@@ -11,7 +11,7 @@ gem 'jekyll-sitemap', '~> 1.4'
 
 gem 'nokogiri', '~> 1.11'
 
-gem "kramdown", ">= 2.3.0"
+gem "kramdown", ">= 2.3.1"
 
 # gem "rails"
 
