@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "New paper in Cerebral Cortex"
+title: "New paper in Cerebral Cortex: Symmetry processing in macaque visual cortex"
 date: 2021-10-12
 ---
 

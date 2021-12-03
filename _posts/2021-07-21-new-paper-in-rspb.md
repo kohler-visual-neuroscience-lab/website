@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "New paper in Proceedings of the Royal Society B"
+title: "New paper in Proceedings of the Royal Society B: The hierarchy of responses to symmetries in textures"
 date: 2021-07-21
 ---
 
