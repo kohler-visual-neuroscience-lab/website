@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My experiment</title>
+    <script src="../utils/jspsych-6/jspsych.js"></script>
+    <script src="../utils/jspsych-6/plugins/jspsych-html-keyboard-response.js"></script>
+	<script src="../utils/jspsych-6/plugins/jspsych-html-button-response.js"></script>
+	<script src="../utils/jspsych-6/plugins/jspsych-image-button-response.js"></script>
+    <script src="../utils/jspsych-6/plugins/jspsych-image-slider-response.js"></script>
+    <script src="../utils/jspsych-6/plugins/jspsych-fullscreen.js"></script>
+    <script src="../utils/jspsych-6/plugins/jspsych-same-different-image.js"></script>
+    <script type="text/javascript" src="../utils/jspsych-6/plugins/jspsych-image-keyboard-response.js"></script>
+    <script type="text/javascript" src="../utils/jspsych-6/plugins/jspsych-survey-html-form.js"></script>
+    <link href="../utils/jspsych-6/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+
+  </head>
+  <body style="background-color:grey;"></body>
+  
+  <script>
+
+	var elem = document.createElement('div');
+	elem.style.width = '1in';
+	document.body.appendChild(elem);
+	var ppi = elem.offsetWidth;
+
+	var d = 20;
+	var L_px = 2*0.0699*d;
+	var pixels_scaled = L_px*ppi
+   		
+    /* create timeline */
+    var timeline = [];
+	
+	timeline.push({
+  		type: 'fullscreen',
+  		fullscreen_mode: true
+	});
+
+	var survey_html = 
+    "<div style='text-align: left; vertical-align: top; display: inline-block; float: left; width: 100%'>"+
+    "<p><u>Participant ID:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='p_id'></p>"+
+    "<p><u>Age:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='age'></p>"+
+    "<p><u>Handedness:</u> </strong><input type='radio' id='left' name='handedness' value='left'>"+
+    "<label for='left'>Left-handed</label>"+
+    "<input type='radio' id='right' name='handedness' value='right' checked>"+
+    "<label for='right'>Right-handed</label>"+
+    "<input type='radio' id='ambi' name='handedness' value='ambi'>"+
+    "<label for='ambi'>Ambidextrous</label></p>"+
+    "<p><u>Sex:</u> <input type='radio' id='female' name='sex' value='female' checked>"+
+    "<label for='female'>Female</label>"+
+    "<input type='radio' id='male' name='sex' value='male'>"+
+    "<label for='male'>Male</label>"+
+    "<input type='radio' name='sex' value='other'><label for='other'>Other, please specify: </label>"+ 
+    "<input type='text' name='other_sex' id='other_sex' value=''></p>"+
+    "</div>"
+
+	var survey = {
+		type: "survey-html-form",
+		html: survey_html,
+		preamble: "<strong>Please provide some personal information: </strong>",
+		button_label: "continue"
+	}
+	
+    /* define welcome message trial */
+    var welcome = {
+      type: "html-keyboard-response",
+      stimulus: "Welcome to the experiment. Press any key to begin."
+    };
+	/* define subject instructions*/
+    var instructions = {
+  	type: "html-keyboard-response",
+  	stimulus: "<p>Please fixate at the center '+' sign which will appear once you press any key. Then, <strong> an image </strong> will be shown in the center " +
+      "of the screen.</p><p>The image will contain an object." +
+      "This will be followed by a <strong> Choice Screen </strong> containing two objects."+
+      " Please choose the option <strong>[Click on the object]</strong> that you think was present in the image"+
+      "<p>Press any key to begin.</p>",
+  	post_trial_gap: 2000
+	};
+
+// fixation stimulus
+    var fixation = {
+      type: 'html-keyboard-response',
+      stimulus: '<div style="font-size:60px;">+</div>',
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 1000
+    }
+	
+	// Define images (from local folder)
+	var images=[]
+	var imageNumber=[]
+	for (var i = 0; i<199; i++)
+		{
+			images[i] = '../stimuli/images_hvm10/im'+i+'.png';
+			imageNumber[i] = i;
+	    }
+		shuffle(imageNumber); // to randomize the trials
+	  
+	 var nrTrials = images.length  
+   //var nrTrials = 5  // uncomment this line here to test functioning quickly 
+		
+// first show the welcome screen
+    timeline.push(welcome);
+
+// show the survey
+		timeline.push(survey);
+    
+// read the instructions
+    timeline.push(instructions);
+	
+// each trial is a fixation point followed by an image (200 ms)   
+    
+ var resultsobj = []   
+ for (var i = 0; i < nrTrials; i++) {
+	if (Math.round(Math.random())==0) {
+  	    var left_object = Math.floor(imageNumber[i]/20) //target
+	    var right_object = (left_object + Math.round(Math.random() * (9 - 1) + 1))%10   //distractor
+    	var lb1 = '<img src= ../stimuli/labels_hvm10/im' + left_object + '.png' + ' height="250px" width="250px"/>' 
+    	var lb2 = '<img src= ../stimuli/labels_hvm10/im' + right_object  + '.png' + ' height="250px" width="250px"/>'
+	} else {
+	    
+	    var right_object = Math.floor(imageNumber[i]/20)
+		var left_object = (right_object+ Math.round(Math.random() * (9 - 1) + 1))%10
+  	    var lb1 = '<img src= ../stimuli/labels_hvm10/im' + left_object + '.png' + ' height="250px" width="250px"/>' 
+    	var lb2 = '<img src= ../stimuli/labels_hvm10/im' + right_object + '.png' + ' height="250px" width="250px"/>'
+	}
+    timeline.push(fixation);
+  	timeline.push({
+	    type: 'image-button-response',
+	    stimulus: images[imageNumber[i]], 
+		stimulus_height:pixels_scaled,
+		choices:[],
+	    trial_duration: 500,
+		stimulus_duration: 100,
+  		data: { images: imageNumber[i], left_choice: left_object, right_choice: right_object} 
+	});
+    timeline.push({
+		stimulus: '',
+		type: 'html-button-response',
+		button_html: [lb1,lb2],
+		choices: ['left','right']});
+		data: {}
+  }
+    /* start the experiment */
+    jsPsych.init({
+      timeline: timeline,
+      show_progress_bar: true,
+	  preload_images: images, 
+      show_preload_progress_bar: true,
+      on_finish: function() {
+        var all_data = jsPsych.data.get();
+		downloadCSV(all_data.csv()) 
+       } 
+    });
+
+	function shuffle(array) {
+	  array.sort(() => Math.random() - 0.5);
+	}
+	
+	// download resulting CSV file
+	function downloadCSV(csvStr) {
+
+	    var hiddenElement = document.createElement('a');
+	    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvStr);
+	    hiddenElement.target = '._blank';
+	    hiddenElement.download = 'object_recognition_data.csv';
+	    hiddenElement.click();
+	}	
+  </script>
+  
+</html>
