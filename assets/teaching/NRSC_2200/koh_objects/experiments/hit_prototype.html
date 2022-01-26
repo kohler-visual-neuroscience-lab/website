@@ -14,7 +14,7 @@
     <link href="jspsych-6/css/jspsych.css" rel="stylesheet" type="text/css"></link>
 
   </head>
-  <body style="background-color:grey;"></body>
+  <body style="background-color:grey; color: rgb(255, 255, 255)"></body>
   
   <script>
 
@@ -89,7 +89,7 @@
 	var imageNumber=[]
 	for (var i = 0; i<199; i++)
 		{
-			images[i] = '/assets/teaching/NRSC_2200/koh_objects/stimuli/images_hvm10/im'+i+'.png';
+			images[i] = 'stimuli/images_hvm10/im'+i+'.png';
 			imageNumber[i] = i;
 	    }
 		shuffle(imageNumber); // to randomize the trials
@@ -113,14 +113,14 @@
 	if (Math.round(Math.random())==0) {
   	    var left_object = Math.floor(imageNumber[i]/20) //target
 	    var right_object = (left_object + Math.round(Math.random() * (9 - 1) + 1))%10   //distractor
-    	var lb1 = '<img src= /assets/teaching/NRSC_2200/koh_objects/stimuli/labels_hvm10/im' + left_object + '.png' + ' height="250px" width="250px"/>' 
-    	var lb2 = '<img src= /assets/teaching/NRSC_2200/koh_objects/stimuli/labels_hvm10/im' + right_object  + '.png' + ' height="250px" width="250px"/>'
+    	var lb1 = '<img src= stimuli/labels_hvm10/im' + left_object + '.png' + ' height="250px" width="250px"/>' 
+    	var lb2 = '<img src= stimuli/labels_hvm10/im' + right_object  + '.png' + ' height="250px" width="250px"/>'
 	} else {
 	    
 	    var right_object = Math.floor(imageNumber[i]/20)
 		var left_object = (right_object+ Math.round(Math.random() * (9 - 1) + 1))%10
-  	    var lb1 = '<img src= /assets/teaching/NRSC_2200/koh_objects/stimuli/labels_hvm10/im' + left_object + '.png' + ' height="250px" width="250px"/>' 
-    	var lb2 = '<img src= /assets/teaching/NRSC_2200/koh_objects/stimuli/labels_hvm10/im' + right_object + '.png' + ' height="250px" width="250px"/>'
+  	    var lb1 = '<img src= stimuli/labels_hvm10/im' + left_object + '.png' + ' height="250px" width="250px"/>' 
+    	var lb2 = '<img src= stimuli/labels_hvm10/im' + right_object + '.png' + ' height="250px" width="250px"/>'
 	}
     timeline.push(fixation);
   	timeline.push({
