@@ -32,6 +32,16 @@ image: /assets/people/pjkohler_short.png
 </p>
 
 <a class="box-head">
+	<span class="wide alignleft">Puneet Bhargava (he, him, his)</span>
+	<span class="mid alignleft">Puneet Bhargava</span>
+	<span class="narrow alignleft">Puneet Bhargava</span>
+	<span class="wide alignright">Volunteer RA</span>
+	<span class="mid alignright">Volunteer RA</span>
+	<span class="narrow alignright">Volunteer RA</span>
+</a>
+<p class="box-body"><img class="small-round" src="/assets/people/pbhargava.png" alt="PuneetBhargava">Puneet has been volunteering in the lab remotely from Kelowna, British Columbia since 2021. His areas of his interest include perception and decision-making. He is currently working on a project relating symmetry to perception of numerosity. In his free time, he enjoys physical fitness activities such as yoga, jogging, and weight training.</p>
+
+<a class="box-head">
 	<span class="wide alignleft">Rita Hdaki (she, her, hers)</span>
 	<span class="mid alignleft">Rita Hdaki</span>
 	<span class="narrow alignleft">Rita Hdaki</span>

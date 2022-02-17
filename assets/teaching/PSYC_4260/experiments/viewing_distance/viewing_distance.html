@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="jspsych-6.3/jspsych.js"></script>
+  <script src="jspsych-6.3/plugins/jspsych-html-keyboard-response.js"></script>
+  <script src="jspsych-6.3/plugins/jspsych-survey-html-form.js"></script>
+  <script src="jspsych-6.3/plugins/jspsych-virtual-chinrest.js"></script>
+  <script src="svg.min.js"></script>
+  <link rel="stylesheet" href="jspsych-6.3/css/jspsych.css"></link>
+  <link href="viewing_distance.css" rel="stylesheet">
+  <script src="viewing_distance_setup_EN.js"></script>
+  <meta charset="utf-8"/>
+</head>
+<body></body>
+<script>
+    const survey = {
+        type: "survey-html-form",
+        html: survey_html,
+        preamble: "<strong>Please provide some personal information: </strong>",
+        button_label: "continue"
+    }
+
+    // three blindspot estimates
+    // estimate viewing distance but do not resize
+    const no_resize = {
+      type: 'virtual-chinrest',
+      blindspot_reps: 3,
+      resize_units: "none",
+      item_path: "card.png",
+      viewing_distance_report: "none"
+    }
+
+    const measure_distance = {
+        type: "survey-html-form",
+        html: "<p><u>viewing distance (in cm):</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='measured_dist'></p>",
+        preamble: "<strong>Now use your measuring tape to measure the distance from your eye (either one) to the monitor: </strong>",
+        button_label: "continue"
+    }
+
+    const goodbye = {
+      type: "html-keyboard-response",
+      stimulus: "<p>You have completed the experiment.</p>" +
+                "<p>Press any key to end and save your data.</p>"
+    }
+
+    jsPsych.init({
+      timeline: [survey, welcome, no_resize, measure_distance, goodbye],
+      on_finish: function() {
+        jsPsych.data.get().localSave('csv','viewing_distance_data.csv');
+      }
+    });
+</script>
+</html>
