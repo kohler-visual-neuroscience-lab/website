@@ -8,25 +8,25 @@ permalink: /teaching/
 ### Experiments used for teaching
 
 #### Ebbinghaus
-[Ebbinghaus size illusion experiment](https://www.kohlerlab.com/assets/teaching/experiments/ebbinghaus/ebbinghaus). Used in NRSC 2200 and PSYC 4260.
+[Ebbinghaus size illusion experiment](/assets/teaching/experiments/ebbinghaus/ebbinghaus). Used in NRSC 2200 and PSYC 4260.
 
 #### Object Recognition
-[Experiment](https://www.kohlerlab.com/assets/teaching/NRSC_2200/koh_objects/experiments/hit_prototype) created by my colleague [Kohitij Kar](https://vital-kolab.org/) measuring core object recognition. Used in NRSC 2200.
+[Experiment](/assets/teaching/experiments/koh_objects/experiments/hit_prototype) created by my colleague [Kohitij Kar](https://vital-kolab.org/) measuring core object recognition. Used in NRSC 2200.
 
 #### Viewing Distance
-[Experiment](https://www.kohlerlab.com/assets/teaching/experiments/viewing_distance/viewing_distance) measuring viewing distance based on the blind spot. Used in PSYC 4260.
+[Experiment](/assets/teaching/experiments/viewing_distance/viewing_distance) measuring viewing distance based on the blind spot. Used in PSYC 4260.
 
 #### Visual Search
-Classic visual search experiments based on Treisman and Gelade (1980). Three versions: [Colour Search](https://www.kohlerlab.com/assets/teaching/experiments/visual_search/colour_search), [Shape Search](https://www.kohlerlab.com/assets/teaching/experiments/visual_search/shape_search) and [Conjunction Search](https://www.kohlerlab.com/assets/teaching/experiments/visual_search/conjunction_search). Used in PSYC 4260.
+Classic visual search experiments based on Treisman and Gelade (1980). Three versions: [Colour Search](/assets/teaching/experiments/visual_search/colour_search), [Shape Search](/assets/teaching/experiments/visual_search/shape_search) and [Conjunction Search](/assets/teaching/experiments/visual_search/conjunction_search). Used in PSYC 4260.
 
 #### Stroop
-Classic Stroop Experiment created by [Jason Steffener](https://github.com/steffejr) and minimally adapted by Prof. Kohler. Three versions: [Stroop Colour](https://www.kohlerlab.com/assets/teaching/experiments/Stroop/stroop_color), [Stroop Word](https://www.kohlerlab.com/assets/teaching/experiments/Stroop/stroop_word) and [Stroop Colour Word](https://https://www.kohlerlab.com/assets/teaching/experiments/Stroop/stroop_colour_word). Used in PSYC 4260.
+Classic Stroop Experiment created by [Jason Steffener](https://github.com/steffejr) and minimally adapted by Prof. Kohler. Three versions: [Stroop Color](/assets/teaching/experiments/stroop/stroop_color), [Stroop Word](/assets/teaching/experiments/stroop/stroop_word) and [Stroop Color Word](/assets/teaching/experiments/stroop/stroop_colorword). Used in PSYC 4260.
 
 #### Cambridge Face Memory Task
-Cambridge Face Memory Task based on Duchaine and Nakayama (2006). Two versions: [Upright Faces](https://www.kohlerlab.com/assets/teaching/experiments/cfmt/cfmt_upright) and [Inverted Faces](https://www.kohlerlab.com/assets/teaching/experiments/cfmt/cfmt_inverted). Used in PSYC 4260.
+Cambridge Face Memory Task based on Duchaine and Nakayama (2006). Two versions: [Upright Faces](/assets/teaching/experiments/cfmt/cfmt_upright) and [Inverted Faces](/assets/teaching/experiments/cfmt/cfmt_inverted). Used in PSYC 4260.
 
 #### Corsi Task
-[Corsi Task](https://www.kohlerlab.com/assets/teaching/experiments/corsi_task/corsi_task) adapted from the version by Rose-Marie Gibeau found [here](https://www.tqmp.org/RegularArticles/vol17-3/p299/). Used in PSYC 4260.
+[Corsi Task](/assets/teaching/experiments/corsi_task/corsi_task) adapted from the version by Rose-Marie Gibeau found [here](https://www.tqmp.org/RegularArticles/vol17-3/p299/). Used in PSYC 4260.
 
 
 ### Courses taught
