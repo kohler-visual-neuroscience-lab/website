@@ -87,6 +87,8 @@ permalink: /pubs/
 	**Samet**, S, Iskandar, Y, Freud, E & **Kohler**, PJ (2023). Symmetry Benefits Working Memory Representations of Object Orientation. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario. <br><span style="color:var(--red)"> Winner of the 2nd best poster prize at the LOVE conference 2023!</span>
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/padilla_love2023.pdf)
 	**Padilla**, D, Stajduhar, A, & **Kohler**, PJ (2023). Similarity Sorting of Novel 2-D and 3-D Objects. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario.
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/shams_evcp2022.pdf)
+	**Shams**, M, **Kohler**, PJ, & Cavanagh, P (2022). Flash Localization in the Vicinity of a Moving Object. Poster at *European Conference on Visual Perception*, Nijmegen, Netherlands.
 0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/moreau_vss2021.mp4)
 	**Moreau**, R, Alp, N, Clarke, A, Freud, E & **Kohler**, PJ (2021). Differential processing of reflection and rotation symmetries in visual textures. Talk at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_sfn2019.pdf)

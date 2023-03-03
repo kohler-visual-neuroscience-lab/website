@@ -6,7 +6,7 @@
   <script src="jspsych-6.3.0/plugins/jspsych-preload.js"></script>
   <script src ="jspsych-6.3.0/plugins/jspsych-visual-search-circle.js"></script>
   <link rel="stylesheet" href="jspsych-6.3.0/css/jspsych.css"></link>
-  <script src="colour_search_setup_EN.js"></script> 
+  <script src="shape_search_setup_EN.js"></script> 
   <meta charset="utf-8"/>
 </head>
 <body></body>
@@ -147,7 +147,7 @@
     jsPsych.init({
         timeline: [preload, welcome, prompt, prac_prompt, prac_procedure, full_procedure],
         on_finish: function() {
-            jsPsych.data.get().localSave('csv','conjunction_search_data.csv');
+            jsPsych.data.get().localSave('csv','shape_search_data.csv');
         }
     });
     // shuffle any input array
