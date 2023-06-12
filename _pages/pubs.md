@@ -79,51 +79,59 @@ permalink: /pubs/
 <h3 class="relative wide">Selected Conference Presentations</h3>
 <h3 class="relative mid">Conferences</h3>
 <h3 class="relative narrow">Conference Presentations</h3>
+0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/iskandar_vss2023.mp4)
+	Iskandar, S, Lee, C, Bosse, S & Kohler, PJ (2023). Spatial Mechanisms Mediating Visual Responses to Symmetries in Textures. Talk at *Vision Sciences Society*, St. Petersburg, FL. <br><span style="color:var(--red)"> Winner of the VSS travel award 2023!</span>
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/samet_vss2023.pdf)
+	Samet, S, Iskandar, Y, Fukuda, K, Freud, E & Kohler, PJ (2023). Symmetry Benefits Working Memory Representations of Object Orientation. Poster at *Vision Sciences Society*, St. Petersburg, FL.
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/shams_vss2023.pdf)
+	Shams, M, Di Pietrantonio, A, Hatton, M, Kohler, PJ & Cavanagh, P (2023). Object-based Attention Measured with SSVEPs. Poster at *Vision Sciences Society*, St. Petersburg, FL.
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2023.pdf)
+	Kohler, PJ, Samet, S, Iskandar, Y & Pierce, L (2023). Brain Responses to Symmetry during Early Infancy. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/ragavaloo_love2023.pdf) 
-	**Ragavaloo**, S & **Kohler**, PJ (2023). Brain Responses to Symmetries in Naturalistic Novel Three-Dimensional Objects. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario.
+	Ragavaloo, S & Kohler, PJ (2023). Brain Responses to Symmetries in Naturalistic Novel Three-Dimensional Objects. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/iskandar_love2023.pdf)
-	**Iskandar**, Y, **Samet**, S, Lee, C, Bosse, S & **Kohler**, PJ (2023). Spatial Mechanisms Mediating Visual Responses to Symmetries in Textures. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario.
+	Iskandar, Y, Samet, S, Lee, C, Bosse, S & Kohler, PJ (2023). Spatial Mechanisms Mediating Visual Responses to Symmetries in Textures. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/samet_love2023.pdf)
-	**Samet**, S, Iskandar, Y, Lysenko, R, Freud, E & **Kohler**, PJ (2023). Symmetry Benefits Working Memory Representations of Object Orientation. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario. <br><span style="color:var(--red)"> Winner of the 2nd best poster prize at the LOVE conference 2023!</span>
+	Samet, S, Iskandar, Y, Lysenko, R, Freud, E & Kohler, PJ (2023). Symmetry Benefits Working Memory Representations of Object Orientation. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario. <br><span style="color:var(--red)"> Winner of the 2nd best poster prize at the LOVE conference 2023!</span>
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/padilla_love2023.pdf)
-	**Padilla**, D, Stajduhar, A, & **Kohler**, PJ (2023). Similarity Sorting of Novel 2-D and 3-D Objects. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario.
+	Padilla, D, Stajduhar, A, & Kohler, PJ (2023). Similarity Sorting of Novel 2-D and 3-D Objects. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/shams_ecvp2022.pdf)
-	**Shams**, M, **Kohler**, PJ, & Cavanagh, P (2022). Flash Localization in the Vicinity of a Moving Object. Poster at *European Conference on Visual Perception*, Nijmegen, Netherlands.
+	Shams, M, Kohler, PJ, & Cavanagh, P (2022). Flash Localization in the Vicinity of a Moving Object. Poster at *European Conference on Visual Perception*, Nijmegen, Netherlands.
 0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/moreau_vss2021.mp4)
-	**Moreau**, R, Alp, N, Clarke, A, Freud, E & **Kohler**, PJ (2021). Differential processing of reflection and rotation symmetries in visual textures. Talk at *Vision Sciences Society*, St. Petersburg, FL.
+	Moreau, R, Alp, N, Clarke, A, Freud, E & Kohler, PJ (2021). Differential processing of reflection and rotation symmetries in visual textures. Talk at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_sfn2019.pdf)
-	**Kohler**, PJ, Norcia, AM & McCandliss, B (2019). Steady-state visual evoked potentials reveal parietal contributions to abstract numerosity. Poster at *Neuroscience*, Chicago, IL.
+	Kohler, PJ, Norcia, AM & McCandliss, B (2019). Steady-state visual evoked potentials reveal parietal contributions to abstract numerosity. Poster at *Neuroscience*, Chicago, IL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2019.pdf)
-	**Kohler**, PJ, Barzegaran, E, Davis, BE & Norcia, AM (2019). Encoding- and decision-related brain activity during a motion judgment task. Poster at *Vision Sciences Society*, St. Petersburg, FL.
+	Kohler, PJ, Barzegaran, E, Davis, BE & Norcia, AM (2019). Encoding- and decision-related brain activity during a motion judgment task. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_cns2019.pdf)
-	**Kohler**, PJ, Norcia, AM & McCandliss, B (2019). Assessing Parietal Contributions to Abstract Numerosity with Steady State Visual Evoked Potentials (SSVEPs). Poster at *Cognitive Neuroscience Society*, San Francisco, CA
+	Kohler, PJ, Norcia, AM & McCandliss, B (2019). Assessing Parietal Contributions to Abstract Numerosity with Steady State Visual Evoked Potentials (SSVEPs). Poster at *Cognitive Neuroscience Society*, San Francisco, CA
 0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/kohler_vss2018.m4v)
-	**Kohler**, PJ, Meredith, WJ & Norcia, AM (2018). Characterizing late-developing binocular motion mechanisms in human visual cortex. Talk at *Vision Sciences Society*, St. Petersburg, FL.
+	Kohler, PJ, Meredith, WJ & Norcia, AM (2018). Characterizing late-developing binocular motion mechanisms in human visual cortex. Talk at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/kohler_vss2017.m4v)
-	**Kohler**, PJ, Meredith, WJ & Norcia, AM (2017). Neural responses to motion in 2 and 3 dimensions. Talk at *Vision Sciences Society*, St. Petersburg, FL.
+	Kohler, PJ, Meredith, WJ & Norcia, AM (2017). Neural responses to motion in 2 and 3 dimensions. Talk at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_fens2016.pdf)
- 	**Kohler**, PJ, Cottereau, BR & Norcia, AM (2016). Cortical areas encoding visual segmentation cues from relative motion and relative disparity. Poster at *FENS Forum of Neuroscience*, Copenhagen, Denmark.
+ 	Kohler, PJ, Cottereau, BR & Norcia, AM (2016). Cortical areas encoding visual segmentation cues from relative motion and relative disparity. Poster at *FENS Forum of Neuroscience*, Copenhagen, Denmark.
  0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2016.pdf)
- 	**Kohler**, PJ, Cottereau, BR & Norcia, AM (2016). Identifying cortical areas involved in perceptual decisions about symmetry. Poster at *Vision Sciences Society*, St. Petersburg, FL.
+ 	Kohler, PJ, Cottereau, BR & Norcia, AM (2016). Identifying cortical areas involved in perceptual decisions about symmetry. Poster at *Vision Sciences Society*, St. Petersburg, FL.
  0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/kohler_vss2015.m4v)
- 	**Kohler**, PJ, Yakovleva, A, Clarke, ADF, Liu, Y & Norcia, AM (2015). Parametric responses to rotation symmetry in mid-level visual cortex. Talk at *Vision Sciences Society*, St. Petersburg, FL.
+ 	Kohler, PJ, Yakovleva, A, Clarke, ADF, Liu, Y & Norcia, AM (2015). Parametric responses to rotation symmetry in mid-level visual cortex. Talk at *Vision Sciences Society*, St. Petersburg, FL.
  0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_cns2015.pdf)
- 	**Kohler**, PJ & Norcia, AM (2015). Does SNR of visually evoked BOLD responses change with rapid multiplexed fMRI? Poster at *Cognitive Neuroscience Society*, San Francisco, CA
+ 	Kohler, PJ & Norcia, AM (2015). Does SNR of visually evoked BOLD responses change with rapid multiplexed fMRI? Poster at *Cognitive Neuroscience Society*, San Francisco, CA
  0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2014.pdf)
- 	**Kohler**, PJ, Clarke, ADF, Liu-Shuang, J, Liu, Y, Norcia, AM (2014). The neural response to visual symmetry in wallpaper patterns. Poster at *Vision Sciences Society*, St. Petersburg, FL.
+ 	Kohler, PJ, Clarke, ADF, Liu-Shuang, J, Liu, Y, Norcia, AM (2014). The neural response to visual symmetry in wallpaper patterns. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdg"){: #pdf-icon }](/assets/posters/kohler_vss2013.pdf)
- 	**Kohler**, PJ, Harder, LH, & Tse, PU (2013). The influence of local and global motion on perceived position. Poster at *Vision Sciences Society*, Naples, FL.
+ 	Kohler, PJ, Harder, LH, & Tse, PU (2013). The influence of local and global motion on perceived position. Poster at *Vision Sciences Society*, Naples, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_ecvp2012.pdf)
- 	**Kohler**, PJ, Harder, LH, & Tse, PU PJ, Cavanagh, CEP, & Tse, PU (2012). The influence of motion integration on shifts in perceived position. Poster at *European Conference on Visual Perception*, Alghero, Italy. 1. [Demo video](/assets/demos/globalmotiongrab.mov) 2. [Feature on New Scientist Blog.](https://web.archive.org/web/20121001014756/http://www.newscientist.com/blogs/nstv/2012/09/friday-illusion-how-to-move-an-object-with-your-mind.html) 3. [Feature on Focus.de's "Illusion der Woche"](https://www.focus.de/wissen/videos/illusion-der-woche-dieser-punkt-wird-zur-marionette-des-gehirns_vid_33733.html)
-0. **Kohler**, PJ, Caplovitz, GP, Fogelson, SF, & Tse, PU (2012). Neural correlates of perceptually bistable motion-based grouping. Talk at *Vision Sciences Society*, Naples, FL.
+ 	Kohler, PJ, Harder, LH, & Tse, PU PJ, Cavanagh, CEP, & Tse, PU (2012). The influence of motion integration on shifts in perceived position. Poster at *European Conference on Visual Perception*, Alghero, Italy. 1. [Demo video](/assets/demos/globalmotiongrab.mov) 2. [Feature on New Scientist Blog.](https://web.archive.org/web/20121001014756/http://www.newscientist.com/blogs/nstv/2012/09/friday-illusion-how-to-move-an-object-with-your-mind.html) 3. [Feature on Focus.de's "Illusion der Woche"](https://www.focus.de/wissen/videos/illusion-der-woche-dieser-punkt-wird-zur-marionette-des-gehirns_vid_33733.html)
+0. Kohler, PJ, Caplovitz, GP, Fogelson, SF, & Tse, PU (2012). Neural correlates of perceptually bistable motion-based grouping. Talk at *Vision Sciences Society*, Naples, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2011.pdf)
- 	**Kohler**, PJ, Fogelson, SF, Reavis, EA, & Tse, PU (2011). The neural basis of lightness constancy in the visual system. Poster at *Vision Sciences Society*, Naples, FL.
+ 	Kohler, PJ, Fogelson, SF, Reavis, EA, & Tse, PU (2011). The neural basis of lightness constancy in the visual system. Poster at *Vision Sciences Society*, Naples, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_assc2010.pdf)
- 	**Kohler**, PJ, Zafer, M, Reavis, EA, & Tse, PU (2010). The Ebbinghaus illusion requires consciousness of the inducers. Poster at *Association for the Scientific Study of Consciousness 14*, Toronto, Canada.
+ 	Kohler, PJ, Zafer, M, Reavis, EA, & Tse, PU (2010). The Ebbinghaus illusion requires consciousness of the inducers. Poster at *Association for the Scientific Study of Consciousness 14*, Toronto, Canada.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2010.pdf)
-	**Kohler**, PJ, Fogelson, SV, Reavis EA, Guntupalli, JS & Tse, PU (2010). The Relationship Between Multivariate Pattern Classification Accuracy and Hemodynamic Response Level in Visual Cortical Areas. Poster at *Vision Sciences Society*, Naples, FL.
+	Kohler, PJ, Fogelson, SV, Reavis EA, Guntupalli, JS & Tse, PU (2010). The Relationship Between Multivariate Pattern Classification Accuracy and Hemodynamic Response Level in Visual Cortical Areas. Poster at *Vision Sciences Society*, Naples, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2009.pdf)
-	**Kohler**, PJ, Caplovitz, GP & Tse, PU (2009). The whole moves less than the spin of its parts. Poster at Poster at *Vision Sciences Society*, Naples, FL.
+	Kohler, PJ, Caplovitz, GP & Tse, PU (2009). The whole moves less than the spin of its parts. Poster at Poster at *Vision Sciences Society*, Naples, FL.
 {: reversed="reversed"}
 </div>
 </div>
