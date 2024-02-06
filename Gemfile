@@ -9,7 +9,7 @@ gem 'jekyll-seo-tag'
 
 gem 'jekyll-sitemap', '~> 1.4'
 
-gem 'nokogiri', '~> 1.14'
+gem 'nokogiri', '~> 1.16'
 
 gem "kramdown", ">= 2.3.1"
 
