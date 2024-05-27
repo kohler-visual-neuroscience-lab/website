@@ -79,6 +79,12 @@ permalink: /pubs/
 <h3 class="relative wide">Selected Conference Presentations</h3>
 <h3 class="relative mid">Conferences</h3>
 <h3 class="relative narrow">Conference Presentations</h3>
+0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/vss2024_movahedi.mp4) Movahedi, N, Ragavaloo, S & Kohler, PJ (2024). Does perspective-distortion modulate the temporal tuning of symmetry responses? Talk at *Vision Sciences Society*, St. Petersburg, FL.
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/talks/vss2024_samet.pdf) Samet, S, Khalon, J, Elder, JH, Baker, N, Freud, E & Kohler, PJ (2024). Investigating Configural and Local Shape Processing with Steady State Visual Evoked Potentials. Poster at *Vision Sciences Society*, St. Petersburg, FL. 
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/talks/kohler_aic2024.pdf) 
+	Kohler, PJ (2024). Investigating local and configural shape processing with steady-state visual evoked potentials. Talk at *Annual Interdisciplinary Conference*, Jackson Hole, WY.
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/talks/ragavaloo_sfn2023.pdf) 
+	Ragavaloo, S & Kohler, PJ (2023). Brain Responses to Symmetries in Naturalistic Novel Three-Dimensional Objects. Poster at *Society for Neuroscience*, Washington, DC.
 0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/iskandar_vss2023.m4v)
 	Iskandar, S, Lee, C, Bosse, S & Kohler, PJ (2023). Spatial Mechanisms Mediating Visual Responses to Symmetries in Textures. Talk at *Vision Sciences Society*, St. Petersburg, FL. <br><span style="color:var(--red)"> Winner of the VSS travel award 2023!</span>
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/samet_vss2023.pdf)
@@ -87,14 +93,6 @@ permalink: /pubs/
 	Shams, M, Di Pietrantonio, A, Hatton, M, Kohler, PJ & Cavanagh, P (2023). Object-based Attention Measured with SSVEPs. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2023.pdf)
 	Kohler, PJ, Samet, S, Iskandar, Y & Pierce, L (2023). Brain Responses to Symmetry during Early Infancy. Poster at *Vision Sciences Society*, St. Petersburg, FL.
-0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/ragavaloo_love2023.pdf) 
-	Ragavaloo, S & Kohler, PJ (2023). Brain Responses to Symmetries in Naturalistic Novel Three-Dimensional Objects. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario.
-0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/iskandar_love2023.pdf)
-	Iskandar, Y, Samet, S, Lee, C, Bosse, S & Kohler, PJ (2023). Spatial Mechanisms Mediating Visual Responses to Symmetries in Textures. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario.
-0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/samet_love2023.pdf)
-	Samet, S, Iskandar, Y, Lysenko, R, Freud, E & Kohler, PJ (2023). Symmetry Benefits Working Memory Representations of Object Orientation. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario. <br><span style="color:var(--red)"> Winner of the 2nd best poster prize at the LOVE conference 2023!</span>
-0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/padilla_love2023.pdf)
-	Padilla, D, Stajduhar, A, & Kohler, PJ (2023). Similarity Sorting of Novel 2-D and 3-D Objects. Poster at *Lake Ontario Visionary Establishment*, Niagara Falls, Ontario.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/shams_ecvp2022.pdf)
 	Shams, M, Kohler, PJ, & Cavanagh, P (2022). Flash Localization in the Vicinity of a Moving Object. Poster at *European Conference on Visual Perception*, Nijmegen, Netherlands.
 0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/moreau_vss2021.mp4)

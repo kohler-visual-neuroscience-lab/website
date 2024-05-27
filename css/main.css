@@ -190,7 +190,7 @@ ul#posts {
 /* ordered list (used for publications and presentations) */
 ol {
     margin-right: 30px;
-    margin-left: 10px;
+    margin-left: 20px;
     display: block;
     position:relative;
     z-index:0;
@@ -448,7 +448,7 @@ p {
     position:absolute;
     width:30px;
     left:0%;
-    margin-left:-55px;
+    margin-left:-65px;
     margin-top:-6px;
 }
 #movie-icon {
@@ -456,7 +456,7 @@ p {
     position:absolute;
     width:20px;
     left:0%;
-    margin-left:-50px;
+    margin-left:-60px;
     margin-top:-2px;
 }
 
