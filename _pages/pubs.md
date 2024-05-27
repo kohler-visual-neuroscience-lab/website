@@ -80,10 +80,10 @@ permalink: /pubs/
 <h3 class="relative mid">Conferences</h3>
 <h3 class="relative narrow">Conference Presentations</h3>
 0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/vss2024_movahedi.mp4) Movahedi, N, Ragavaloo, S & Kohler, PJ (2024). Does perspective-distortion modulate the temporal tuning of symmetry responses? Talk at *Vision Sciences Society*, St. Petersburg, FL.
-0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/talks/vss2024_samet.pdf) Samet, S, Khalon, J, Elder, JH, Baker, N, Freud, E & Kohler, PJ (2024). Investigating Configural and Local Shape Processing with Steady State Visual Evoked Potentials. Poster at *Vision Sciences Society*, St. Petersburg, FL. 
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/vss2024_samet.pdf) Samet, S, Khalon, J, Elder, JH, Baker, N, Freud, E & Kohler, PJ (2024). Investigating Configural and Local Shape Processing with Steady State Visual Evoked Potentials. Poster at *Vision Sciences Society*, St. Petersburg, FL. 
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/talks/kohler_aic2024.pdf) 
 	Kohler, PJ (2024). Investigating local and configural shape processing with steady-state visual evoked potentials. Talk at *Annual Interdisciplinary Conference*, Jackson Hole, WY.
-0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/talks/ragavaloo_sfn2023.pdf) 
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/ragavaloo_sfn2023.pdf) 
 	Ragavaloo, S & Kohler, PJ (2023). Brain Responses to Symmetries in Naturalistic Novel Three-Dimensional Objects. Poster at *Society for Neuroscience*, Washington, DC.
 0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/iskandar_vss2023.m4v)
 	Iskandar, S, Lee, C, Bosse, S & Kohler, PJ (2023). Spatial Mechanisms Mediating Visual Responses to Symmetries in Textures. Talk at *Vision Sciences Society*, St. Petersburg, FL. <br><span style="color:var(--red)"> Winner of the VSS travel award 2023!</span>
