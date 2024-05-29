@@ -81,6 +81,7 @@ permalink: /pubs/
 <h3 class="relative narrow">Conference Presentations</h3>
 0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/vss2024_movahedi.mp4) Movahedi, N, Ragavaloo, S & Kohler, PJ (2024). Does perspective-distortion modulate the temporal tuning of symmetry responses? Talk at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/vss2024_iskandar.pdf) Iskandar, S, Lee, C, Bosse, S & Kohler, PJ (2024). Spatial Tuning of Visual Responses to Symmetries in Textures. Poster at *Vision Sciences Society*, St. Petersburg, FL.
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/vss2024_ragavaloo.pdf) Ragavaloo, S, Movahedi, N & Kohler, PJ (2024). Brain Responses to Symmetries in Naturalistic Novel Three-Dimensional Objects. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/vss2024_samet.pdf) Samet, S, Khalon, J, Elder, JH, Baker, N, Freud, E & Kohler, PJ (2024). Investigating Configural and Local Shape Processing with Steady State Visual Evoked Potentials. Poster at *Vision Sciences Society*, St. Petersburg, FL. 
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/talks/kohler_aic2024.pdf) 
 	Kohler, PJ (2024). Investigating local and configural shape processing with steady-state visual evoked potentials. Talk at *Annual Interdisciplinary Conference*, Jackson Hole, WY.
