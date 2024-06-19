@@ -50,28 +50,38 @@ image: /assets/people/pjkohler_short.png
 	<span class="mid alignright">Master's Student</span>
 	<span class="narrow alignright">MA Student</span>
 </a>
-<p class="box-body"><img class="small-round" src="/assets/people/sragavaloo.png" alt="Shenoa Ragavaloo">Shenoa is a Master’s student in the Psychology program, supervised by Prof. Kohler, and is currently working on a project using high-density EEG to begin to understand how the brain encodes symmetries over novel, naturalistic objects under conditions of perspective distortion that occur during natural vision. Shenoa presented this work at the at the Lake Ontario Visionary Establishment in February 2023.
+<p class="box-body"><img class="small-round" src="/assets/people/sragavaloo.png" alt="Shenoa Ragavaloo">Shenoa is a Master’s student in the Psychology program, supervised by Prof. Kohler, and is currently working on a project using high-density EEG to begin to understand how the brain encodes symmetries over novel, naturalistic objects under conditions of perspective distortion that occur during natural vision. Shenoa has presented her work at national and international conferences.
 </p>
 
 <a class="box-head">
 	<span class="wide alignleft">Yara Iskandar (she, her, hers)</span>
 	<span class="mid alignleft">Yara Iskandar</span>
 	<span class="narrow alignleft">Yara Iskandar</span>
-	<span class="wide alignright">Undergrad RA</span>
-	<span class="mid alignright">Undergrad RA</span>
-	<span class="narrow alignright">Undergrad RA</span>
+	<span class="wide alignright">Master's Student, Psychology</span>
+	<span class="mid alignright">Master's Student</span>
+	<span class="narrow alignright">MA Student</span>
 </a>
-<p class="box-body"><img class="small-round" src="/assets/people/yiskandar.png" alt="Yara Iskandar">Yara is an undergraduate student majoring in Psychology at York University. She is currently working as a Research at York student in the lab, working on a project exploring spatial mechanisms mediating visual responses to symmetries in textures. She this work in a poster at the Lake Ontario Visionary Establishment in February 2023, and will be giving a talk at the Vision Sciences Society in Florida in May 2023. At this time she is focusing on using high-density EEG to explore these responses, but plans to build on these findings with functional MRI in the near future. In her free time Yara enjoys reading, exercising, and playing chess.</p>
+<p class="box-body"><img class="small-round" src="/assets/people/yiskandar.png" alt="Yara Iskandar">Yara is a Master's student in the Psychology program. Yara joined the lab as an undergraduate student, working on a project using EEG to probe the spatial mechanisms that mediate visual responses to symmetries in textures. For her Master's thesis, she is building on this work using functional MRI, in a project that aims to relate symmetry sensitivity to the properties of receptive fields of distinct visual regions. Yara has presented her work at national and international conferences, including a talk at the Vision Sciences Society in Florida in 2023, for which she won the VSS travel award. In her free time Yara enjoys reading, exercising, and playing chess.</p>
 
 <a class="box-head">
 	<span class="wide alignleft">Shaya Samet (he, him, his)</span>
 	<span class="mid alignleft">Shaya Samet</span>
 	<span class="narrow alignleft">Shaya Samet</span>
-	<span class="wide alignright">Undergrad RA</span>
-	<span class="mid alignright">Undergrad RA</span>
-	<span class="narrow alignright">Undergrad RA</span>
+	<span class="wide alignright">Master's Student, Psychology</span>
+	<span class="mid alignright">Master's Student</span>
+	<span class="narrow alignright">MA Student</span>
 </a>
-<p class="box-body"><img class="small-round" src="/assets/people/ssamet.png" alt="Shaya Samet">Shaya is completing his Specialized Honours BA in Psychology at York University. He joined the lab in Fall 2021 to complete his Specialized Honours thesis on the roles of perceptual load and object salience in inattentional blindness supervised by Prof. Kohler. Shaya is currently working as an RA in the lab, completing an Individual Research Project that entails involvement in various projects in the lab, including a working memory experiment for which he won the 2nd place award for best poster presentation at the Lake Ontario Visionary Establishment Conference in February 2023. He is trained to collect high-density EEG data from adult and infant participants.</p>
+<p class="box-body"><img class="small-round" src="/assets/people/ssamet.png" alt="Shaya Samet">Shaya is a Master's student in the Psychology program. Before starting graduate school, he completed a Specialized Honours thesis under Prof. Kohler's supervision on the roles of perceptual load and object salience in inattentional blindness. He then did an Individual Research Project, where he contributed to a study on working memory and symmetry, and was trained in collecting high-density EEG data from adult and infant participants. All of this prepared him well for his thesis work, where he uses EEG to study how local and configural information contributes to shape perception. Shaya has presented his work at national and international conferences, and won the 2nd place award for best poster presentation at the Lake Ontario Visionary Establishment Conference in 2023.</p>
+
+<a class="box-head">
+	<span class="wide alignleft">Shadi Ahmari (she, her, hers)</span>
+	<span class="mid alignleft">Shadi Ahmari</span>
+	<span class="narrow alignleft">Shadi Ahmari</span>
+	<span class="wide alignright">Master's student, Biology</span>
+	<span class="mid alignright">Master's student</span>
+	<span class="narrow alignright">MSc student</span>
+</a>
+<p class="box-body"><img class="small-round" src="/assets/people/sahmari.png" alt="Shadi Ahmari">Shadi is a Master's student in the Biology program, with a solid background in biomedical engineering and a deep enthusiasm for brain research. Her primary focus is on identifying psychometric thresholds for symmetry and contrast detection in novel, three-dimensional objects. Shadi is dedicated to creative and interdisciplinary research, applying brain science to various fields. In her free time, she enjoys drawing, photography, and performance art, often visiting galleries to stay inspired.</p>
 
 <a class="box-head">
 	<span class="wide alignleft">Lab Alumni</span>
