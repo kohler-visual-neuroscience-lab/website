@@ -9,6 +9,11 @@ permalink: /pubs/
 <h3 class="relative wide">Peer-reviewed Articles</h3>
 <h3 class="relative mid">Articles</h3>
 <h3 class="relative narrow">Peer-reviewed Articles</h3>
+0.	Maechler, MR, Choe, E, Cavanagh, P, **Kohler**, PJ, Tse, PU (in prep). Hemifield Specificity of Attention Response Functions During Multiple Object Tracking. 
+0.	Kohler, PJ, Moreau, R, Alp, N, Godley, L, Freud, E (in prep) Symmetry has Dissociable Effects on Efficiency and Difficulty of Visual Search. 
+0.	Samet, S, Iskandar, Y, Fukuda, K, Freud, E & **Kohler**, PJ (in prep). Symmetry Benefits Working Memory Representations of Object Orientation.
+0.	Moreau, R, Alp, N, Clarke, A, Freud, E & **Kohler**, PJ (submitted). Differential processing of reflection and rotation symmetries in visual textures. Submitted to Journal of Vision.
+0.	Shams, M, **Kohler**, PJ & Cavanagh, P (submitted). Deconstructing the Frame Effect. Submitted to Journal of Vision. 
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/kohler_et_al_2022.pdf) **Kohler**, PJ, Vedak, S &amp; Gilmore, RO (2022) Perceptual Similarities among Wallpaper Group Exemplars. *Symmetry 14*(5), 857.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/boswell_et_al_2021.pdf) Boswell, A., **Kohler**, PJ, McCarthy, JD &amp; Caplovitz, GP (2021). Perceived group size is determined by the centroids of the component elements. *Journal of Vision 21*(13), 1. 
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/sievers_et_al_2021.pdf) Sievers, B, Parkinson, C, **Kohler**, PJ, Hughes, J, Fogelson, S &amp; Wheatley, T (2021). Visual and auditory brain areas share a representational geometry for perceiving emotion. *Current Biology, 31*, 1–12 
