@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Back from a successful Vision Sciences Society conference in St. Petersburg, Florida"
+title: "Back from another successful Vision Sciences Society conference in St. Petersburg, Florida"
 date: 2024-05-25
 ---
 
