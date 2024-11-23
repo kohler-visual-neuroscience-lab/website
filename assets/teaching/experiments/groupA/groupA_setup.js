@@ -17,6 +17,9 @@ const pos_faces = [
   'assets/images/faces/id03_happy.jpg'
 ]
 
+const save_name = 'groupA_data_idxxxx.csv'
+
+
 exp_repeat_trials = 1;
 prac_repeat_trials = 1;                       // how many times to repeat each trial type
 exp_trial_num = 100;
