@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Same Different Experiment</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+        <script src="jspsych-6.1.0/jspsych.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-external-html.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-html-form.js"></script>
+        <link href="jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <script src="kvnl-js/kvnl-functions.js"></script>
+        <script src="kvnl-js/jspsych-free-sort-ext.js"></script>
+        <script src="folders.js"></script>
+
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+        <script>
+            timeline = [];
+              /* init connection with pavlovia.org */
+              /*var pavlovia_init = {
+                type: "pavlovia",
+                command: "init"
+              };
+              timeline.push(pavlovia_init);*/
+            var welcome = {
+                type: "html-keyboard-response",
+                stimulus: "Welcome to the experiment. Press any key to begin."
+            };
+            /* define consent from trial */
+            const check_consent = function(elem) {
+                if (document.getElementById('consent_checkbox').checked) {
+                    return true;
+                } else {
+                    alert("If you wish to participate, you must consent to participate by checking the box");
+                    return false;
+                }
+                return false
+            }
+
+            // declare the block.
+            const consent = {
+                type:'external-html',
+                url: "consent.html",
+                cont_btn: "start",
+                check_fn: check_consent
+            };
+
+            const survey = {
+                type: "survey-html-form",
+                html: get_survey("simple"),
+                preamble: "<strong>Please provide some personal information: </strong>",
+                button_label: "continue"
+            }
+
+            timeline.push(welcome);
+
+            // CODE FOR DEFINING WALLPAPERS
+
+             // wallpaper variables
+            const img_h = 400 // I noticed the note here about possibly changing the pixel size.
+            const img_w = 400 // I tested it out and honestly I prefer the larger images so I will stick with 400px. 
+
+            let image_set = []            
+            for (const [key, value] of Object.entries(intact)) {
+                for (const img1 of value) {
+                    image_set.push('whole_images/' + img1)
+                }
+            }
+            for (const [key, value] of Object.entries(frankensteined)) {
+                for (const img1 of value) {
+                    image_set.push('frank_images/' + img1)
+                }
+            }
+            intact_obj = make_lists(intact)
+            frank_obj = make_lists(frankensteined)
+            
+            /*for (const [key, value] of Object.entries(intact_obj.same)) {
+                console.log(intact_obj.same[key][0], frank_obj.same[key][0])
+                console.log(intact_obj.diff[key][0], frank_obj.diff[key][0])
+            }*/
+
+            // trial variables
+            // letter keys, same first, then different
+            const letter_keys = ['s', 'l']
+            const letter_codes = [83, 76]
+
+            const exp_reps = 4 // per category
+            const prac_reps = 1 // per category
+            const block_len = 36 // should be multiples of 9 trials
+
+            // prepare practice trials
+            prac_list = []
+            prac_list = prac_list.concat(
+                make_blocks(intact_obj.same, "intact_same", prac_reps),
+                make_blocks(intact_obj.diff, "intact_diff", prac_reps),
+                make_blocks(frank_obj.same, "frank_same", prac_reps),
+                make_blocks(frank_obj.diff, "frank_diff", prac_reps),
+            )
+            // prepare experiment trials
+            exp_list = []
+            exp_list = exp_list.concat(
+                make_blocks(intact_obj.same, "intact_same", exp_reps),
+                make_blocks(intact_obj.diff, "intact_diff", exp_reps),
+                make_blocks(frank_obj.same, "frank_same", exp_reps),
+                make_blocks(frank_obj.diff, "frank_diff", exp_reps),
+            )
+            
+            console.log(prac_list[0])
+            console.log(exp_list[0])
+
+            prac_trials = trial_set(prac_list, letter_keys, letter_codes, true)
+            exp_trials = trial_set(exp_list, letter_keys, letter_codes, false)
+
+            prac_trials = shuffle(prac_trials)
+            exp_trials = shuffle(exp_trials)
+
+            // INSTRUCTIONS
+            const instructions = {
+                type: "html-keyboard-response",
+                stimulus: '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">'+
+                    '<p>On each trial of this experiment, you will be presented with two images of animal silhouettes.<br>' +
+                    ' These images may be <strong>original</strong> silhouettes or <strong>Frankensteined</strong> silhouettes.<br>' + 
+                    ' <strong>Frankensteined</strong> silhouettes have configurational changes' +
+                    ' such as the rotation of a portion of the image.' +
+                    '<p>Your goal is to identify if the two images presented are of the <strong>same animal</strong>.</p>' +
+                    '<p>Press <strong>' + letter_keys[0].toUpperCase() + '</strong> if the two animals are the same, ' + 
+                    'press <strong>' + letter_keys[1].toUpperCase() + '</strong> if the two animals are different.<br>' + 
+                    'Please respond as quickly and accurately as possible.</p>' +
+                    '<p>There are <strong>' + exp_trials.length + ' trials </strong> in the experiment.' +
+                    ' You will first do ' + prac_trials.length + ' practice trials.<br>' +
+                    'After each trial, you will be told if your answer was correct.<br>'+
+                    'The experiment trials are broken into blocks of ' + block_len + ' trials.<br>You will have the opportunity to take a break between blocks.' +
+                    '<p>Press any key to begin.</p></div>'
+            };
+
+            timeline.push(instructions);
+
+            // end of practice notification 
+            const end_practice = {
+                type: "html-keyboard-response",
+                stimulus: '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">'+
+                    '<p>End of practice trials.</p>'+
+                    '<p>Press any key to continue with experiment trials.</p></div>',
+                    post_trial_gap: 1000
+            };
+
+            // add trial counter (needs to be done in order)
+            let feedback = []
+            let trial_count = 0
+            let test_procedure = []
+
+            for (const elem of prac_trials) {
+                trial_count++
+                elem.prompt = '<p align="top">Press <strong>' + letter_keys[0].toUpperCase() + '</strong> if the two animals are the same, ' + 
+                    'press <strong>' + letter_keys[1].toUpperCase() + '</strong> if the two animals are different.<br>' 
+                // feedback block                 
+                feedback = {
+                    type: 'html-keyboard-response',
+                    stimulus: function(){
+                        let last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+                        if (last_trial_correct) {
+                            return '<p><span style="color: green"><strong>Correct Response!</strong></span></p>'
+                                    
+                        } else {
+                            return '<p><span style="color: red"><strong>Incorrect Response!</strong></span> </p>'
+                        }
+                    },
+                    choices: jsPsych.NO_KEYS, 
+                    prompt: '<p>Practice trial ' + trial_count + ' of ' + prac_trials.length + '</p>',
+                    trial_duration: 1000,
+                    response_ends_trial: false
+                }
+                if (trial_count == prac_trials.length) {
+                    test_procedure = { 
+                        timeline: [elem, feedback, end_practice]
+                    }
+                } else {
+                    test_procedure = { 
+                        timeline: [elem, feedback]
+                    }
+                }
+                timeline.push(test_procedure)
+            }
+
+            let break_statement = [] 
+            trial_count = 0
+            for (const elem of exp_trials) {
+                trial_count++
+                elem.prompt = '<p align="top">Press <strong>' + letter_keys[0].toUpperCase() + '</strong> if the two animals are the same, ' + 
+                    'press <strong>' + letter_keys[1].toUpperCase() + '</strong> if the two animals are different.<br>' 
+                // feedback block                 
+                feedback = {
+                    type: 'html-keyboard-response',
+                    stimulus: function(){
+                        let last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+                        if (last_trial_correct) {
+                            return '<p><span style="color: green"><strong>Correct Response!</strong></span></p>'
+                        } else {
+                            return '<p><span style="color: red"><strong>Incorrect Response!</strong></span> </p>'
+                        }
+                    },
+                    choices: jsPsych.NO_KEYS, 
+                    prompt: '<p>Trial ' + trial_count + ' of ' + exp_trials.length + '</p>',
+                    trial_duration: 1000,
+                }
+
+                if ( ( ( trial_count % block_len ) == 0 ) && ( trial_count < exp_trials.length ) ) {
+                    break_statement = {
+                        type: "html-keyboard-response",
+                        stimulus: '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">'+
+                                    '<p>You have completed ' + (trial_count/exp_trials.length * 100).toFixed(0) + '% of the trials. <br>Good job! Take a break if you need to.</p>'+
+                                    '<p>Press any key to continue the experiment.</p></div>',
+                        post_trial_gap: 1000
+                    }
+                    test_procedure = { 
+                        timeline: [elem, feedback, break_statement]
+                    }
+                } else {
+                    test_procedure = { 
+                        timeline: [elem, feedback]
+                    }
+                }
+                timeline.push(test_procedure)
+            }
+
+            jsPsych.init({
+                timeline:timeline,
+                on_finish: function(){
+                    end_display(debrief())
+                    jsPsych.data.get().localSave('csv','groupE_samediff_id.csv');
+                },
+                exclusions: {
+                  min_width: 800,
+                  min_height: 800
+                },
+                preload_images: image_set
+            });
+
+            // FUNCTIONS
+            function isEqual(a, b) {
+                const test = JSON.stringify(a.sort()) === JSON.stringify(b.sort());
+                return test
+            }
+            function removeNamed(item, list) {
+                const index = list.indexOf(item); 
+                if (index > -1) { 
+                    list.splice(index, 1); // 2nd parameter means remove one item only
+                }
+                return list 
+            } 
+            function make_blocks(cond, label, reps) {
+                let out_list = []
+                const label1 = (label.includes("frank")) ? "frank" : "intact"
+                const label2 = (label.includes("same")) ? "same" : "diffent"
+                const folder = (label.includes("frank")) ? "frank_images" : "whole_images"
+                // loop over categories
+                for (const q of Object.keys(cond)) {
+                    let tmp_list = shuffle(JSON.parse(JSON.stringify(cond[q])));
+                    tmp_list = tmp_list.slice(0, reps);
+                    for (const t of tmp_list) {
+                        out_list.push({"image_pair": t, "class": label2, "condition": label1, "category": q, "folder": folder})
+                    }                    
+                }
+                out_list = shuffle(out_list)
+                return out_list
+            }
+            function make_lists(input) {
+                same_obj = {}
+                diff_obj = {}
+                for (const [key, value] of Object.entries(input)) {
+                    let same_list = []
+                    let diff_list = []
+                    let other_cat = JSON.parse(JSON.stringify(Object.keys(input)));
+                    other_cat = removeNamed(key, other_cat) // avoid references
+                    for (const img1 of value) {
+                        let temp_list = JSON.parse(JSON.stringify(Object.values(input[key]))); // avoid references
+                        temp_list = removeNamed(img1, temp_list)
+                        for (const img2 of temp_list) {
+                            let tester = false
+                            for (const q of same_list) {
+                                tester = isEqual([img1, img2], q)
+                                if (tester) {
+                                    break
+                                }
+                            }
+                            if (! tester) {
+                                same_list.push([img1, img2])
+                            }
+                        }
+                        for (const cat2 of other_cat) {
+                            other_list = input[cat2]
+                            for (const img2 of other_list) {
+                                let tester = false
+                                for (const q of diff_list) {
+                                    tester = isEqual([img1, img2], q)
+                                    if (tester) {
+                                        break
+                                    }
+                                }
+                                if (! tester) {
+                                    diff_list.push([img1, img2])
+                                }
+                            }
+                        }
+                    }
+                    same_obj[key] = same_list
+                    diff_obj[key] = diff_list
+                }
+                const final_obj = {"same": same_obj, "diff": diff_obj }
+                return final_obj
+            }
+
+            function prep_images(img_pair, folder) {
+                // general style settings for all images
+                const img_dims = 'height=' + img_h + 'px width=' + img_w + 'px '
+                const img_style = 'margin:None; vertical-align:top;'
+                let full_html = '<div style="background-color: #7f7f7f; ; width: ' + img_w * 2 + 'px; height: ' + img_h + 'px; display: block; margin-left: auto; margin-right: auto">'
+                for (const cur of img_pair) {
+                    full_html += '<div style="display: inline-block; width: ' + img_h + 'px; height: ' + img_w + 'px">'
+                    full_html += '<img src="' + folder + '/' + cur + '"' + img_dims
+                    full_html += 'style="' + img_style + '"></img>'
+                    full_html += '</div>'
+                }
+                full_html += '</div>'
+                return full_html                
+            }
+
+            function trial_set(trial_list, letter_keys, letter_codes, practice) { 
+                let trial_set = [] 
+                for (const trial of trial_list) {
+                    let cur_trial = {
+                        type: 'html-keyboard-response', // this is the plugin that allows for HTML_STRING as stimuli input
+                        stimulus: prep_images(trial["image_pair"], trial["folder"]),
+                        choices: letter_keys,
+                        prompt_location: 'below',
+                        data: {
+                            condition: trial["condition"],
+                            class: trial["class"],
+                            category: trial["category"],
+                            practice: practice
+                        },
+                        on_finish: function(data){
+                            if ( data.class == "same" ) {
+                                if ( data.key_press == letter_codes[0] ) {
+                                    data.correct = true;
+                                } else {
+                                    data.correct = false;
+                                }
+                            } else {
+                                if ( data.key_press == letter_codes[1] ) {
+                                    data.correct = true; 
+                                } else {
+                                    data.correct = false;
+                                }
+                            }
+                        }
+                    }
+                    trial_set.push(cur_trial)
+                }
+                return trial_set;
+            }
+            
+            function debrief(code=null) {
+                let html_debrief = "<p>Please rename the csv file to include your experiment participant number, and send to Prof. Kohler.</p>"
+                
+                if (code) {
+                    html_debrief += "<p>Your secret key code is: <strong>" + code + "</strong></p>"
+                }
+
+                // get unique conditions
+                const unique = (value, index, self) => {
+                  return self.indexOf(value) === index
+                }
+                const cond_values = jsPsych.data.get().select("condition").values.filter(unique)
+                cond_values.sort(function(a, b){return a - b});
+
+
+                html_debrief +='<table style="border-collapse: collapse; border: 1px solid black"><tr>'+
+                                        '<th style="background-color: #D3D3D3; border-right: 1px solid black; border-bottom: 1px solid black"># trials</th>'+
+                                        '<th style="background-color: #D3D3D3; border-right: 1px solid black; border-bottom: 1px solid black">condition</th>'+
+                                        '<th style="background-color: #D3D3D3; border-right: 1px solid black; border-bottom: 1px solid black">rt</th>'+
+                                        '<th style="background-color: #D3D3D3; border-right: 1px solid black; border-bottom: 1px solid black">accuracy</th><tr>'
+                // loop over conditions
+                for ( const cond of cond_values ) {
+                    let trials = jsPsych.data.get().filter({practice: false})
+                    trials = trials.filter({condition: cond})
+                    const correct_trials = trials.filter({correct: true})
+                    const accuracy = (correct_trials.count() / trials.count() * 100);
+                    const rt = (trials.select('rt').mean());
+                    html_debrief += '<tr><td width=100 style="border-right: 1px solid black">' + trials.count() + '</td>' +
+                                        '<td width=100 style="border-right: 1px solid black">' + cond + '</td>' +
+                                        '<td width=100 style="border-right: 1px solid black">' + rt.toFixed(0) + ' ms</td>' +
+                                        '<td width=100 style="border-right: 1px solid black">' + accuracy.toFixed(0) + '%</td></tr>'
+                    jsPsych.data.get().addToLast({ [ cond + "_summary"]: 
+                           {"n-trials": trials.count(),
+                           "accuracy": accuracy,
+                           "rt": rt}
+                        })              
+                }
+                return html_debrief
+            }
+        </script>
+    </body> 
+</html>
