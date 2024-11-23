@@ -7,14 +7,14 @@ const pos_scenes = [
   'assets/images/pos_scenes/beach02.jpg'
 ]
 const neg_faces = [
-  'assets/images/faces/id01_angry.jpg',
-  'assets/images/faces/id02_angry.jpg',
-  'assets/images/faces/id03_angry.jpg'
+  'assets/images/faces_smaller/id01_angry.jpg',
+  'assets/images/faces_smaller/id02_angry.jpg',
+  'assets/images/faces_smaller/id03_angry.jpg'
 ]
 const pos_faces = [
-  'assets/images/faces/id01_happy.jpg',
-  'assets/images/faces/id02_happy.jpg',
-  'assets/images/faces/id03_happy.jpg'
+  'assets/images/faces_smaller/id01_happy.jpg',
+  'assets/images/faces_smaller/id02_happy.jpg',
+  'assets/images/faces_smaller/id03_happy.jpg'
 ]
 
 const save_name = 'groupA_data_idxxxx.csv'

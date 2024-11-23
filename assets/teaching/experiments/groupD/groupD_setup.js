@@ -19,7 +19,7 @@ const block_len = Math.floor(2*trial_set_n.length*repeat_trials*set_sizes.length
 let happy_faces = []
 let angry_faces = []
 let neutral_faces = []
-const image_path = 'assets/images/' // set to '' if images in the same folder
+const image_path = 'assets/images/faces_smaller' // set to '' if images in the same folder
 for (let i = 1; i <= 10; i++) {
         i = i.toString();
         if (i != 5) {
