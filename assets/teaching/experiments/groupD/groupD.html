@@ -236,7 +236,7 @@
             if (jsPsych.evaluateTimelineVariable('target_present')) {
               const cur_targ_set = targ_set
               const cur_target = cur_targ_set[cur_num]
-              cur_stimuli = shuffle([cur_target].concat(cur_foil_set.splice(0, cur_set_size - 1)))
+              cur_stimuli = shuffle([cur_target].concat(cur_foil_set.splice(0, cur_set_size-1)))
             } else {
               cur_stimuli = cur_foil_set.splice(0, cur_set_size)
             }

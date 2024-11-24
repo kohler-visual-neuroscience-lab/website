@@ -34,9 +34,9 @@ const the_present_key = 'j'
 const the_absent_key = 's'
 
 const resize_factor = 50 // 50 pixels to 1 dva --- works better on smaller screens***
-const item_size = [163, 250] // 200 pixels = 4 degrees of visual angle
+const item_size = [150, 150] // 150 pixels = 4 degrees of visual angle
 const fix_size = [50,50]
-const circle_dia = 500 
+const circle_dia = 600 
 
 const start_msg = "<p>You just finished your practice trials - good job!<br>" +
                   "Next you will complete $BLOCK_NUM blocks of $BLOCK_LEN test trials. <br>" +

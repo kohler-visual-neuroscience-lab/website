@@ -22,12 +22,10 @@ let neutral_faces = []
 const image_path = 'assets/images/faces_upright/' // set to '' if images in the same folder
 for (let i = 1; i <= 10; i++) {
         i = i.toString();
-        if (i != 5) {
-          while (i.length < 2) i = "0" + i;
-          angry_faces.push(image_path + 'id' + i + '_angry.jpg')
-          happy_faces.push(image_path + 'id' + i + '_happy.jpg')
-          neutral_faces.push(image_path + 'id' + i + '_neutral.jpg')
-        }
+        while (i.length < 2) i = "0" + i;
+        angry_faces.push(image_path + 'id' + i + '_angry.jpg')
+        happy_faces.push(image_path + 'id' + i + '_happy.jpg')
+        neutral_faces.push(image_path + 'id' + i + '_neutral.jpg')
       }
 
 const fixation_img = 'assets/images/fixation.png'
@@ -36,9 +34,9 @@ const the_present_key = 'j'
 const the_absent_key = 's'
 
 const resize_factor = 50 // 50 pixels to 1 dva --- works better on smaller screens***
-const item_size = [163, 250] // 200 pixels = 4 degrees of visual angle
+const item_size = [150, 150] // 150 pixels = 4 degrees of visual angle
 const fix_size = [50, 50] // 50 pixels = 1 degree of visual angle
-const circle_dia = 500 
+const circle_dia = 600 
 
 const start_msg = "<p>You just finished your practice trials - good job!<br>" +
                   "Next you will complete $BLOCK_NUM blocks of $BLOCK_LEN test trials. <br>" +
