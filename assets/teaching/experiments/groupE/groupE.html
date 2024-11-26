@@ -39,6 +39,23 @@
                 return false
             }
 
+            const survey_html = "<div style='text-align: left; vertical-align: top; display: inline-block; float: left; width: 100%'>" +
+                    "<p><u>Participant ID:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='p_id'></p>" +
+                    "<p><u>Age:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='age'></p>" +
+                    "<p><u>Handedness:</u> </strong><input type='radio' id='left' name='handedness' value='left'>" +
+                    "<label for='left'>Left-handed</label>" +
+                    "<input type='radio' id='right' name='handedness' value='right' checked>" +
+                    "<label for='right'>Right-handed</label>" +
+                    "<input type='radio' id='ambi' name='handedness' value='ambi'>" +
+                    "<label for='ambi'>Ambidextrous</label></p>" +
+                    "<p><u>Sex:</u> <input type='radio' id='female' name='sex' value='female' checked>" +
+                    "<label for='female'>Female</label>" +
+                    "<input type='radio' id='male' name='sex' value='male'>" +
+                    "<label for='male'>Male</label>" +
+                    "<input type='radio' name='sex' value='other'><label for='other'>Other, please specify: </label>" +
+                    "<input type='text' name='other_sex' id='other_sex' value=''></p>" +
+                    "</div>"
+
             // declare the block.
             const consent = {
                 type:'external-html',
@@ -49,18 +66,21 @@
 
             const survey = {
                 type: "survey-html-form",
-                html: get_survey("simple"),
+                html: survey_html,
                 preamble: "<strong>Please provide some personal information: </strong>",
                 button_label: "continue"
+
             }
 
             timeline.push(welcome);
 
+            timeline.push(survey);
+
             // CODE FOR DEFINING WALLPAPERS
 
              // wallpaper variables
-            const img_h = 400 // might want to change this to 200
-            const img_w = 400 // might want to change this to 200
+            const img_h = 400 // I noticed the note here about possibly changing the pixel size.
+            const img_w = 400 // I tested it out and honestly I prefer the larger images so I will stick with 400px. 
 
             let image_set = []            
             for (const [key, value] of Object.entries(intact)) {
@@ -86,7 +106,7 @@
             const letter_keys = ['s', 'l']
             const letter_codes = [83, 76]
 
-            const exp_reps = 5 // per category
+            const exp_reps = 4 // per category
             const prac_reps = 1 // per category
             const block_len = 36 // should be multiples of 9 trials
 
@@ -120,11 +140,9 @@
             const instructions = {
                 type: "html-keyboard-response",
                 stimulus: '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">'+
-                    '<p>On each trial of this experiment, you will be presented with a pattern<br>' +
-                    ' that looks like a wallpaper or a carpet. Patterns will vary in size from trial to trial.<br>' + 
-                    'Your job is to look for patches where the pattern looks <strong>broken</strong> or different.</p>' +
-                    '<p>Broken patches can occur anywhere in the pattern, <br>but <strong>on some trials there will be no broken patch!</strong>' +
-                    '<br>Your goal is to correctly identify both broken and intact patterns.</p>' +
+                    '<p>On each trial of this experiment, you will be presented with two images of animal silhouettes.<br>' +
+                    ' These images may be <strong>original</strong> silhouettes or <strong>distorted</strong> silhouettes.<br>' + 
+                    '<p>Your goal is to identify if the two images presented are of the <strong>same animal</strong>.</p>' +
                     '<p>Press <strong>' + letter_keys[0].toUpperCase() + '</strong> if the two animals are the same, ' + 
                     'press <strong>' + letter_keys[1].toUpperCase() + '</strong> if the two animals are different.<br>' + 
                     'Please respond as quickly and accurately as possible.</p>' +
@@ -141,7 +159,7 @@
             const end_practice = {
                 type: "html-keyboard-response",
                 stimulus: '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">'+
-                    '<p>End of practice trials.</p>'+
+                    '<p><strong>End of practice trials.</strong></p>'+
                     '<p>Press any key to continue with experiment trials.</p></div>',
                     post_trial_gap: 1000
             };
@@ -230,10 +248,6 @@
                 on_finish: function(){
                     end_display(debrief())
                     jsPsych.data.get().localSave('csv','groupE_samediff_id.csv');
-                },
-                exclusions: {
-                  min_width: 800,
-                  min_height: 800
                 },
                 preload_images: image_set
             });
@@ -363,7 +377,7 @@
             }
             
             function debrief(code=null) {
-                let html_debrief = "<p>Please save the csv file, rename, and send to Prof. Kohler.</p>"
+                let html_debrief = "<p>Please rename the csv file to include your experiment participant number, and send to Prof. Kohler.</p>"
                 
                 if (code) {
                     html_debrief += "<p>Your secret key code is: <strong>" + code + "</strong></p>"

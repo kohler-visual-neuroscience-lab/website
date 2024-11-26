@@ -59,8 +59,8 @@
             // CODE FOR DEFINING WALLPAPERS
 
              // wallpaper variables
-            const img_h = 400 // I noticed the note here about possibly changing the pixel size.
-            const img_w = 400 // I tested it out and honestly I prefer the larger images so I will stick with 400px. 
+            const img_h = 400 // might want to change this to 200
+            const img_w = 400 // might want to change this to 200
 
             let image_set = []            
             for (const [key, value] of Object.entries(intact)) {
@@ -86,7 +86,7 @@
             const letter_keys = ['s', 'l']
             const letter_codes = [83, 76]
 
-            const exp_reps = 4 // per category
+            const exp_reps = 5 // per category
             const prac_reps = 1 // per category
             const block_len = 36 // should be multiples of 9 trials
 
@@ -120,11 +120,11 @@
             const instructions = {
                 type: "html-keyboard-response",
                 stimulus: '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">'+
-                    '<p>On each trial of this experiment, you will be presented with two images of animal silhouettes.<br>' +
-                    ' These images may be <strong>original</strong> silhouettes or <strong>Frankensteined</strong> silhouettes.<br>' + 
-                    ' <strong>Frankensteined</strong> silhouettes have configurational changes' +
-                    ' such as the rotation of a portion of the image.' +
-                    '<p>Your goal is to identify if the two images presented are of the <strong>same animal</strong>.</p>' +
+                    '<p>On each trial of this experiment, you will be presented with a pattern<br>' +
+                    ' that looks like a wallpaper or a carpet. Patterns will vary in size from trial to trial.<br>' + 
+                    'Your job is to look for patches where the pattern looks <strong>broken</strong> or different.</p>' +
+                    '<p>Broken patches can occur anywhere in the pattern, <br>but <strong>on some trials there will be no broken patch!</strong>' +
+                    '<br>Your goal is to correctly identify both broken and intact patterns.</p>' +
                     '<p>Press <strong>' + letter_keys[0].toUpperCase() + '</strong> if the two animals are the same, ' + 
                     'press <strong>' + letter_keys[1].toUpperCase() + '</strong> if the two animals are different.<br>' + 
                     'Please respond as quickly and accurately as possible.</p>' +
@@ -183,6 +183,8 @@
                 }
                 timeline.push(test_procedure)
             }
+
+            timeline.push(end_practice);
 
             let break_statement = [] 
             trial_count = 0
@@ -363,7 +365,7 @@
             }
             
             function debrief(code=null) {
-                let html_debrief = "<p>Please rename the csv file to include your experiment participant number, and send to Prof. Kohler.</p>"
+                let html_debrief = "<p>Please save the csv file, rename, and send to Prof. Kohler.</p>"
                 
                 if (code) {
                     html_debrief += "<p>Your secret key code is: <strong>" + code + "</strong></p>"
