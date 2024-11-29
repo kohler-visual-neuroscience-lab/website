@@ -4,12 +4,12 @@ const prop_list = ['025','070','090','100','110','130','175']
 
 const save_name = 'groupB_data_idxxxx.csv'
 
-const block_number = 4;                          // how many blocks to include in the experiment 
+const block_number = 10;                          // how many blocks to include in the experiment 
                                                   // message to display before each trial.
                                                   // note: '\n\n' is needed at the end of each line 
                                                   // because prompt is displayed using the psychophysics plugin
 
-const block_len = Math.floor(2*prop_list.length*exp_repeat_trials/block_number)
+const block_len = Math.floor(2*2*prop_list.length*exp_repeat_trials/block_number) // 2 conditions, left vs right side
 
 const fixation_img = 'assets/images/fixation.png'
 
