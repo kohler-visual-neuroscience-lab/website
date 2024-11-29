@@ -4,7 +4,7 @@ const prop_list = ['025','070','090','100','110','130','175']
 
 const save_name = 'groupB_data_idxxxx.csv'
 
-const block_number = 10;                          // how many blocks to include in the experiment 
+const block_number = 8;                          // how many blocks to include in the experiment 
                                                   // message to display before each trial.
                                                   // note: '\n\n' is needed at the end of each line 
                                                   // because prompt is displayed using the psychophysics plugin
