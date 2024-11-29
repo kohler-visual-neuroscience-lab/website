@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Liquid judgments</title>
+    <script type="text/javascript" src="jspsych-8.1/jspsych.js"></script>
+    <script type="text/javascript" src="jspsych-8.1/plugin-html-keyboard-response.js"></script>
+    <script type="text/javascript" src="jspsych-8.1/plugin-external-html.js"></script>
+    <script type="text/javascript" src="jspsych-8.1/plugin-survey-html-form.js"></script>
+    <script type="text/javascript" src="jspsych-8.1/plugin-visual-search-circle.js"></script>
+    <script type="text/javascript" src="jspsych-8.1/plugin-virtual-chinrest.js"></script>
+    <script type="text/javascript" src="jspsych-8.1/plugin-preload.js"></script>         
+    <link rel="stylesheet" type="text/css" href="jspsych-8.1/css/jspsych.css"/>
+    <script type="text/javascript" src="groupB_setup.js"></script>
+    <script src="kvnl-functions.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.6.3/svg.min.js"></script>
+    <meta charset="utf-8"/>
+  </head>
+  <body style="margin: 0px; height: 100%; width: 100%;" tabindex="0" class=" jspsych-display-element">
+  <script>
+    jsPsych = initJsPsych({
+        use_webaudio: false,
+        on_finish: function(){
+          jsPsych.data.get().localSave('csv',save_name)
+        }
+      })
+
+    timeline = [];
+
+    img_list = []
+
+    for (t of ["vol", "dis"] ) {
+      for (p of prop_list) {
+        img_list.push("assets/images/" + t + p + ".png")
+      }
+    }
+    img_list.push("assets/images/" + "fixation.png")
+    img_list.push("assets/images/" + "ref.png")
+
+    /* preload images */ 
+    let preload = {
+      type: jsPsychPreload,
+      images: img_list,
+      show_detailed_errors: true
+    }
+
+    timeline.push(preload)
+
+    /* define welcome message and URPP code collection */
+    const welcome = {
+      type: jsPsychSurveyHtmlForm,
+      html: "<div style='text-align: center; vertical-align: top; display: inline-block; float: left; width: 100%'>"+
+          "<p>Welcome to the experiment. <br><br>" + 
+          "Please enter your URPP code here (if applicable): <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='urpp'></p>"+
+          "</div>",
+      button_label: 'continue'
+    }
+
+    /* define consent from trial */
+    const check_consent = function(elem) {
+        if (document.getElementById('consent_checkbox').checked) {
+          return true;
+        }
+        else {
+          alert("If you wish to participate, you must consent to participate by checking the box");
+          return false;
+        }
+        return false;
+    };
+
+    // declare the block.
+    const consent = {
+        type:'external-html',
+        url: "consent.html",
+        cont_btn: "start",
+        check_fn: check_consent
+    };
+
+    const survey = {
+        type: jsPsychSurveyHtmlForm,
+        html: survey_html,
+        preamble: "<strong>Welcome to the experiment. <br> Please provide some personal information: </strong>",
+        button_label: "continue",
+        on_finish: jsPsych.data.addProperties(get_id())
+    }
+
+    timeline.push(survey)
+
+    /*const distance_msg = {
+      type: jsPsychSurveyHtmlForm,
+      html: "<div style='text-align: center; vertical-align: top; display: inline-block; float: left; width: 100%'>"+
+            "<p>We will now measure your viewing distance - how far away from the screen you are sitting. <br>" + 
+            "Before proceeding please ensure that you are seated at a comfortable distance to your screen. <br>"+
+            "Try not to change your viewing distance over the course of the experiment.</p>"+
+            "</div>",
+      button_label: 'continue'
+    }
+
+    const deg_resize = {
+        type: jsPsychVirtualChinrest,
+        blindspot_reps: 3,
+        resize_units: "deg",
+        pixels_per_unit: resize_factor,
+        viewing_distance_report: "<p>Based on your responses, you are sitting about <span id='distance-estimate' style='font-weight: bold;'></span> from the screen.</p><p>Does that seem about right?</p>",
+        item_path: "assets/images/card.png"
+    }
+
+    timeline.push(distance_msg, deg_resize) // 50 pixels will be equal to 1 degree of visual angle*/
+    
+    const test = prep_images(["assets/images/vol175.png", "assets/images/fixation.png", "assets/images/ref.png"])
+    const general_instructions = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">' +
+                  '<p>On each trial of this experiment you will be presented with drawings of two glasses.<br>' +
+                  'Your job is to identify which glass has <b>more yellow liquid</b>.<br>' + 
+                  '<p> Use the arrow keys to indicate your choice. <br>' + 
+                  'The glasses will only be shown briefly, and then turn off, <br> but you can make your response at any time. <br> Please try to be as accurate as possible. </p>' +
+                  '<p>Below, we are showing examples of two glasses <br>' + test +
+                  '<p> You will complete two sections of trials, each containing a brief practice session <br> followed by ' + block_number + ' blocks of experiment trials.<br>' +
+                  'After each block of trials you will be given the opportunity to take a short break.<br>' +
+                  'After each section of trials you will get a message telling you to prepare for the next one. </p>' +
+                  '<p>When you are ready to begin, press any key to start the first practice.</p></div>'
+    }
+
+    timeline.push(general_instructions);
+
+    const prac_trials = make_2AFC(prop_list, pract_repeat_trials, true)
+    const exp_trials = make_2AFC(prop_list, exp_repeat_trials, false)
+
+    const end_practice = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: function(){ 
+            const html_instr = '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">'+
+                                start_msg.replace("$BLOCK_NUM", block_number).replace("$BLOCK_LEN", block_len) + "</div>"
+              
+            return html_instr
+        }
+    }
+
+    timeline.push(prac_trials, end_practice, exp_trials)
+
+    jsPsych.run(timeline);
+
+    function prep_images(img_set) {
+      // general style settings for all images
+      const img_style = 'margin:None; vertical-align:top;'
+      let full_html = '<div style="background-color: none; width:800px; margin:0 auto;">'
+      full_html += '<table><tr>'
+      for (let i = 0; i < 3; i++) { 
+        full_html += '<td><div style="display: inline-block; height: ' + img_h[i] + 'px; '
+        full_html += 'margin-left: ' + img_margin + 'px; margin-right: '+ img_margin +'px">'
+        full_html += '<img src="' + img_set[i] + '" height=' + img_h[i] + 'px'
+        full_html += ' style="' + img_style + '"></img>'
+        full_html += '</div></td>'
+      }
+      full_html += '</tr></table></div>'
+      return full_html                
+    }
+
+    function prepare_stimuli(practice) {
+      ready_stim = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: function() {
+          const tst_img = "assets/images/" + 
+            jsPsych.evaluateTimelineVariable('type') + 
+            jsPsych.evaluateTimelineVariable('prop') + '.png'
+          if ( jsPsych.evaluateTimelineVariable('ref_side') == "left")
+            img_pair = ["assets/images/ref.png", "assets/images/fixation.png", tst_img]
+          else {
+            img_pair = [tst_img, "assets/images/fixation.png", "assets/images/ref.png"]
+          }
+          return prep_images(img_pair)
+        },        
+        choices: letter_keys,
+        prompt_location: 'below',
+        stimulus_duration: 500,
+        post_trial_gap: 1000,
+        data: {
+            type: jsPsych.timelineVariable('type'),
+            prop: jsPsych.timelineVariable('prop'),
+            ref_side: jsPsych.timelineVariable('ref_side'),
+            practice: practice,
+            response_trial: true
+        },
+        // record responses relative to test position (left vs right)
+        on_finish: function(data){
+          if ( data.ref_side == "right" ) {
+              // if test on the left
+              if (jsPsych.pluginAPI.compareKeys(data.response, letter_keys[0])) {
+                  data.test_bigger = true
+              } else if (jsPsych.pluginAPI.compareKeys(data.response, letter_keys[1])) {
+                  data.test_bigger = false
+              } else {
+                  data.test_bigger = null
+              }
+          } else {
+              // if test on the right
+              if (jsPsych.pluginAPI.compareKeys(data.response, letter_keys[0])) {
+                  data.test_bigger = false
+              } else if (jsPsych.pluginAPI.compareKeys(data.response, letter_keys[1]))  {
+                  data.test_bigger = true
+              } else {
+                  data.test_bigger = null
+              }
+          }
+      }
+      }
+      return ready_stim
+    }
+
+    function make_2AFC(prop_list, repeat_trials, practice) {
+      const factors = {
+        type: ["vol", "dis"], 
+        prop: prop_list,
+        ref_side: ["left", "right"]
+      }        
+      const full_design = jsPsych.randomization.factorial(factors, repeat_trials)
+      const block_len = Math.floor(full_design.length/block_number) 
+      let procedure = {
+        timeline: [
+          prepare_stimuli(practice),
+            {
+            timeline: [
+                { 
+                    type: jsPsychHtmlKeyboardResponse,
+                    stimulus: function() {
+                        let trial_num = jsPsych.data.get().filter({response_trial: true}).count()
+                        let t = trial_num
+                        let b = t / block_len
+                        const html_out = 'You have completed ' + (t/full_design.length * 100).toFixed(0) + '% of the trials.<br>' + ' You are on block ' + b + ' of ' + block_number + '.<br>' + ' Good job! Take a break if you need to.<br>' + 'Press any key to continue the experiment.'
+                        return html_out
+                    },
+                    post_trial_gap: 1000
+                }
+            ],
+            conditional_function: function(){ // trials so far
+                //get all data from experiment, get data from last trial, get the values from this array, the first element of the array
+                if (practice === true) {
+                    return false;
+                } else {
+                  let t = jsPsych.data.get().filter({response_trial: true}).count()
+                  if ( ( ( t % block_len ) == 0 ) && ( t < full_design.length ) ) {
+                      return true;
+                  } else {
+                      return false;
+                  }
+                } 
+              }
+            }
+            ],    
+            timeline_variables: full_design,
+            randomize_order: true,
+            }
+            return procedure
+    }
+  </script>
+  </body>
+</html>
