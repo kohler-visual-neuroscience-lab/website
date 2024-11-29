@@ -1,4 +1,4 @@
-exp_repeat_trials = 10;
+exp_repeat_trials = 8;
 pract_repeat_trials = 1;                       // how many times to repeat each trial type
 const prop_list = ['025','070','090','100','110','130','175']
 
