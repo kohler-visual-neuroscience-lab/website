@@ -1,33 +1,35 @@
 repeat_trials = 1;
 pract_repeat_trials = 1;                       // how many times to repeat each trial type
-trial_set_n = [0,1,2,3,4,5,6,7,8];            // note add 9 back in for full set
+trial_set_n = [2,3,4,5,6,7,8,9,10,11];            // note add 9 back in for full set
 pract_set_n = [0,1];
 
 const save_name = 'groupD_data_idxxxx.csv'
 
-const same_exemplar = false; // whether to use the same exemplar for target present and target absent trials
+const same_exemplar = true; // whether to use the same exemplar for target present and target absent trials
 
 const set_sizes = [3, 5, 7, 9]
 
-const block_number = 5;                          // how many blocks to include in the experiment 
+const block_number = 4;                          // how many blocks to include in the experiment 
                                                   // message to display before each trial.
                                                   // note: '\n\n' is needed at the end of each line 
                                                   // because prompt is displayed using the psychophysics plugin
 
 const block_len = Math.floor(2*trial_set_n.length*repeat_trials*set_sizes.length/block_number) // multiply by 2 because both target absent and target present trials
 
-let happy_faces = []
-let angry_faces = []
-let neutral_faces = []
-const image_path = 'assets/images/faces_upright/' // set to '' if images in the same folder
-for (let i = 1; i <= 10; i++) {
-        i = i.toString();
-        while (i.length < 2) i = "0" + i;
-        angry_faces.push(image_path + 'id' + i + '_angry.jpg')
-        happy_faces.push(image_path + 'id' + i + '_happy.jpg')
-        neutral_faces.push(image_path + 'id' + i + '_neutral.jpg')
-      }
-
+let emo_faces = [[],[]]
+let neutral_faces = [[],[]]
+p_count = 0
+for (p of ['assets/images/faces_upright/','assets/images/faces_inverted/']) {
+  for (let i = 1; i <= 10; i++) {
+    i = i.toString();
+    while (i.length < 2) i = "0" + i;
+    emo_faces[p_count].push(p + 'id' + i + '_angry.jpg')
+    emo_faces[p_count].push(p + 'id' + i + '_happy.jpg')
+    neutral_faces[p_count].push(p + 'id' + i + '_neutral.jpg')
+    neutral_faces[p_count].push(p + 'id' + i + '_neutral.jpg')
+  }
+  p_count++
+}
 const fixation_img = 'assets/images/fixation.png'
 
 const the_present_key = 'j'

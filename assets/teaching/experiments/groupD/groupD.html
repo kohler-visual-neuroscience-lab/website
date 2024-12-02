@@ -39,7 +39,7 @@
     /* preload images */ 
     let preload = {
       type: jsPsychPreload,
-      images: happy_faces.concat(angry_faces, neutral_faces, [fixation_img]),
+      images: emo_faces.concat(neutral_faces, [fixation_img]),
       show_detailed_errors: true
     }
 
@@ -112,30 +112,29 @@
     //timeline.push(distance_msg, deg_resize) // 50 pixels will be equal to 1 degree of visual angle
 
     const general_instructions = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">' +
-                  '<p>On each trial of this experiment you will be presented with a collection of objects.<br>' +
-                  'Your job is to identify if one of these objects is <b> different </b> from the others.<br>' + 
-                  '<p> If one of the objects is different, press the "J" key as quickly as possible. <br>' + 
-                  'If all the items appear to be the same, press the "S" key.<br>' + 
-                  'Please try to be as accurate and quick as possible. </p>' +
-                  '<table style="border-collapse: collapse; border: 1px solid black; margin-left: auto; margin-right: auto"><tr>'+
-                  '<th style="background-color: #D3D3D3; border-right: 1px solid black; border-bottom: 1px solid black"> <img src=assets/images/undisrupted.png width="300" height="300"> </th>'+
-                  '<th style="background-color: #D3D3D3; border-right: 1px solid black; border-bottom: 1px solid black"> <img src=assets/images/disrupted.png width="300" height="300"> </th><tr>'+
-                  '<td> All Objects the Same </td>' +
-                  '<td> One Object Different </td>' +
-                  '<p> You will complete two sections of trials, each containing a brief practice session followed by ' + block_number + ' blocks of experiment trials.<br>' +
-                  'After each block of trials you will be given the opportunity to take a short break.<br>' +
-                  'After each section of trials you will get a message telling you to prepare for the next one. </p>' +
-                  '<p>When you are ready to begin, press any key to start the first practice.</p></div>'
-    }
+       type: jsPsychHtmlKeyboardResponse,
+       stimulus: '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">' +
+                 '<p> During this experiment, you will focus on the plus (+) sign  in the center of the faces shown.<br>' +
+                 '<p> If you see one face showing a different emotion compared to the others press J.<br>' +
+                 'If all the faces display the same emotion, press S. <br>' +
+                 '<table style="border-collapse: collapse; border: 1px solid black; margin-left: auto; margin-right: auto"><tr>'+
+                 '<th style="background-color: #D3D3D3; border-right: 1px solid black; border-bottom: 1px solid black"> <img src="assets/images/target_present.png" width="300" height="300"> </th>'+
+                 '<th style="background-color: #D3D3D3; border-right: 1px solid black; border-bottom: 1px solid black"> <img src="assets/images/target_absent.png" width="300" height="300"> </th><tr>'+
+                 '<td> One different emotion. </td>' +
+                 '<td> All the same emotions. </td>' +
+                 '<p> You will complete two sections of trials, each containing a brief practice session followed by ' + block_number + ' blocks of experiment trials.<br>' +
+                 'After each block of trials you will be given the opportunity to take a short break.<br>' +
+                 'After each section of trials you will get a message telling you to prepare for the next one. </p>' +
+                 'Please make sure you keep your eyes on the target, be as quick and accurate as possible! </p>' +
+                 '<p>When you are ready to begin, press any key to start the first practice.</p></div>'
+   }
 
-    //timeline.push(general_instructions);
+    timeline.push(general_instructions);
 
-    const prac_happy = make_visual_search(same_exemplar, neutral_faces, happy_faces, set_sizes, pract_repeat_trials, pract_set_n, true, "practice happy")
-    const exp_happy = make_visual_search(same_exemplar, neutral_faces, happy_faces, set_sizes, repeat_trials, trial_set_n, false, "experiment happy")
-    const prac_angry = make_visual_search(same_exemplar, neutral_faces, angry_faces, set_sizes, pract_repeat_trials, pract_set_n, true, "practice angry")
-    const exp_angry = make_visual_search(same_exemplar, neutral_faces, angry_faces, set_sizes, repeat_trials, trial_set_n, false, "experiment angry")
+    const prac_upright = make_visual_search(same_exemplar, neutral_faces[0], emo_faces[0], set_sizes, pract_repeat_trials, pract_set_n, true, "practice upright")
+    const exp_upright = make_visual_search(same_exemplar, neutral_faces[0], emo_faces[0], set_sizes, repeat_trials, trial_set_n, false, "experiment upright")
+    const prac_inverted = make_visual_search(same_exemplar, neutral_faces[1], emo_faces[1], set_sizes, pract_repeat_trials, pract_set_n, true, "practice inverted")
+    const exp_inverted = make_visual_search(same_exemplar, neutral_faces[1], emo_faces[1],  set_sizes, repeat_trials, trial_set_n, false, "experiment inverted")
 
     const end_practice = {
         type: jsPsychHtmlKeyboardResponse,
@@ -152,15 +151,9 @@
       stimulus: '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">'+
                 switch_msg.replace("$BLOCK_NUM", block_number).replace("$BLOCK_LEN", block_len) + "</div>"
     }
-    /*if ( Math.round(Math.random()) == 0 ) {
-      // congruent first
-      timeline.push(prac_happy, end_practice, exp_happy, switch_instructions, prac_angry, end_practice, exp_angry)
-    } else {
-      // incongruent first
-      timeline.push(prac_angry, end_practice, exp_angry, switch_instructions, prac_happy, end_practice, exp_happy)
-    }*/
-    timeline.push(prac_happy)
-    
+
+    timeline.push(prac_upright, end_practice, exp_upright, switch_instructions, prac_inverted, end_practice, exp_inverted)
+
     jsPsych.run(timeline);
 
     function debrief(code=null) {
@@ -174,7 +167,7 @@
                             
               return html_debrief
           }
-    function prepare_stimuli(same_exemplar, foil_set, targ_set, set_label, practice) {
+    function prepare_stimuli(same_exemplar, foil_set, targ_set, set_sizes, set_label, practice) {
       let ready_stim = {}
       if (same_exemplar == true) {
         ready_stim = {
@@ -209,18 +202,23 @@
             practice_run: practice,
             set_label: set_label,
             array_size: jsPsych.timelineVariable('set_size'),
+            emotion: function(){
+              const cur_num = jsPsych.evaluateTimelineVariable('stim_num')
+              const cur_targ_set = targ_set
+              const cur_target = cur_targ_set[cur_num]
+              const emotion = (cur_target.includes("angry")) ? "angry" : "happy"
+              return emotion
+            },
             exemplar_target: function(){
               const cur_num = jsPsych.evaluateTimelineVariable('stim_num')
               const cur_targ_set = targ_set
               const cur_target = cur_targ_set[cur_num]
-              console.log(cur_num, cur_targ_set, cur_target)
               return cur_target
             },
             exemplar_foil: function(){
               const cur_num = jsPsych.evaluateTimelineVariable('stim_num')
               const cur_foil_set = foil_set
               const cur_foil = cur_foil_set[cur_num]
-              console.log(cur_num, cur_foil_set, cur_foil)
               return cur_foil
             }
           }
@@ -254,6 +252,13 @@
             practice_run: practice,
             set_label: set_label,
             array_size: jsPsych.timelineVariable('set_size'),
+            emotion: function(){
+              const cur_num = jsPsych.evaluateTimelineVariable('stim_num')
+              const cur_targ_set = targ_set
+              const cur_target = cur_targ_set[cur_num]
+              const emotion = (cur_target.includes("angry")) ? "angry" : "happy"
+              return emotion
+            },
             exemplar_target: function(){
               const cur_num = jsPsych.evaluateTimelineVariable('stim_num')
               const cur_targ_set = targ_set
@@ -282,12 +287,13 @@
         }
         console.log(factors)
 
+        console.log(set_label)
         
         const full_design = jsPsych.randomization.factorial(factors, repeat_trials)
         const block_len = Math.floor(full_design.length/block_number) 
         let procedure = {
           timeline: [
-              prepare_stimuli(same_exemplar, foil_set, targ_set, set_label, practice),
+              prepare_stimuli(same_exemplar, foil_set, targ_set, set_sizes, set_label, practice),
             {
               type: jsPsychHtmlKeyboardResponse,
               stimulus: function(){
