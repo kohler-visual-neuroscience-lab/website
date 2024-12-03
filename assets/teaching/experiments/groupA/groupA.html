@@ -21,10 +21,6 @@
         use_webaudio: false,
         on_finish: function(){
           jsPsych.data.get().localSave('csv',save_name)
-        },
-        exclusions: {
-          min_width: 800,
-          min_height: 600
         }
       })
 
@@ -114,20 +110,15 @@
     const general_instructions = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="text-align: center; vertical-align: top; display: inline-block; width: 800px; margin: auto">' +
-                  '<p>On each trial of this experiment you will be presented with a collection of objects.<br>' +
-                  'Your job is to identify if one of these objects is <b> different </b> from the others.<br>' + 
-                  '<p> If one of the objects is different, press the "J" key as quickly as possible. <br>' + 
-                  'If all the items appear to be the same, press the "S" key.<br>' + 
+                  '<p>On each trial of this experiment you will be presented <br>with an environmental scene followed by a picture of a face.<br>' +
+                  'Your job is to identify the <b> emotional status </b> of the face.<br>' + 
+                  '<p> If the face displays negative emotion then press the "S" key. <br>' + 
+                  'If the face displays positive emotion then press the "J" key.<br>' + 
                   'Please try to be as accurate and quick as possible. </p>' +
-                  '<table style="border-collapse: collapse; border: 1px solid black; margin-left: auto; margin-right: auto"><tr>'+
-                  '<th style="background-color: #D3D3D3; border-right: 1px solid black; border-bottom: 1px solid black"> <img src=assets/images/undisrupted.png width="300" height="300"> </th>'+
-                  '<th style="background-color: #D3D3D3; border-right: 1px solid black; border-bottom: 1px solid black"> <img src=assets/images/disrupted.png width="300" height="300"> </th><tr>'+
-                  '<td> All Objects the Same </td>' +
-                  '<td> One Object Different </td>' +
-                  '<p> You will complete two sections of trials, each containing a brief practice session followed by ' + block_number + ' blocks of experiment trials.<br>' +
                   'After each block of trials you will be given the opportunity to take a short break.<br>' +
                   'After each section of trials you will get a message telling you to prepare for the next one. </p>' +
-                  '<p>When you are ready to begin, press any key to start the first practice.</p></div>'
+                  '<p>You will first do a set of practice trials.</p>' +
+                  '<p>When you are ready, press any key to begin the experiment.</p></div>'
     }
 
     timeline.push(general_instructions);
@@ -176,9 +167,29 @@
         stim1: pos_scenes.concat(neg_scenes), 
         stim2: pos_faces.concat(neg_faces), // is the target present? //choose target condition, defined in set_up
       }
-      let full_design = shuffle(jsPsych.randomization.factorial(factors, repetitions))
-      full_design = full_design.splice(0, trial_number)
-              
+
+      congruent = []
+      incongruent = []
+
+      while (congruent.length < trial_number) {
+        let temp_design = shuffle(jsPsych.randomization.factorial(factors, 1))
+        for (t of temp_design) {
+          if ((t["stim1"].includes("pos") == t["stim2"].includes("pos")) || (t["stim1"].includes("neg") == t["stim2"].includes("neg"))) {
+            congruent.push(t)
+          } else {
+            incongruent.push(t)
+          }
+        }
+      }
+      
+      congruent = shuffle(congruent)
+      incongruent = shuffle(incongruent)
+
+      congruent = congruent.splice(0, trial_number)
+      incongruent = incongruent.splice(0, trial_number)
+
+      const full_design = congruent.concat(incongruent)
+
       let procedure = {
       timeline: [
         {
