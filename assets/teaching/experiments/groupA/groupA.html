@@ -171,7 +171,7 @@
       congruent = []
       incongruent = []
 
-      while (congruent.length < trial_number) {
+      while ( (congruent.length < trial_number) && (incongruent.length < trial_number) ) {
         let temp_design = shuffle(jsPsych.randomization.factorial(factors, 1))
         for (t of temp_design) {
           if ((t["stim1"].includes("pos") == t["stim2"].includes("pos")) || (t["stim1"].includes("neg") == t["stim2"].includes("neg"))) {
