@@ -9,9 +9,10 @@ permalink: /pubs/
 <h3 class="relative wide">Peer-reviewed Articles</h3>
 <h3 class="relative mid">Articles</h3>
 <h3 class="relative narrow">Peer-reviewed Articles</h3>
-0.	Kohler, PJ, Moreau, R, Alp, N, Godley, L, Freud, E (in prep) Symmetry has Dissociable Effects on Efficiency and Difficulty of Visual Search. 
-0.	Samet, S, Iskandar, Y, Fukuda, K, Freud, E & **Kohler**, PJ (in prep). Symmetry Benefits Working Memory Representations of Object Orientation.
-0.	Maechler, MR, Choe, E, Cavanagh, P, **Kohler**, PJ, Tse, PU (in revision). Hemifield Specificity of Attention Response Functions During Multiple Object Tracking. 
+0. Kohler, PJ, Moreau, R, Alp, N, Godley, L, Freud, E (in prep) Symmetry has Dissociable Effects on Efficiency and Difficulty of Visual Search. 
+0. Samet, S, Iskandar, Y, Fukuda, K, Freud, E & **Kohler**, PJ (in prep). Symmetry Benefits Working Memory Representations of Object Orientation.
+0. Reitelbach, C, **Kohler**, PJ, Oyibo, K and Ehlers, J (submitted). Optimizing SSVEP for Brain-Computer Interfaces: The influence of viewing distance, stimulus size and luminance. *Human-Computer Interaction*.
+0. Maechler, MR, Choe, E, Cavanagh, P, **Kohler**, PJ, Tse, PU (in revision). Hemifield Specificity of Attention Response Functions During Multiple Object Tracking. 
 0.	Moreau, R, Alp, N, Clarke, A, Freud, E & **Kohler**, PJ (in revision). Differential processing of reflection and rotation symmetries in visual textures.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/shams_et_al_2024.pdf) Shams, M, **Kohler**, PJ & Cavanagh, P (2024). Deconstructing the Frame Effect. *Journal of Vision 24*(11), 8.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/kohler_et_al_2022.pdf) **Kohler**, PJ, Vedak, S &amp; Gilmore, RO (2022) Perceptual Similarities among Wallpaper Group Exemplars. *Symmetry 14*(5), 857.
