@@ -11,8 +11,9 @@ permalink: /pubs/
 <h3 class="relative narrow">Peer-reviewed Articles</h3>
 0. Kohler, PJ, Moreau, R, Alp, N, Godley, L, Freud, E (in prep) Symmetry has Dissociable Effects on Efficiency and Difficulty of Visual Search. 
 0. Samet, S, Iskandar, Y, Fukuda, K, Freud, E & **Kohler**, PJ (in prep). Symmetry Benefits Working Memory Representations of Object Orientation.
-0. Shams, M, **Kohler**, PJ & Cavanagh, P (under review). Different Effects of Flash-Grab and Frame Stimuli on Position Shift and Shape Distortion. *Journal of Vision*
 0. Reitelbach, C, **Kohler**, PJ, Oyibo, K and Ehlers, J (under review). Optimizing SSVEP for Brain-Computer Interfaces: The influence of viewing distance, stimulus size and luminance. *Behavioural Brain Research*.
+0. Shams, M, **Kohler**, PJ & Cavanagh, P (in revision). Different Effects of Flash-Grab and Frame Stimuli on Position Shift and Shape Distortion. *Journal of Vision*
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/liu_et_al_2025.pdf) Liu, Y, Halfen, EJ, Yau, JM, Fischer-Baum, S, **Kohler**, PJ, Faseyitan, O, Coslett, HB, Medina, J (2025). Reweighting of visuomotor areas during motor processing subsequent to somatosensory cortical damage. *NeuroImage 317*, 121336.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/maechler_et_al_2025.pdf) Maechler, MR, Choe, E, Cavanagh, P, **Kohler**, PJ, Tse, PU (2025). Hemifield Specificity of Attention Response Functions During Multiple Object Tracking. *Journal of Neuroscience 45*(19), 1-12.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/moreau_et_al_2025.pdf) Moreau, R, Alp, N, Clarke, A, Freud, E & **Kohler**, PJ (2025). Visual search efficiency is modulated by symmetry type and texture regularity. *Journal of Vision 25*(7), 1-13.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/shams_et_al_2024.pdf) Shams, M, **Kohler**, PJ & Cavanagh, P (2024). Deconstructing the Frame Effect. *Journal of Vision 24*(11), 1-10.
