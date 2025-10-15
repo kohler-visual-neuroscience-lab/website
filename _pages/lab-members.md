@@ -50,6 +50,16 @@ image: /assets/people/pjkohler_short.png
 <p class="box-body"><img class="small-round" src="/assets/people/sahmari.png" alt="Shadi Ahmari">Shadi is a Master's student in the Biology program, with a solid background in biomedical engineering and a deep enthusiasm for brain research. Her primary focus is on identifying psychometric thresholds for symmetry and contrast detection in novel, three-dimensional objects. Shadi is dedicated to creative and interdisciplinary research, applying brain science to various fields. In her free time, she enjoys drawing, photography, and performance art, often visiting galleries to stay inspired.</p>
 
 <a class="box-head">
+	<span class="wide alignleft">Isimeme Okonofua (she, her, hers)</span>
+	<span class="mid alignleft">Isimeme Okonofua</span>
+	<span class="narrow alignleft">Isimeme Okonofua</span>
+	<span class="wide alignright">Master's Student, Biology</span>
+	<span class="mid alignright">Master's Student</span>
+	<span class="narrow alignright">MSc Student</span>
+</a>
+<p class="box-body"><img class="small-round" src="/assets/people/iokonofua.png" alt="Isimeme Okonofua">Isimeme is a Master's student in the Biology program, with a background in Biology and Psychology. Before joining the lab, she worked on various social psychology and mental health research projects. Her Master's thesis is on the effect of visual cortex morphology on visual evoked potential spatiotemporal patterns, measured using EEG. Outside of the lab, she enjoys yoga, reading, and watching movies.</p>
+
+<a class="box-head">
 	<span class="wide alignleft">Aida Golshan (she, her, hers)</span>
 	<span class="mid alignleft">Aida Golshan</span>
 	<span class="narrow alignleft">Aida Golshan</span>
