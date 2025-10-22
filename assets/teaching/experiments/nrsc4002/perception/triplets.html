@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Triplets (Shapes × Textures)</title>
+
+  <!-- jsPsych core (UMD) + CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/jspsych@8.2.2/css/jspsych.css" />
+  <script src="https://unpkg.com/jspsych@8.2.2"></script>
+
+  <!-- Official plugins (UMD builds) -->
+  <script src="https://unpkg.com/@jspsych/plugin-preload@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-button-response@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-external-html@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-browser-check@2.1.0"></script>
+
+  <!-- DataPipe (jspsych-contrib) -->
+  <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe@2.0.0"></script>
+
+  <!-- (optional) lab helpers you mentioned -->
+  <script src="kvnl-functions.js"></script>
+
+  <!-- Settings + Manifest (classic scripts; manifest defines: const stimulus_manifest = {...}) -->
+  <script src="triplets_settings.js"></script>
+  <script src="stimulus_manifest.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+    }
+
+    .jspsych-content {
+      max-width: 1100px;
+    }
+
+    :root {
+      --stim-size: 240px;
+    }
+
+    .arena {
+      position: relative;
+      width: 90vmin;
+      height: 70vmin;
+      margin: 1rem auto;
+    }
+
+    .stim {
+      position: absolute;
+      width: var(--stim-size);
+      height: var(--stim-size);
+      transform: translate(-50%, -50%);
+    }
+
+    .stim img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    .fixation {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      background: #000;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .pretrial {
+      max-width: 720px;
+      margin: 2rem auto;
+      text-align: center;
+      font-family: system-ui, sans-serif;
+    }
+
+    .pretrial h3 {
+      margin: .25rem 0;
+    }
+
+    .ok {
+      color: #4caf50;
+      font-weight: 700;
+    }
+
+    .bad {
+      color: #e53935;
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    /* ================= settings ================= */
+    const s = (typeof triplets_settings === "object" && triplets_settings) ? triplets_settings : {};
+
+    const background_color = s.background_color ?? "#808080";
+    const foreground_color = s.foreground_color ?? "#eeeeee";
+    const use_fullscreen = !!s.use_fullscreen;
+
+    const shapes_base_path = (typeof s.shapes_base_path === 'string') ? s.shapes_base_path : "shapes";
+    const textures_base_path = (typeof s.textures_base_path === 'string') ? s.textures_base_path : "textures";
+
+    const stim_size_px = Number.isFinite(s.stim_size_px) ? s.stim_size_px : 240;
+    const triangle_radius_px = Number.isFinite(s.triangle_radius_px) ? s.triangle_radius_px : 220;
+
+    const block_types = ["shape", "texture"];
+    const pre_trial_ms = Number.isFinite(s.pre_trial_ms) ? s.pre_trial_ms : 600;
+
+    const practice_trials_per_type = Number.isFinite(s.practice_trials_per_type) ? s.practice_trials_per_type : 4;
+    const main_trials_per_type = Number.isFinite(s.main_trials_per_type) ? s.main_trials_per_type : 16;
+
+    const practice_feedback = s.practice_feedback !== false;
+    const main_feedback = s.main_feedback === true;
+
+    /* NEW: all instruction copy comes from settings (no hard-coded text) */
+    const instr_text_html = s.instr_text_html ?? `<h2>Instructions</h2><p>On each trial, select the odd one out using the Left, Up, or Right arrow keys.</p><p><em>Press SPACE to continue.</em></p>`;
+    const shape_block_intro_html = s.shape_block_intro_html ?? `<h2>Shape Block</h2><p>Pick the odd one out by <em>shape</em>.</p><p><em>Press SPACE to continue.</em></p>`;
+    const texture_block_intro_html = s.texture_block_intro_html ?? `<h2>Texture Block</h2><p>Pick the odd one out by <em>texture</em>.</p><p><em>Press SPACE to continue.</em></p>`;
+    const practice_intro_html = s.practice_intro_html ?? `<h3>Practice</h3><p>Practice: <strong>{{n_trials}}</strong> trial(s).</p><p><em>Press SPACE to start.</em></p>`;
+    const main_intro_html = s.main_intro_html ?? `<h3>Main</h3><p>Main: <strong>{{n_trials}}</strong> trial(s).</p><p><em>Press SPACE to begin.</em></p>`;
+
+    /* Browser check (official plugin) – optional via settings */
+    const use_browser_check = s.use_browser_check === true;            // default off unless set in settings
+    const collect_consent_survey = s.collect_consent_survey === true;            // default off unless set in settings
+    const browser_check_require_desktop = s.browser_check_require_desktop !== false; // default true
+    const browser_check_min_width = Number.isFinite(s.browser_check_min_width) ? s.browser_check_min_width : 900;
+    const browser_check_min_height = Number.isFinite(s.browser_check_min_height) ? s.browser_check_min_height : 600;
+
+    /* ---- local save & DataPipe toggles (simple, with back-compat) ---- */
+    const use_local_save = (typeof s.use_local_save === 'boolean')
+      ? s.use_local_save
+      : (s.save_data === true);  // fallback to old key
+
+    const use_datapipe = (typeof s.use_datapipe === 'boolean')
+      ? s.use_datapipe
+      : (s.use_datapipe === true); // default false if missing
+
+    const file_format = (typeof s.file_format === 'string')
+      ? (s.file_format.toLowerCase() === 'json' ? 'json' : 'csv')
+      : ((s.save_format === 'json') ? 'json' : (s.datapipe_format === 'json' ? 'json' : 'csv'));
+
+    const filename_base = (typeof s.filename_base === 'string' && s.filename_base.trim())
+      ? s.filename_base.trim()
+      : (s.save_filename || s.datapipe_filename_prefix || 'triplets_data');
+
+    const add_timestamp = (typeof s.add_timestamp === 'boolean')
+      ? s.add_timestamp
+      : (s.save_add_timestamp !== false); // default true
+
+    const datapipe_experiment_id = s.datapipe_experiment_id || "";
+
+    /* look */
+    document.documentElement.style.background = background_color;
+    document.body.style.background = background_color;
+    document.body.style.color = foreground_color;
+    document.documentElement.style.setProperty("--stim-size", stim_size_px + "px");
+
+    /* ================= manifest ================= */
+    if (!stimulus_manifest || !stimulus_manifest.shapes || !stimulus_manifest.textures) {
+      throw new Error("stimulus_manifest missing/malformed. Define `const stimulus_manifest = { shapes:{...}, textures:{...} }` and load it before this HTML.");
+    }
+    const clean_path = p => String(p).replace(/(^\/+|\/+$)/g, "");
+    const path_join = (...parts) => parts.map(clean_path).filter(Boolean).join("/");
+
+    function obj_to_cat_array(obj, base_path) {
+      return Object.keys(obj).map(name => ({
+        name,
+        images: (obj[name] || []).map(file => path_join(base_path, name, file))
+      }));
+    }
+    const shape_cats = obj_to_cat_array(stimulus_manifest.shapes, shapes_base_path);
+    const texture_cats = obj_to_cat_array(stimulus_manifest.textures, textures_base_path);
+
+    /* ================= utils ================= */
+    function shuffled(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
+    function rand_int(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function choice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    /* ===== Balanced schedulers (round-robin per category & per image) ===== */
+    function make_round_robin(list) { const arr = shuffled(list.slice()); let i = 0; return () => { const v = arr[i]; i = (i + 1) % arr.length; return v; }; }
+    function make_image_picker(cat_arr) {
+      const map = new Map();
+      cat_arr.forEach(c => { map.set(c.name, make_round_robin(c.images)); });
+      return (cat_name) => { const next_img = map.get(cat_name); if (!next_img) throw new Error("No image RR for category: " + cat_name); return next_img(); };
+    }
+
+    const rr_shape_common = make_round_robin(shape_cats.map(c => c.name));
+    const rr_shape_odd = make_round_robin(shape_cats.map(c => c.name));
+    const rr_texture_common = make_round_robin(texture_cats.map(c => c.name));
+    const rr_texture_odd = make_round_robin(texture_cats.map(c => c.name));
+
+    const next_shape_image = make_image_picker(shape_cats);
+    const next_texture_image = make_image_picker(texture_cats);
+
+    function rr_two_distinct(rr_a, rr_b) {
+      let a = rr_a(); let b = rr_b();
+      if (b === a) b = rr_b();
+      if (b === a) { // ultra-rare fallback
+        const pool = shape_cats.map(c => c.name).concat(texture_cats.map(c => c.name));
+        b = choice(pool.filter(x => x !== a));
+      }
+      return [a, b];
+    }
+
+    /* ================= trial constructors ================= */
+    function make_shape_baseline_trial() {
+      const [shape_a, shape_b] = rr_two_distinct(rr_shape_common, rr_shape_odd);
+      const tex_c = rr_texture_common();
+      const pos = [0, 1, 2]; const odd_idx = choice(pos);
+      const items = pos.map(i => ({ shape_cat: (i === odd_idx) ? shape_b : shape_a, tex_cat: tex_c }));
+      return finalize_triplet({ items, relevant: "shape", trial_type: "baseline", correct_index: odd_idx });
+    }
+    function make_shape_incongruent_trial() {
+      const [shape_a, shape_b] = rr_two_distinct(rr_shape_common, rr_shape_odd);
+      const [tex_c, tex_d] = rr_two_distinct(rr_texture_common, rr_texture_odd);
+      const pos = [0, 1, 2]; const odd_shape = choice(pos); const odd_texture = choice(pos.filter(p => p !== odd_shape));
+      const items = pos.map(i => ({ shape_cat: (i === odd_shape) ? shape_b : shape_a, tex_cat: (i === odd_texture) ? tex_d : tex_c }));
+      return finalize_triplet({ items, relevant: "shape", trial_type: "incongruent", correct_index: odd_shape });
+    }
+    function make_texture_baseline_trial() {
+      const [tex_a, tex_b] = rr_two_distinct(rr_texture_common, rr_texture_odd);
+      const shape_c = rr_shape_common();
+      const pos = [0, 1, 2]; const odd_idx = choice(pos);
+      const items = pos.map(i => ({ shape_cat: shape_c, tex_cat: (i === odd_idx) ? tex_b : tex_a }));
+      return finalize_triplet({ items, relevant: "texture", trial_type: "baseline", correct_index: odd_idx });
+    }
+    function make_texture_incongruent_trial() {
+      const [tex_a, tex_b] = rr_two_distinct(rr_texture_common, rr_texture_odd);
+      const [shape_c, shape_d] = rr_two_distinct(rr_shape_common, rr_shape_odd);
+      const pos = [0, 1, 2]; const odd_texture = choice(pos); const odd_shape = choice(pos.filter(p => p !== odd_texture));
+      const items = pos.map(i => ({ shape_cat: (i === odd_shape) ? shape_d : shape_c, tex_cat: (i === odd_texture) ? tex_b : tex_a }));
+      return finalize_triplet({ items, relevant: "texture", trial_type: "incongruent", correct_index: odd_texture });
+    }
+
+    function finalize_triplet({ items, relevant, trial_type, correct_index }) {
+      const shuffled_items = shuffled(items);
+      const correct_screen_index = shuffled_items.findIndex(it => it === items[correct_index]);
+      const screen_items = shuffled_items.map((src, screen_pos) => ({
+        screen_pos,
+        shape_cat: src.shape_cat,
+        tex_cat: src.tex_cat,
+        shape_img: next_shape_image(src.shape_cat),
+        tex_img: next_texture_image(src.tex_cat)
+      }));
+      return { relevant, trial_type, items: screen_items, correct_index: correct_screen_index };
+    }
+
+    /* ================= compositing (masking surround) ================= */
+    const composite_cache = new Map();
+    function load_image(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => img.decode ? img.decode().then(() => resolve(img)).catch(() => resolve(img)) : resolve(img);
+        img.onerror = () => reject(new Error("Failed to load: " + src));
+        img.src = src;
+      });
+    }
+    async function compose_pair(shape_src, texture_src, size) {
+      const key = `${shape_src}|${texture_src}|${size}|maskv2`;
+      if (composite_cache.has(key)) return composite_cache.get(key);
+      const [tex, shape] = await Promise.all([load_image(texture_src), load_image(shape_src)]);
+      const c = document.createElement("canvas");
+      c.width = c.height = size;
+      const ctx = c.getContext("2d");
+      // draw texture
+      ctx.globalCompositeOperation = "source-over";
+      ctx.drawImage(tex, 0, 0, size, size);
+      // erase outside shape (keep only interior)
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.drawImage(shape, 0, 0, size, size);
+      // reset
+      ctx.globalCompositeOperation = "source-over";
+      const url = c.toDataURL("image/png");
+      composite_cache.set(key, url);
+      return url;
+    }
+    async function compose_triplet(trip) {
+      const urls = [];
+      for (let i = 0; i < 3; i++) {
+        const it = trip.items[i];
+        urls.push(await compose_pair(it.shape_img, it.tex_img, stim_size_px));
+      }
+      return urls; // [left, up, right]
+    }
+
+    /* ================= layout ================= */
+    function render_arena_html(composite_urls) {
+      const r = triangle_radius_px;
+      const dxl = -0.8660254 * r, dyl = 0.5 * r;  // left  (bottom-left)
+      const dxu = 0.0 * r, dyu = -1.0 * r; // up    (top)
+      const dxr = 0.8660254 * r, dyr = 0.5 * r;  // right (bottom-right)
+
+      const pos_style = (dx, dy) =>
+        `style="left:50%; top:50%; transform: translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px));"`;
+
+      return `
+          <div class="arena">
+            <div class="fixation"></div>
+            <div class="stim" ${pos_style(dxl, dyl)}>
+              <img src="${composite_urls[0]}" alt="" aria-hidden="true" decoding="sync" loading="eager" draggable="false">
+            </div>
+            <div class="stim" ${pos_style(dxu, dyu)}>
+              <img src="${composite_urls[1]}" alt="" aria-hidden="true" decoding="sync" loading="eager" draggable="false">
+            </div>
+            <div class="stim" ${pos_style(dxr, dyr)}>
+              <img src="${composite_urls[2]}" alt="" aria-hidden="true" decoding="sync" loading="eager" draggable="false">
+            </div>
+          </div>
+        `;
+    }
+
+    /* ================= design compilers ================= */
+    function build_block_trials(block_type, n_per_type) {
+      const makers = (block_type === "shape")
+        ? { baseline: make_shape_baseline_trial, incongruent: make_shape_incongruent_trial }
+        : { baseline: make_texture_baseline_trial, incongruent: make_texture_incongruent_trial };
+      const specs = [];
+      for (const tt of ["baseline", "incongruent"]) {
+        for (let r = 0; r < n_per_type; r++) specs.push({ block_type, trial_type: tt });
+      }
+      return shuffled(specs).map(spec => ({ ...spec, triplet: makers[spec.trial_type]() }));
+    }
+
+    /* ================= preload list ================= */
+    const all_images = (() => {
+      const imgs = [];
+      shape_cats.forEach(c => imgs.push(...c.images));
+      texture_cats.forEach(c => imgs.push(...c.images));
+      return Array.from(new Set(imgs));
+    })();
+
+    /* ================= jsPsych init ================= */
+    const jsPsych = initJsPsych({
+      on_finish: async function () {
+        const z = n => String(n).padStart(2, "0");
+        const now = new Date();
+        const ts = `${now.getFullYear()}${z(now.getMonth() + 1)}${z(now.getDate())}_${z(now.getHours())}${z(now.getMinutes())}${z(now.getSeconds())}`;
+
+        const base = (filename_base && typeof filename_base === "string") ? filename_base.replace(/\s+/g, "_") : "triplets_data";
+        const ext = (file_format === "json") ? ".json" : ".csv";
+        const fname = add_timestamp ? `${base}_${ts}${ext}` : `${base}${ext}`;
+        const data_string = (file_format === "json") ? jsPsych.data.get().json() : jsPsych.data.get().csv();
+
+        // Decide actions
+        const pipe_available = !!(window.jsPsychPipe && typeof window.jsPsychPipe.saveData === "function");
+        const want_pipe = !!use_datapipe;
+        const can_pipe = want_pipe && pipe_available && !!datapipe_experiment_id;
+
+        let pipe_result = "skipped";
+        let local_result = "skipped";
+
+        // If they asked for DataPipe but it's not possible, we warn and fall back to local if allowed
+        if (want_pipe && !can_pipe) {
+          console.warn("[Triplets] DataPipe requested but not available. " +
+            (pipe_available ? "Missing experiment_id." : "Pipe plugin not loaded."));
+        }
+
+        // Show a minimal "uploading" message if we're going to Pipe
+        if (can_pipe) {
+          const el = jsPsych.pluginAPI.getDisplayElement?.();
+          if (el) {
+            el.innerHTML = `<div style="max-width:720px;margin:2rem auto;font-family:system-ui,sans-serif;">
+          <h3>Uploading data…</h3>
+          <p>Please don't close the tab.</p>
+        </div>`;
+          }
+          try {
+            await jsPsychPipe.saveData({
+              experiment_id: datapipe_experiment_id,
+              filename: fname,
+              data_string: data_string
+            });
+            pipe_result = "uploaded";
+          } catch (e) {
+            pipe_result = "failed";
+            console.error("[Triplets] DataPipe upload failed:", e);
+          }
+        }
+
+        // Local save if requested, or as fallback if Pipe failed/was unavailable
+        const should_local =
+          use_local_save ||                             // explicitly requested
+          (!can_pipe && !use_local_save) ||             // pipe impossible; ensure we still save something
+          (can_pipe && pipe_result === "failed");       // pipe attempted but failed
+
+        if (should_local) {
+          try {
+            const local_name = can_pipe && pipe_result === "uploaded" ? `local_copy_${fname}` : fname;
+            if (file_format === "json") jsPsych.data.get().localSave("json", local_name);
+            else jsPsych.data.get().localSave("csv", local_name);
+            local_result = "saved";
+          } catch (e) {
+            local_result = "failed";
+            console.error("[Triplets] Local save failed:", e);
+            // As a last resort, show data
+            jsPsych.data.displayData();
+          }
+        }
+
+        // Console summary
+        console.info(`[Triplets] Data summary → Pipe: ${pipe_result} | Local: ${local_result} | file: ${fname}`);
+
+        // Optional nice end screen if nothing else is shown
+        const el = jsPsych.pluginAPI.getDisplayElement?.();
+        if (el && el.innerHTML.trim() === "") {
+          el.innerHTML = `<div style="max-width:720px;margin:2rem auto;font-family:system-ui,sans-serif;">
+        <h3>Thank you!</h3>
+        <p>Experiment complete.</p>
+        <p style="color:#666">Pipeline: ${pipe_result}. Local: ${local_result}. Filename: ${fname}</p>
+      </div>`;
+        }
+      }
+    });
+
+    const timeline = [];
+
+    /* ================= Browser Check (optional) ================= */
+    if (use_browser_check) {
+      const inclusion_fn = (data) => {
+        let ok = true;
+        if (browser_check_require_desktop && data.mobile) ok = false;
+        if (browser_check_min_width && data.width < browser_check_min_width) ok = false;
+        if (browser_check_min_height && data.height < browser_check_min_height) ok = false;
+        return ok;
+      };
+      timeline.push({
+        type: jsPsychBrowserCheck,
+        inclusion_function: inclusion_fn,
+        exclusion_message: (data) => {
+          const reasons = [];
+          if (browser_check_require_desktop && data.mobile) reasons.push("mobile/tablet detected");
+          if (browser_check_min_width && data.width < browser_check_min_width) reasons.push(`window width ${data.width}px < ${browser_check_min_width}px`);
+          if (browser_check_min_height && data.height < browser_check_min_height) reasons.push(`window height ${data.height}px < ${browser_check_min_height}px`);
+          return `<div style="max-width:780px;margin:2rem auto;font-family:system-ui,sans-serif;">
+              <h2>Setup not supported</h2>
+              <ul>${reasons.map(r => `<li>${r}</li>`).join("")}</ul>
+              <p>Please adjust your setup and reload this page.</p>
+            </div>`;
+        }
+      });
+    }
+
+    /* ====== Welcome / consent / survey (keep yours; SPACE change not needed) ====== */
+    const welcome = {
+      type: jsPsychSurveyHtmlForm,
+      html:
+        "<div style='text-align: center; vertical-align: top; display: inline-block; float: left; width: 100%'>" +
+        "<p>Welcome to the experiment. <br><br>" +
+        "Please enter your URPP code here (if applicable): <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='urpp'></p>" +
+        "</div>",
+      button_label: "continue"
+    };
+
+    const check_consent = function (elem) {
+      if (document.getElementById("consent_checkbox").checked) { return true; }
+      alert("If you wish to participate, you must consent to participate by checking the box");
+      return false;
+    };
+
+    const consent = { type: jsPsychExternalHtml, url: "consent.html", cont_btn: "start", check_fn: check_consent };
+
+    const survey = {
+      type: jsPsychSurveyHtmlForm,
+      html: survey_html,
+      preamble: "<strong>Welcome to the experiment. <br> Please provide some personal information: </strong>",
+      button_label: "continue",
+      on_finish: jsPsych.data.addProperties(get_id())
+    };
+    if (collect_consent_survey) {
+      timeline.push(welcome, consent, survey);
+    } else {
+      timeline.push(welcome)
+    }
+
+    /* ================= Instructions (SPACE) ================= */
+    timeline.push({
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: instr_text_html,
+      choices: [' '],
+      save_trial_parameters: { stimulus: false, choices: false }
+    });
+
+    /* ================= Preload ================= */
+    timeline.push({
+      type: jsPsychPreload,
+      images: all_images,
+      show_progress_bar: true,
+      message: "Loading images…",
+      continue_after_error: false
+    });
+
+    /* ================= Fullscreen (optional; SPACE) ================= */
+    if (use_fullscreen && jsPsych.pluginAPI.getDisplayElement().requestFullscreen) {
+      timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div style="max-width:720px;margin:2rem auto;font-family:system-ui,sans-serif;">
+            <h2>Fullscreen</h2><p>We'll switch to fullscreen for steadier timing.</p><p><em>Press SPACE to continue.</em></p></div>`,
+        choices: [' '],
+        save_trial_parameters: { stimulus: false, choices: false },
+        on_finish: () => {
+          const el = jsPsych.pluginAPI.getDisplayElement();
+          if (el.requestFullscreen) el.requestFullscreen();
+        }
+      });
+    }
+
+    /* ================= Block scaffolding ================= */
+    const randomized_blocks = shuffled(block_types);
+
+    function push_block(block_type) {
+      const intro_html = (block_type === "shape") ? shape_block_intro_html : texture_block_intro_html;
+      timeline.push({ type: jsPsychHtmlKeyboardResponse, stimulus: intro_html, choices: [' '] });
+
+      // Practice intro
+      const practice_specs = build_block_trials(block_type, practice_trials_per_type);
+      const total_practice = practice_specs.length;
+      timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: practice_intro_html.replace("{{n_trials}}", total_practice),
+        choices: [' '],    
+        save_trial_parameters: { stimulus: false, choices: false }
+      });
+
+      let practice_counter = 0;
+      for (const spec of practice_specs) push_trial(spec, true, () => (++practice_counter), total_practice);
+
+      // Main intro
+      const main_specs = build_block_trials(block_type, main_trials_per_type);
+      const total_main = main_specs.length;
+      timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: main_intro_html.replace("{{n_trials}}", total_main),
+        choices: [' '],    
+        save_trial_parameters: { stimulus: false, choices: false }
+      });
+
+      let main_counter = 0;
+      for (const spec of main_specs) push_trial(spec, false, () => (++main_counter), total_main);
+    }
+
+    /* ================= Trial (pretrial → compose → choice → feedback?) ================= */
+    function push_trial(spec, is_practice, inc_fn, total_in_block) {
+      const trip = spec.triplet;
+
+      // 1) pre-trial counter
+      const idx = inc_fn();
+      const label = is_practice ? "Practice Trial" : "Experiment Trial";
+      timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div class="pretrial"><h3>${label} ${idx} of ${total_in_block}</h3><div>Get ready…</div></div>`,
+        choices: "NO_KEYS",
+        trial_duration: pre_trial_ms,
+        save_trial_parameters: { stimulus: false, choices: false }
+      });
+
+      // 2) async compose step
+      let composed_urls = null; // [left, up, right]
+      timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div class="pretrial"><div>Preparing…</div></div>`,
+        choices: "NO_KEYS",
+        trial_duration: null,
+        save_trial_parameters: { stimulus: false, choices: false },
+        on_load: function () {
+          compose_triplet(trip)
+            .then(urls => { composed_urls = urls; jsPsych.finishTrial(); })
+            .catch(err => {
+              console.error("Compositing failed:", err);
+              const el = document.getElementById('jspsych-content');
+              if (el) el.innerHTML = `<div style="max-width:700px;margin:2rem auto;font-family:system-ui,sans-serif;">
+                  <h3>Sorry — a stimulus failed to load.</h3><p>${String(err)}</p></div>`;
+              setTimeout(() => jsPsych.finishTrial(), 1200);
+            });
+        }
+      });
+
+      // 3) choice trial (keyboard: Left/Up/Right)
+      timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: function () { return render_arena_html(composed_urls); },
+        choices: ["arrowleft", "arrowup", "arrowright"],
+        save_trial_parameters: { stimulus: false, choices: false },
+        data: {
+          task: "triplets_choice",
+          block_type: spec.block_type,
+          trial_type: spec.trial_type,
+          is_practice: is_practice ? 1 : 0,
+          relevant: trip.relevant,
+          correct_index: trip.correct_index,
+          // Keep the logical sources only (no data-URLs)
+          left_shape_cat: trip.items[0].shape_cat,
+          left_tex_cat: trip.items[0].tex_cat,
+          left_shape_img: trip.items[0].shape_img,
+          left_tex_img: trip.items[0].tex_img,
+          up_shape_cat: trip.items[1].shape_cat,
+          up_tex_cat: trip.items[1].tex_cat,
+          up_shape_img: trip.items[1].shape_img,
+          up_tex_img: trip.items[1].tex_img,
+          right_shape_cat: trip.items[2].shape_cat,
+          right_tex_cat: trip.items[2].tex_cat,
+          right_shape_img: trip.items[2].shape_img,
+          right_tex_img: trip.items[2].tex_img
+        },
+        on_finish: function (data) {
+          const key = (data.response || "").toLowerCase();
+          const map = { "arrowleft": 0, "arrowup": 1, "arrowright": 2 };
+          const response_index = map[key];
+          const correct = (response_index === data.correct_index) ? 1 : 0;
+
+          // add concise fields
+          data.response_key = key || null;
+          data.response_index = Number.isInteger(response_index) ? response_index : null;
+          data.correct = Number.isInteger(response_index) ? correct : null; // null if no response
+        }
+      });
+
+      // 4) feedback (optional; SPACE)
+      const want_feedback = is_practice ? practice_feedback : main_feedback;
+      if (want_feedback) {
+        timeline.push({
+          type: jsPsychHtmlKeyboardResponse,
+          stimulus: function () {
+            const last = jsPsych.data.get().last(1).values()[0];
+            const ok = !!last.correct;
+            const where = ["Left", "Up", "Right"][last.correct_index];
+            return `<div style="max-width:720px;margin:2rem auto;font-family:system-ui,sans-serif;">
+                <h3>Feedback</h3>
+                <p class="${ok ? "ok" : "bad"}">${ok ? "Correct" : "Incorrect"}</p>
+                <p>Correct answer: <strong>${where}</strong></p>
+                <p><em>Press SPACE to continue.</em></p>
+              </div>`;
+          },
+          choices: [' '],
+          save_trial_parameters: { stimulus: false, choices: false },
+          data: { task: "triplets_feedback", is_practice: is_practice ? 1 : 0 }
+        });
+      }
+    }
+
+    /* ================= Build & run ================= */
+    randomized_blocks.forEach(bt => push_block(bt));
+    jsPsych.run(timeline);
+  </script>
+</body>
+
+</html>
