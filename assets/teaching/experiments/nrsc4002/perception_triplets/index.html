@@ -365,20 +365,14 @@
         const ext = (file_format === "json") ? ".json" : ".csv";
         const fname = add_timestamp ? `${base}_${ts}${ext}` : `${base}${ext}`;
 
-        // build data string NOW (not earlier)
-        const dataset = jsPsych.data.get(); // or get().ignore([...]) if you want to prune cols
-        const data_string = (file_format === "json") ? dataset.json() : dataset.csv();
+        // Build the export string *now* (not earlier)
+        const ds = jsPsych.data.get();                   // full DataCollection
+        const data_string = (file_format === "json") ? ds.json() : ds.csv();
 
-        // sanity
-        const bytes = new Blob([data_string]).size;
-        console.info(`[Triplets] exporting ${dataset.trials?.length ?? "?"} rows, ${bytes} bytes, file ${fname}`);
-
-        // OPTIONAL: guard against empty uploads
-        if (bytes === 0) {
-          console.warn("[Triplets] Data appears empty; skipping Pipe upload and showing data instead.");
-          jsPsych.data.displayData();
-          return;
-        }
+        // sany logs
+        console.log("[Pipe] rows:", ds.trials?.length ?? "n/a");
+        console.log("[Pipe] preview:", data_string.slice(0, 120)); // first 120 chars
+        console.log("[Pipe] bytes:", new Blob([data_string]).size);
 
         // Pipe first (v0.5 API), then fallback to local if it fails or if use_local_save is on
         let pipe_ok = false;

@@ -17,8 +17,8 @@ const triplets_settings = {
   pre_trial_ms: 600,
 
   /* Design: counts per block (shape / texture) */
-  practice_trials_per_type: 1,  // baseline & incongruent → 2 × 4 = 8 practice trials/block
-  main_trials_per_type: 1,     // baseline & incongruent → 2 × 120 = 240 main trials/block
+  practice_trials_per_type: 10,  // baseline & incongruent → 2 × 10 = 20 practice trials/block
+  main_trials_per_type: 60,     // baseline & incongruent → 2 × 60 = 120 main trials/block
 
   /* Feedback */
   practice_feedback: true,
@@ -27,12 +27,12 @@ const triplets_settings = {
 
   /* saving and datapipe */
   collect_consent_survey: true, // set to true when collecting real data
-  use_local_save: false,          // replaces "save_data"
-  use_datapipe: true,           // upload via DataPipe (Pipe plugin)
+  use_local_save: true,          // replaces "save_data"
+  use_datapipe: false,           // upload via DataPipe (Pipe plugin)
   file_format: "csv",            // replaces "save_format" / "datapipe_format"
   filename_base: "triplets_data",// replaces "save_filename" / "datapipe_filename_prefix"
   add_timestamp: true,           // replaces "save_add_timestamp"
-  datapipe_experiment_id: "4NCyg2ljs7mx",
+  datapipe_experiment_id: "SXIm98HnPi9H",
 
   /* Browser Check (official plugin) — simple, optional gate */
   use_browser_check: true,                // set to false to skip the check entirely
