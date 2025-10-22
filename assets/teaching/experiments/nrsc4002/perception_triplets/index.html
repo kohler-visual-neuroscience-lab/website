@@ -167,7 +167,7 @@
 
     // ---- Pipe diagnostics (runs once on load) ----
     (function pipe_diag(){
-      const okPlugin = !!(window.jsPsychPipe && typeof jsPsychPipe.saveData === 'function');
+      const okPlugin = !!(window.jsPsychPipe && typeof jsPsychPipe.save === 'function');
       console.group('[Triplets] Data config');
       console.log('use_datapipe        =', use_datapipe);
       console.log('use_local_save      =', use_local_save);
@@ -367,7 +367,7 @@
         const data_string = (file_format === "json") ? jsPsych.data.get().json() : jsPsych.data.get().csv();
 
         // Decide actions
-        const pipe_available = !!(window.jsPsychPipe && typeof window.jsPsychPipe.saveData === "function");
+        const pipe_available = !!(window.jsPsychPipe && typeof window.jsPsychPipe.save === "function");
         const want_pipe = !!use_datapipe;
         const can_pipe = want_pipe && pipe_available && !!datapipe_experiment_id;
 
@@ -393,7 +393,7 @@
             await jsPsychPipe.save({
               experiment_id: datapipe_experiment_id,
               filename: fname,
-              data_string: data_string
+              data: data_string
             });
             pipe_result = "uploaded";
           } catch (e) {
