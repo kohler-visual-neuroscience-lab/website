@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Triplets (Shapes × Textures)</title>
+  <title>Triplets (Perception Triplets: Shapes × Textures)</title>
 
   <!-- jsPsych core (UMD) + CSS -->
   <link rel="stylesheet" href="https://unpkg.com/jspsych@8.2.2/css/jspsych.css" />
@@ -164,6 +164,21 @@
     document.body.style.background = background_color;
     document.body.style.color = foreground_color;
     document.documentElement.style.setProperty("--stim-size", stim_size_px + "px");
+
+    // ---- Pipe diagnostics (runs once on load) ----
+    (function pipe_diag(){
+      const okPlugin = !!(window.jsPsychPipe && typeof jsPsychPipe.saveData === 'function');
+      console.group('[Triplets] Data config');
+      console.log('use_datapipe        =', use_datapipe);
+      console.log('use_local_save      =', use_local_save);
+      console.log('file_format         =', file_format);
+      console.log('filename_base       =', filename_base);
+      console.log('add_timestamp       =', add_timestamp);
+      console.log('datapipe_experiment_id (len) =', (datapipe_experiment_id||'').length);
+      console.log('Pipe plugin loaded? =', okPlugin);
+      console.log('Page origin         =', location.origin);
+      console.groupEnd();
+    })();
 
     /* ================= manifest ================= */
     if (!stimulus_manifest || !stimulus_manifest.shapes || !stimulus_manifest.textures) {
