@@ -26,12 +26,13 @@ const triplets_settings = {
   feedback_button_label: "Next",
 
   /* saving and datapipe */
-  collect_consent_survey: false, // set to true when collecting real data
-  use_local_save: true,          // replaces "save_data"
-  use_datapipe: false,           // upload via DataPipe (Pipe plugin)
+  collect_consent_survey: true, // set to true when collecting real data
+  use_local_save: false,          // replaces "save_data"
+  use_datapipe: true,           // upload via DataPipe (Pipe plugin)
   file_format: "csv",            // replaces "save_format" / "datapipe_format"
   filename_base: "triplets_data",// replaces "save_filename" / "datapipe_filename_prefix"
   add_timestamp: true,           // replaces "save_add_timestamp"
+  datapipe_experiment_id: "4NCyg2ljs7mx",
 
   /* Browser Check (official plugin) — simple, optional gate */
   use_browser_check: true,                // set to false to skip the check entirely
