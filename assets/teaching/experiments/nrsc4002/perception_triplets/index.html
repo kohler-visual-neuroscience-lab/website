@@ -19,7 +19,7 @@
 
   <!-- DataPipe (jspsych-contrib) -->
   <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe@0.5"></script>
-  
+
   <!-- (optional) lab helpers you mentioned -->
   <script src="kvnl-functions.js"></script>
 
@@ -166,15 +166,15 @@
     document.documentElement.style.setProperty("--stim-size", stim_size_px + "px");
 
     // ---- Pipe diagnostics (runs once on load) ----
-    (function pipe_diag(){
-      const okPlugin = !!(window.jsPsychPipe && typeof jsPsychPipe.save === 'function');
+    (function pipe_diag() {
+      const okPlugin = !!(window.jsPsychPipe && typeof jsPsychPipe.saveData === 'function');
       console.group('[Triplets] Data config');
       console.log('use_datapipe        =', use_datapipe);
       console.log('use_local_save      =', use_local_save);
       console.log('file_format         =', file_format);
       console.log('filename_base       =', filename_base);
       console.log('add_timestamp       =', add_timestamp);
-      console.log('datapipe_experiment_id (len) =', (datapipe_experiment_id||'').length);
+      console.log('datapipe_experiment_id (len) =', (datapipe_experiment_id || '').length);
       console.log('Pipe plugin loaded? =', okPlugin);
       console.log('Page origin         =', location.origin);
       console.groupEnd();
@@ -356,83 +356,54 @@
 
     /* ================= jsPsych init ================= */
     const jsPsych = initJsPsych({
-      on_finish: async function () {
+      on_finish: async () => {
+        // filename
         const z = n => String(n).padStart(2, "0");
-        const now = new Date();
-        const ts = `${now.getFullYear()}${z(now.getMonth() + 1)}${z(now.getDate())}_${z(now.getHours())}${z(now.getMinutes())}${z(now.getSeconds())}`;
-
-        const base = (filename_base && typeof filename_base === "string") ? filename_base.replace(/\s+/g, "_") : "triplets_data";
+        const d = new Date();
+        const ts = `${d.getFullYear()}${z(d.getMonth() + 1)}${z(d.getDate())}_${z(d.getHours())}${z(d.getMinutes())}${z(d.getSeconds())}`;
+        const base = (filename_base || "triplets_data").replace(/\s+/g, "_");
         const ext = (file_format === "json") ? ".json" : ".csv";
         const fname = add_timestamp ? `${base}_${ts}${ext}` : `${base}${ext}`;
-        const data_string = (file_format === "json") ? jsPsych.data.get().json() : jsPsych.data.get().csv();
 
-        // Decide actions
-        const pipe_available = !!(window.jsPsychPipe && typeof window.jsPsychPipe.save === "function");
-        const want_pipe = !!use_datapipe;
-        const can_pipe = want_pipe && pipe_available && !!datapipe_experiment_id;
+        // build data string NOW (not earlier)
+        const dataset = jsPsych.data.get(); // or get().ignore([...]) if you want to prune cols
+        const data_string = (file_format === "json") ? dataset.json() : dataset.csv();
 
-        let pipe_result = "skipped";
-        let local_result = "skipped";
+        // sanity
+        const bytes = new Blob([data_string]).size;
+        console.info(`[Triplets] exporting ${dataset.trials?.length ?? "?"} rows, ${bytes} bytes, file ${fname}`);
 
-        // If they asked for DataPipe but it's not possible, we warn and fall back to local if allowed
-        if (want_pipe && !can_pipe) {
-          console.warn("[Triplets] DataPipe requested but not available. " +
-            (pipe_available ? "Missing experiment_id." : "Pipe plugin not loaded."));
+        // OPTIONAL: guard against empty uploads
+        if (bytes === 0) {
+          console.warn("[Triplets] Data appears empty; skipping Pipe upload and showing data instead.");
+          jsPsych.data.displayData();
+          return;
         }
 
-        // Show a minimal "uploading" message if we're going to Pipe
-        if (can_pipe) {
-          const el = jsPsych.pluginAPI.getDisplayElement?.();
-          if (el) {
-            el.innerHTML = `<div style="max-width:720px;margin:2rem auto;font-family:system-ui,sans-serif;">
-          <h3>Uploading data…</h3>
-          <p>Please don't close the tab.</p>
-        </div>`;
-          }
+        // Pipe first (v0.5 API), then fallback to local if it fails or if use_local_save is on
+        let pipe_ok = false;
+        if (use_datapipe && window.jsPsychPipe && typeof jsPsychPipe.saveData === "function" && datapipe_experiment_id) {
           try {
-            await jsPsychPipe.save({
-              experiment_id: datapipe_experiment_id,
-              filename: fname,
-              data: data_string
-            });
-            pipe_result = "uploaded";
+            await jsPsychPipe.saveData(datapipe_experiment_id, fname, data_string);
+            pipe_ok = true;
+            console.info("[Triplets] Pipe upload OK:", fname);
           } catch (e) {
-            pipe_result = "failed";
-            console.error("[Triplets] DataPipe upload failed:", e);
+            console.error("[Triplets] Pipe upload FAILED:", e);
           }
+        } else if (use_datapipe) {
+          console.warn("[Triplets] Pipe requested but not available (check script tag and experiment_id).");
         }
 
-        // Local save if requested, or as fallback if Pipe failed/was unavailable
-        const should_local =
-          use_local_save ||                             // explicitly requested
-          (!can_pipe && !use_local_save) ||             // pipe impossible; ensure we still save something
-          (can_pipe && pipe_result === "failed");       // pipe attempted but failed
-
-        if (should_local) {
+        if (use_local_save || !pipe_ok) {
           try {
-            const local_name = can_pipe && pipe_result === "uploaded" ? `local_copy_${fname}` : fname;
-            if (file_format === "json") jsPsych.data.get().localSave("json", local_name);
-            else jsPsych.data.get().localSave("csv", local_name);
-            local_result = "saved";
+            const local_name = pipe_ok ? `local_copy_${fname}` : fname;
+            if (file_format === "json") dataset.localSave("json", local_name);
+            else dataset.localSave("csv", local_name);
+            console.info("[Triplets] Local save:", local_name);
           } catch (e) {
-            local_result = "failed";
-            console.error("[Triplets] Local save failed:", e);
-            // As a last resort, show data
+            console.error("[Triplets] Local save failed; showing data.", e);
             jsPsych.data.displayData();
           }
-        }
-
-        // Console summary
-        console.info(`[Triplets] Data summary → Pipe: ${pipe_result} | Local: ${local_result} | file: ${fname}`);
-
-        // Optional nice end screen if nothing else is shown
-        const el = jsPsych.pluginAPI.getDisplayElement?.();
-        if (el && el.innerHTML.trim() === "") {
-          el.innerHTML = `<div style="max-width:720px;margin:2rem auto;font-family:system-ui,sans-serif;">
-        <h3>Thank you!</h3>
-        <p>Experiment complete.</p>
-        <p style="color:#666">Pipeline: ${pipe_result}. Local: ${local_result}. Filename: ${fname}</p>
-      </div>`;
         }
       }
     });
@@ -542,7 +513,7 @@
       timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: practice_intro_html.replace("{{n_trials}}", total_practice),
-        choices: [' '],    
+        choices: [' '],
         save_trial_parameters: { stimulus: false, choices: false }
       });
 
@@ -555,7 +526,7 @@
       timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: main_intro_html.replace("{{n_trials}}", total_main),
-        choices: [' '],    
+        choices: [' '],
         save_trial_parameters: { stimulus: false, choices: false }
       });
 
