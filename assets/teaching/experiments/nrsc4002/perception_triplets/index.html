@@ -18,7 +18,7 @@
   <script src="https://unpkg.com/@jspsych/plugin-browser-check@2.1.0"></script>
 
   <!-- DataPipe (jspsych-contrib) -->
-  <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>  
+  <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe@0.5"></script>
   
   <!-- (optional) lab helpers you mentioned -->
   <script src="kvnl-functions.js"></script>
@@ -391,6 +391,8 @@
           }
           try {
             await jsPsychPipe.saveData({
+              type: jsPsychPipe,
+              action: "save",
               experiment_id: datapipe_experiment_id,
               filename: fname,
               data_string: data_string
