@@ -16,6 +16,7 @@
   <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@2.1.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-external-html@2.1.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-browser-check@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-fullscreen@2.1.0"></script>
 
   <!-- DataPipe (jspsych-contrib) -->
   <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe@0.5"></script>
@@ -158,6 +159,24 @@
       : (s.save_add_timestamp !== false); // default true
 
     const datapipe_experiment_id = s.datapipe_experiment_id || "";
+
+    const survey_html =
+      "<div style='text-align: left; vertical-align: top; display: inline-block; float: left; width: 100%'>" +
+      "<p><u>Participant ID:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='p_id'></p>" +
+      "<p><u>Age:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='age'></p>" +
+      "<p><u>Handedness:</u> </strong><input type='radio' id='left' name='handedness' value='left'>" +
+      "<label for='left'>Left-handed</label>" +
+      "<input type='radio' id='right' name='handedness' value='right' checked>" +
+      "<label for='right'>Right-handed</label>" +
+      "<input type='radio' id='ambi' name='handedness' value='ambi'>" +
+      "<label for='ambi'>Ambidextrous</label></p>" +
+      "<p><u>Sex:</u> <input type='radio' id='female' name='sex' value='female' checked>" +
+      "<label for='female'>Female</label>" +
+      "<input type='radio' id='male' name='sex' value='male'>" +
+      "<label for='male'>Male</label>" +
+      "<input type='radio' name='sex' value='other'><label for='other'>Other, please specify: </label>" +
+      "<input type='text' name='other_sex' id='other_sex' value=''></p>" +
+      "</div>"
 
     /* look */
     document.documentElement.style.background = background_color;
@@ -479,21 +498,6 @@
       continue_after_error: false
     });
 
-    /* ================= Fullscreen (optional; SPACE) ================= */
-    if (use_fullscreen && jsPsych.pluginAPI.getDisplayElement().requestFullscreen) {
-      timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `<div style="max-width:720px;margin:2rem auto;font-family:system-ui,sans-serif;">
-            <h2>Fullscreen</h2><p>We'll switch to fullscreen for steadier timing.</p><p><em>Press SPACE to continue.</em></p></div>`,
-        choices: [' '],
-        save_trial_parameters: { stimulus: false, choices: false },
-        on_finish: () => {
-          const el = jsPsych.pluginAPI.getDisplayElement();
-          if (el.requestFullscreen) el.requestFullscreen();
-        }
-      });
-    }
-
     /* ================= Block scaffolding ================= */
     const randomized_blocks = shuffled(block_types);
 
@@ -628,8 +632,26 @@
     }
 
     /* ================= Build & run ================= */
+        /* ================= Enter Fullscreen ================= */
+    if (use_fullscreen) {
+      timeline.push({
+        type: jsPsychFullscreen,
+        fullscreen_mode: true
+      });
+    }
+    
     randomized_blocks.forEach(bt => push_block(bt));
+
+    /* ================= Exit Fullscreen ================= */
+
+    if (use_fullscreen) {
+      timeline.push({
+        type: jsPsychFullscreen,
+        fullscreen_mode: false
+      });
+    }
     jsPsych.run(timeline);
+    
   </script>
 </body>
 

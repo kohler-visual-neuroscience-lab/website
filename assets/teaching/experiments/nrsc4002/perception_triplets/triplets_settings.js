@@ -74,21 +74,3 @@ const triplets_settings = {
     <p><em>Press SPACE to begin.</em></p>
   `,
 };
-
-const survey_html =
-  "<div style='text-align: left; vertical-align: top; display: inline-block; float: left; width: 100%'>" +
-  "<p><u>Participant ID:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='p_id'></p>" +
-  "<p><u>Age:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='age'></p>" +
-  "<p><u>Handedness:</u> </strong><input type='radio' id='left' name='handedness' value='left'>" +
-  "<label for='left'>Left-handed</label>" +
-  "<input type='radio' id='right' name='handedness' value='right' checked>" +
-  "<label for='right'>Right-handed</label>" +
-  "<input type='radio' id='ambi' name='handedness' value='ambi'>" +
-  "<label for='ambi'>Ambidextrous</label></p>" +
-  "<p><u>Sex:</u> <input type='radio' id='female' name='sex' value='female' checked>" +
-  "<label for='female'>Female</label>" +
-  "<input type='radio' id='male' name='sex' value='male'>" +
-  "<label for='male'>Male</label>" +
-  "<input type='radio' name='sex' value='other'><label for='other'>Other, please specify: </label>" +
-  "<input type='text' name='other_sex' id='other_sex' value=''></p>" +
-  "</div>"
