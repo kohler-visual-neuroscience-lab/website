@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Attentional Blink — RSVP</title>
+
+  <!-- jsPsych core + plugins (UMD) via CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/jspsych@8.2.2/css/jspsych.css" />
+  <script src="https://unpkg.com/jspsych@8.2.2"></script>
+
+  <!-- Official plugins (UMD builds) -->
+  <script src="https://unpkg.com/@jspsych/plugin-preload@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-animation@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-button-response@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-external-html@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-browser-check@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-fullscreen@2.1.0"></script>
+
+  <!-- DataPipe (v0.5 uses saveData(id, file, string)) -->
+  <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe@0.5"></script>
+
+  <!-- Stimuli + Settings (you provide these) -->
+  <script src="ab_image_lists.js"></script>
+  <script src="ab_rsvp_settings.js"></script>
+
+  <!-- (optional) lab helpers you mentioned -->
+  <script src="kvnl-functions.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+    }
+
+    .jspsych-content {
+      max-width: 1200px;
+    }
+
+    /* RSVP trial image size (animation plugin uses this <img> id) */
+    #jspsych-content #jspsych-animation-image {
+      width: var(--img-trial-size) !important;
+      height: var(--img-trial-size) !important;
+      max-width: none !important;
+      max-height: none !important;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .targets-preview {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: flex-start;
+      margin-top: 12px;
+    }
+
+    .targets-preview .target {
+      text-align: center;
+    }
+
+    .targets-preview img {
+      width: var(--img-instr-size);
+      height: var(--img-instr-size);
+      object-fit: contain;
+      display: block;
+      margin: 6px auto 0;
+    }
+
+    .targets-inline {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: flex-start;
+      margin: 8px 0 16px;
+    }
+
+    .targets-inline .target {
+      text-align: center;
+    }
+
+    .targets-inline img {
+      width: var(--img-response-size);
+      height: var(--img-response-size);
+      object-fit: contain;
+      display: block;
+      margin: 6px auto 0;
+    }
+
+    .question {
+      margin: 0.75rem 0;
+    }
+
+    .question label {
+      margin-right: 1rem;
+    }
+
+    .ok {
+      color: #7cfc00;
+      font-weight: 700;
+    }
+
+    .bad {
+      color: #ff6b6b;
+      font-weight: 700;
+    }
+
+    .muted {
+      color: #222;
+    }
+
+    .pretrial {
+      max-width: 720px;
+      margin: 2rem auto;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    }
+
+    .pretrial h3 {
+      margin: 0 0 .25rem 0;
+    }
+
+    .pretrial p {
+      margin: .25rem 0 0 0;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    /* ================= Settings (snake_case) ================= */
+    const s = (typeof AB_SETTINGS === "object" && AB_SETTINGS) ? AB_SETTINGS : {};
+
+    // Display & timing
+    const background_color = s.background_color ?? "#808080";
+    const foreground_color = s.foreground_color ?? "#eeeeee";
+    const families_requested = [];
+    if (s.run_shape_block !== false) families_requested.push("shape");
+    if (s.run_texture_block === true) families_requested.push("texture");
+    if (families_requested.length === 0) families_requested.push("shape"); // fallback
+    const n_stream = Number.isFinite(s.n_stream) ? s.n_stream : 24;
+    const frame_time_ms = Number.isFinite(s.frame_time_ms) ? s.frame_time_ms : 32;
+    const frame_isi_ms = Number.isFinite(s.frame_isi_ms) ? s.frame_isi_ms : 70;
+    const soa_ms = frame_time_ms + frame_isi_ms;
+
+    // Design
+    const exp_reps = Number.isFinite(s.exp_reps) ? s.exp_reps : 2;   // reps per 2×2×8 cell
+    const prac_reps = Number.isFinite(s.prac_reps) ? s.prac_reps : 1; // reps per 2×2 (max lag)
+
+    // Feedback
+    const practice_feedback = s.practice_feedback !== false;
+    const feedback_button_label = s.feedback_button_label || "Next";
+    const main_feedback = s.main_feedback === true;
+    const main_feedback_button_label = s.main_feedback_button_label || feedback_button_label;
+
+    // Image sizes
+    const instr_image_size_px = Number.isFinite(s.instr_image_size_px) ? s.instr_image_size_px : 220;
+    const trial_image_size_px = Number.isFinite(s.trial_image_size_px) ? s.trial_image_size_px : 220;
+    const response_image_size_px = Number.isFinite(s.response_image_size_px) ? s.response_image_size_px : 160;
+    const show_targets_in_instructions = s.show_targets_in_instructions !== false;
+    const show_targets_on_response = s.show_targets_on_response !== false;
+
+    // Fullscreen & pretrial
+    const use_fullscreen = !!s.use_fullscreen;
+    const pre_trial_message_ms = Number.isFinite(s.pre_trial_message_ms) ? s.pre_trial_message_ms : 600;
+
+    // Preload / audit
+    const preload_show_progress = s.preload_show_progress !== false;
+    const preload_message = (typeof s.preload_message === "string") ? s.preload_message : "Loading images…";
+    const preload_continue_after_error = s.preload_continue_after_error === true;
+    const verify_assets_before_start = s.verify_assets_before_start !== false;
+    const asset_audit_timeout_ms = Number.isFinite(s.asset_audit_timeout_ms) ? s.asset_audit_timeout_ms : 5000;
+
+    const collect_consent_survey = s.collect_consent_survey === true;            // default off unless set in settings
+
+    /* Browser check (official plugin) – optional via settings */
+    const use_browser_check = s.use_browser_check === true;            // default off unless set in settings
+    const browser_check_require_desktop = s.browser_check_require_desktop !== false; // default true
+    const browser_check_min_width = Number.isFinite(s.browser_check_min_width) ? s.browser_check_min_width : 900;
+    const browser_check_min_height = Number.isFinite(s.browser_check_min_height) ? s.browser_check_min_height : 600;
+
+    // --------- Streamlined saving controls ----------
+    // DataPipe
+    const use_datapipe = s.use_datapipe === true;
+    const datapipe_experiment_id = (typeof s.datapipe_experiment_id === "string") ? s.datapipe_experiment_id : "";
+    const datapipe_filename_prefix = (typeof s.datapipe_filename_prefix === "string") ? s.datapipe_filename_prefix : "ab_rsvp";
+    const datapipe_format = (s.datapipe_format === "json") ? "json" : "csv";
+
+    // Local copy (also-save or fallback)
+    const use_local_save = (s.use_local_save !== false); // default true
+    const local_filename_prefix = (typeof s.local_filename_prefix === "string") ? s.local_filename_prefix : datapipe_filename_prefix;
+    const local_format = (s.local_format === "json") ? "json" : datapipe_format;
+    const local_add_timestamp = (s.local_add_timestamp !== false); // default true
+
+    // Instruction text templates
+    const global_intro_tpl = (typeof s.global_intro_tpl === "string")
+      ? s.global_intro_tpl
+      : `In this experiment, you will see a rapid stream of {{n_stream}} different images. \n
+          Each image is shown for <strong>{{frame_time_ms}} ms</strong> with <strong>{{frame_isi_ms}} ms</strong> between images. \n
+          The first target T1 (if present) will appear anywhere between images 9 and 16. \n
+          The second target T2 (if present) will appear anywhere between 1 and 8 images after T1.\n 
+          After each stream, report whether you saw T1 and T2. \n
+          There will be {{n_blocks}} block(s): {{blocks}}.\n
+          Press continue to begin.\n`
+
+    const block_intro_tpl = (typeof s.block_intro_tpl === "string")
+      ? s.block_intro_tpl
+      : `You will now do the {{family}} block.\n
+          There are {{practice_trials}} practice trial(s), followed by {{main_trials}} main experiment trial(s).\n"
+          Press continue when ready.`
+
+    const practice_intro_tpl = (typeof s.practice_intro_tpl === "string")
+      ? s.practice_intro_tpl
+      : `Practice uses the 2×2 design (T1 present/absent × T2 present/absent) with the longest T2 delay. There are <strong>{{practice_trials}}</strong> practice trial(s).`;
+
+    const main_intro_tpl = (typeof s.main_intro_tpl === "string")
+      ? s.main_intro_tpl
+      : `The main experiment will now begin. There are <strong>{{main_trials}}</strong> trials. Please stay focused and respond as accurately as you can.`;
+
+    const survey_html =
+      "<div style='text-align: left; vertical-align: top; display: inline-block; float: left; width: 100%'>" +
+      "<p><u>Participant ID:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='p_id'></p>" +
+      "<p><u>Age:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='age'></p>" +
+      "<p><u>Handedness:</u> </strong><input type='radio' id='left' name='handedness' value='left'>" +
+      "<label for='left'>Left-handed</label>" +
+      "<input type='radio' id='right' name='handedness' value='right' checked>" +
+      "<label for='right'>Right-handed</label>" +
+      "<input type='radio' id='ambi' name='handedness' value='ambi'>" +
+      "<label for='ambi'>Ambidextrous</label></p>" +
+      "<p><u>Sex:</u> <input type='radio' id='female' name='sex' value='female' checked>" +
+      "<label for='female'>Female</label>" +
+      "<input type='radio' id='male' name='sex' value='male'>" +
+      "<label for='male'>Male</label>" +
+      "<input type='radio' name='sex' value='other'><label for='other'>Other, please specify: </label>" +
+      "<input type='text' name='other_sex' id='other_sex' value=''></p>" +
+      "</div>"
+
+    // Look & size
+    document.documentElement.style.background = background_color;
+    document.body.style.background = background_color;
+    document.body.style.color = foreground_color;
+    document.documentElement.style.setProperty("--img-instr-size", instr_image_size_px + "px");
+    document.documentElement.style.setProperty("--img-trial-size", trial_image_size_px + "px");
+    document.documentElement.style.setProperty("--img-response-size", response_image_size_px + "px");
+
+    /* ================= Stimulus lists ================= */
+    function get_family_lists(fam /* 'shape' | 'texture' */) {
+      console.log(shape_targets, texture_targets)
+      const t_list = (fam === "shape") ? (shape_targets || []) : (texture_targets || []);
+      const d_list = (fam === "shape") ? (shape_distractors || []) : (texture_distractors || []);
+      if (!Array.isArray(t_list) || t_list.length < 2) {
+        throw new Error(`[${fam}] Need ≥ 2 entries in ${fam}_targets (images_stimulus.js).`);
+      }
+      if (!Array.isArray(d_list) || d_list.length < 36) {
+        throw new Error(`[${fam}] Need ≥ 36 distractors ordered in 6 blocks of 6 (images_stimulus.js).`);
+      }
+      return {
+        family: fam,
+        target_list: t_list,
+        distractor_list: d_list,
+        targets: { t1: t_list[0], t2: t_list[1] }
+      };
+    }
+
+    /* ================= Helpers ================= */
+    function rand_int(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function shuffled(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; }
+      return a;
+    }
+    function blocks_of_six(arr, n_cats = 6) {
+      const need = n_cats * 6;
+      if (arr.length < need) throw new Error(`Need at least ${need} distractors; got ${arr.length}.`);
+      const out = [];
+      for (let i = 0; i < n_cats; i++) out.push(arr.slice(i * 6, i * 6 + 6));
+      return out;
+    }
+    function even_counts(n, k) {
+      const base = Math.floor(n / k), r = n % k;
+      const counts = new Array(k).fill(base);
+      const idxs = shuffled([...Array(k).keys()]);
+      for (let i = 0; i < r; i++) counts[idxs[i]] += 1;
+      return counts;
+    }
+    function take_k(arr, k) {
+      if (k <= 0) return [];
+      if (k <= arr.length) return shuffled(arr).slice(0, k);
+      const out = [], cyc = shuffled(arr);
+      for (let i = 0; i < k; i++) out.push(cyc[i % cyc.length]);
+      return out;
+    }
+
+    // Template helper
+    function tpl(str, ctx) {
+      return String(str).replace(/\{\{\s*([\w.]+)\s*\}\}/g, (_, k) => {
+        const v = k.split('.').reduce((o, p) => (o && o[p] != null ? o[p] : ""), ctx);
+        return (v == null) ? "" : String(v);
+      });
+    }
+
+    // show T1/T2 under intro text, sized by s.instr_image_size_px
+    // caption + T1/T2 preview under intro text; uses global instr_image_size_px
+    function targets_block_html(FL) {
+      return `
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="text-align:center;">
+            <div style="margin-bottom:4px;">T1</div>
+            <img src="${FL.targets.t1}" alt="T1"
+                style="width:${instr_image_size_px}px;height:${instr_image_size_px}px;object-fit:contain;">
+          </div>
+          <div style="text-align:center;">
+            <div style="margin-bottom:4px;">T2</div>
+            <img src="${FL.targets.t2}" alt="T2"
+                style="width:${instr_image_size_px}px;height:${instr_image_size_px}px;object-fit:contain;">
+          </div>
+        </div>`;
+    }
+
+
+    /* ================= RSVP stream builder ================= */
+    function build_rsvp(cell, family_lists) {
+      const { targets, distractor_list, family } = family_lists;
+
+      const t1_pos = (cell.t1_present || cell.t2_present) ? rand_int(9, 16) : null;
+      const t2_pos = cell.t2_present ? (t1_pos + cell.lag) : null;
+
+      const distractor_idxs = [];
+      for (let i = 0; i < n_stream; i++) {
+        const frame = i + 1;
+        if (!(cell.t1_present && frame === t1_pos) && !(cell.t2_present && frame === t2_pos)) {
+          distractor_idxs.push(i);
+        }
+      }
+
+      const n_shown = distractor_idxs.length;
+
+      const blocks = blocks_of_six(distractor_list, 6);
+      const counts = even_counts(n_shown, 6);
+      const order = shuffled([0, 1, 2, 3, 4, 5]);
+      const picked = [];
+      for (let i = 0; i < 6; i++) picked.push(...take_k(blocks[order[i]], counts[i]));
+      const shown_distractors = shuffled(picked);
+
+      const stimuli = new Array(n_stream).fill(null);
+      if (cell.t1_present) stimuli[t1_pos - 1] = targets.t1;
+      if (cell.t2_present) stimuli[t2_pos - 1] = targets.t2;
+      distractor_idxs.forEach((idx, k) => { stimuli[idx] = shown_distractors[k]; });
+
+      const null_idx = stimuli.map((s, i) => s ? null : i + 1).filter(v => v !== null);
+      if (null_idx.length) console.error("RSVP null frames:", null_idx, { cell, family });
+
+      return {
+        stimuli,
+        meta: {
+          family,
+          t1_present: cell.t1_present ? 1 : 0,
+          t2_present: cell.t2_present ? 1 : 0,
+          lag: cell.lag,
+          t1_pos: t1_pos ?? 0,
+          t2_pos: t2_pos ?? 0,
+          shown_distractors: n_shown,
+          n_stream,
+          frame_time_ms,
+          frame_isi_ms,
+          t1_file: targets.t1,
+          t2_file: targets.t2
+        }
+      };
+    }
+
+    /* ================= Designs ================= */
+    function build_full_design(reps_per_cell) {
+      const lags = [1, 2, 3, 4, 5, 6, 7, 8];
+      const cells = [];
+      for (const t1 of [false, true]) {
+        for (const t2 of [false, true]) {
+          for (const lag of lags) {
+            for (let r = 0; r < reps_per_cell; r++) {
+              cells.push({ t1_present: t1, t2_present: t2, lag });
+            }
+          }
+        }
+      }
+      return shuffled(cells);
+    }
+
+    function build_practice_design(prac_reps_local) {
+      const max_lag = 8;
+      const base = [];
+      for (const t1 of [false, true]) {
+        for (const t2 of [false, true]) {
+          base.push({ t1_present: t1, t2_present: t2, lag: max_lag });
+        }
+      }
+      const out = [];
+      for (let r = 0; r < prac_reps_local; r++) out.push(...shuffled(base));
+      return shuffled(out);
+    }
+
+    /* ================= Save helpers ================= */
+    function make_filename(prefix, fmt, add_ts) {
+      const safe = (prefix && typeof prefix === "string") ? prefix.replace(/\s+/g, "_") : "ab_rsvp";
+      const ts = add_ts
+        ? (() => {
+          const d = new Date(), z = n => String(n).padStart(2, "0");
+          return `_${d.getFullYear()}${z(d.getMonth() + 1)}${z(d.getDate())}_${z(d.getHours())}${z(d.getMinutes())}${z(d.getSeconds())}`;
+        })()
+        : "";
+      const ext = (fmt === "json") ? ".json" : ".csv";
+      return safe + ts + ext;
+    }
+
+    // DataPipe helper supports v0.5 (saveData) and future (save)
+    async function pipe_save(experiment_id, filename, data_string) {
+      if (!window.jsPsychPipe) throw new Error("jsPsychPipe not loaded");
+      if (typeof jsPsychPipe.saveData === "function") {
+        return jsPsychPipe.saveData(experiment_id, filename, data_string);
+      }
+      if (typeof jsPsychPipe.save === "function") {
+        return jsPsychPipe.save({ experiment_id, filename, data: data_string });
+      }
+      throw new Error("No compatible jsPsychPipe save method found");
+    }
+
+    /* ================= jsPsych init ================= */
+    const jsPsych = initJsPsych({
+      on_finish: async function () {
+        const dataset = jsPsych.data.get();
+
+        // Filenames
+        const fname_pipe = make_filename(datapipe_filename_prefix, datapipe_format, true);
+        const fname_local = make_filename(local_filename_prefix, local_format, local_add_timestamp);
+
+        // Data strings
+        const pipe_string = (datapipe_format === "json") ? dataset.json() : dataset.csv();
+        const local_string = (local_format === "json") ? dataset.json() : dataset.csv();
+
+        let pipe_ok = false;
+
+        if (use_datapipe && datapipe_experiment_id) {
+          try {
+            await pipe_save(datapipe_experiment_id, fname_pipe, pipe_string);
+            pipe_ok = true;
+            console.info("[AB RSVP] DataPipe upload OK:", fname_pipe);
+          } catch (e) {
+            console.error("[AB RSVP] DataPipe upload FAILED:", e);
+          }
+        }
+
+        if (use_local_save || !pipe_ok) {
+          try {
+            const name = pipe_ok ? `local_copy_${fname_local}` : fname_local;
+            if (local_format === "json") dataset.localSave("json", name);
+            else dataset.localSave("csv", name);
+            console.info("[AB RSVP] Local save:", name);
+          } catch (e) {
+            console.error("[AB RSVP] Local save failed; showing data.", e);
+            jsPsych.data.displayData();
+          }
+        }
+      }
+    });
+
+    const timeline = [];
+
+    /* ================= Optional Browser Check (NEW) ================= */
+    if (use_browser_check) {
+      const inclusion_fn = (data) => {
+        let ok = true;
+        if (browser_check_require_desktop && data.mobile) ok = false;
+        if (browser_check_min_width && data.width < browser_check_min_width) ok = false;
+        if (browser_check_min_height && data.height < browser_check_min_height) ok = false;
+        return ok;
+      };
+      timeline.push({
+        type: jsPsychBrowserCheck,
+        inclusion_function: inclusion_fn,
+        exclusion_message: (data) => {
+          const reasons = [];
+          if (browser_check_require_desktop && data.mobile) reasons.push("mobile/tablet detected");
+          if (browser_check_min_width && data.width < browser_check_min_width) reasons.push(`window width ${data.width}px < ${browser_check_min_width}px`);
+          if (browser_check_min_height && data.height < browser_check_min_height) reasons.push(`window height ${data.height}px < ${browser_check_min_height}px`);
+          return `
+                    <div style="max-width:780px;margin:2rem auto;font-family:system-ui,sans-serif;">
+                    <h2>Setup not supported</h2>
+                    ${reasons.map(r => `<p>${r}</p>`).join("")}
+                    <p>Please adjust your setup and reload this page.</p>
+                    </div>
+                  `;
+        }
+      });
+    }
+
+    /* ====== Welcome, Consent and Survey ====== */
+    const welcome = {
+      type: jsPsychSurveyHtmlForm,
+      html:
+        "<div style='text-align: center; vertical-align: top; display: inline-block; float: left; width: 100%'>" +
+        "<p>Welcome to the experiment. <br><br>" +
+        "Please enter your URPP code here (if applicable): <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='urpp'></p>" +
+        "</div>",
+      button_label: "continue"
+    };
+
+    const check_consent = function () {
+      if (document.getElementById("consent_checkbox").checked) return true;
+      alert("If you wish to participate, you must consent to participate by checking the box");
+      return false;
+    };
+
+    const consent = {
+      type: jsPsychExternalHtml,
+      url: "consent.html",
+      cont_btn: "start",
+      check_fn: check_consent
+    };
+
+    const survey = {
+      type: jsPsychSurveyHtmlForm,
+      html: survey_html,
+      preamble: "<strong>Welcome to the experiment. <br> Please provide some personal information: </strong>",
+      button_label: "continue",
+      on_finish: jsPsych.data.addProperties(get_id())
+    };
+
+    if (collect_consent_survey) {
+      timeline.push(welcome, consent, survey);
+    } else {
+      timeline.push(welcome)
+    }
+
+    /* ================= Full preload ================= */
+    const preload_images = Array.from(new Set(
+      families_requested.flatMap(f => {
+        const L = get_family_lists(f);
+        return [...L.target_list, ...L.distractor_list];
+      })
+    ));
+
+    timeline.push({
+      type: jsPsychPreload,
+      images: preload_images,
+      show_progress_bar: preload_show_progress,
+      message: preload_message,
+      continue_after_error: preload_continue_after_error,
+      error_message: `
+          <div style="max-width:720px;margin:2rem auto;font-family:system-ui,sans-serif;">
+          <h3 style="color:#ffb4a9;">Some images failed to load.</h3>
+          <p>Please check your <code>images_stimulus.js</code> paths and that files exist on the server.</p>
+          </div>
+        `
+    });
+
+    /* ================= Enter Fullscreen ================= */
+    if (use_fullscreen) {
+      timeline.push({
+        type: jsPsychFullscreen,
+        fullscreen_mode: true
+      });
+    }
+
+    // ordering
+    let fam_order = families_requested.slice();
+    if (s.block_order === "random") {
+      fam_order = jsPsych.randomization.shuffle(fam_order);
+    } else if (s.block_order === "shape_first") {
+      fam_order = ["shape", ...fam_order.filter(f => f !== "shape")];
+    } else if (s.block_order === "texture_first") {
+      fam_order = ["texture", ...fam_order.filter(f => f !== "texture")];
+    }
+
+    // build a plan so we know counts up front
+    const block_plan = fam_order.map((fam) => {
+      const FL = get_family_lists(fam); // uses the fixed version without window.*
+      const practice_cells = (s.prac_reps > 0) ? build_practice_design(s.prac_reps) : [];
+      const main_cells = build_full_design(s.exp_reps);
+      return { fam, FL, practice_cells, main_cells };
+    });
+
+    // global totals for the intro template
+    const total_practice_trials = block_plan.reduce((a, b) => a + b.practice_cells.length, 0);
+    const total_main_trials = block_plan.reduce((a, b) => a + b.main_cells.length, 0);
+
+    const global_intro_ctx = {
+      n_blocks: block_plan.length,
+      blocks: block_plan.map(b => b.fam).join(" and "),
+      total_practice_trials,
+      total_main_trials,
+      total_trials: total_practice_trials + total_main_trials,
+      n_stream,
+      frame_isi_ms,
+      frame_time_ms
+    };
+
+    timeline.push({
+      type: jsPsychHtmlButtonResponse,
+      stimulus: () => `<div style="font-family:system-ui, sans-serif;">${tpl(s.global_intro_tpl || "instructions. press continue.", global_intro_ctx)
+        }</div>`,
+      choices: ["continue"]
+    });
+
+    // For each family: intro → practice (optional) → main
+    for (const [i, B] of block_plan.entries()) {
+      const { fam, FL, practice_cells, main_cells } = B;
+
+      // block intro
+      const ctx_block = {
+        family: fam,
+        block_index: i + 1,
+        n_blocks: block_plan.length,
+        practice_trials: practice_cells.length,
+        main_trials: main_cells.length
+      };
+      timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: () => `<div style="font-family:system-ui, sans-serif;">${tpl(s.block_intro_tpl || "block: {{family}}. press continue.", ctx_block)
+          }</div>`,
+        choices: ["continue"]
+      });
+
+      // practice intro
+      if (practice_cells.length > 0) {
+        const ctx_prac = { family: fam, practice_trials: practice_cells.length };
+        timeline.push({
+          type: jsPsychHtmlButtonResponse,
+          stimulus: () => `
+          <div style="white-space:pre-line;font-family:system-ui,sans-serif;">
+            ${tpl(s.practice_intro_tpl || "practice: {{practice_trials}} trial(s).", ctx_prac)}
+            ${targets_block_html(FL)}
+          </div>`,
+          choices: ["continue"]
+        });
+      }
+
+      // run practice trials for this block
+      let practice_counter = 0;
+      for (const cell of practice_cells) {
+        // your existing helper (now family-aware) e.g.:
+        // push_rsvp_report_feedback(cell, true, () => (++practice_counter), practice_cells.length, FL);
+        push_rsvp_report_feedback(cell, true, () => (++practice_counter), practice_cells.length, FL);
+      }
+
+      // main intro
+      const ctx_main = { family: fam, main_trials: main_cells.length };
+      timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: () => `
+        <div style="white-space:pre-line;font-family:system-ui,sans-serif;">
+          ${tpl(s.main_intro_tpl || "main: {{main_trials}} trial(s).", ctx_main)}
+          ${targets_block_html(FL)}
+        </div>`,
+        choices: ["continue"]
+      });
+
+      // run main trials for this block
+      let main_counter = 0;
+      for (const cell of main_cells) {
+        push_rsvp_report_feedback(cell, false, () => (++main_counter), main_cells.length, FL);
+      }
+    }
+
+
+    /* ================= Exit Fullscreen ================= */
+    if (use_fullscreen) {
+      timeline.push({
+        type: jsPsychFullscreen,
+        fullscreen_mode: false
+      });
+    }
+
+    /* ================= Asset audit (optional) & run ================= */
+    function img_exists(url, timeout_ms) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        let done = false;
+        const timer = setTimeout(() => { if (!done) { done = true; resolve({ url, ok: false, reason: "timeout" }); } }, Math.max(100, timeout_ms | 0));
+        img.onload = () => { if (!done) { done = true; clearTimeout(timer); resolve({ url, ok: true }); } };
+        img.onerror = () => { if (!done) { done = true; clearTimeout(timer); resolve({ url, ok: false, reason: "error" }); } };
+        const bust = (url.includes("?") ? "&" : "?") + "cachebust=" + Date.now();
+        img.src = url + bust;
+      });
+    }
+    async function audit_images(urls, timeout_ms) {
+      const uniq = Array.from(new Set(urls));
+      const results = await Promise.all(uniq.map(u => img_exists(u, timeout_ms)));
+      const failed = results.filter(r => !r.ok);
+      return { failed, total: uniq.length };
+    }
+    function show_fatal_asset_error(failed_list) {
+      const lines = failed_list.map(r => `<li><code>${r.url}</code> — <strong>${r.reason}</strong></li>`).join("");
+      document.body.innerHTML = `
+          <div style="max-width:900px;margin:4rem auto;font-family:system-ui,sans-serif;color:#fff;">
+          <div style="background:#b00020;padding:1.25rem 1.5rem;border-radius:10px;">
+          <h2 style="margin:0 0 .5rem 0;">Missing or broken image files</h2>
+          <p style="margin:.25rem 0 .75rem 0;">The following files could not be loaded. Please fix the paths or filenames and reload the page.</p>
+          <ul style="margin:.5rem 0 0 1rem;line-height:1.4;">${lines}</ul>
+          </div>
+          </div>
+        `;
+    }
+
+    (async function run_with_audit() {
+      // assumes you built: const preload_images = Array.from(new Set(families_requested.flatMap(...)));
+      const all_images = preload_images;
+
+      if (verify_assets_before_start) {
+        const { failed } = await audit_images(all_images, asset_audit_timeout_ms);
+        if (failed.length > 0) { show_fatal_asset_error(failed); return; }
+      }
+      jsPsych.run(timeline);
+    })();
+
+    /* ================= RSVP + report (+ optional feedback) ================= */
+    function push_rsvp_report_feedback(cell, is_practice, inc_fn, total_for_block, family_lists) {
+      const { stimuli, meta } = build_rsvp(cell, family_lists);
+      const stream_list = stimuli.slice();
+
+      const idx = inc_fn(); // 1-based
+      const label = is_practice ? "Practice Trial" : "Experiment Trial";
+
+      // Pre-trial counter
+      timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus:
+          `
+          <div class="pretrial">
+          ${label} ${idx} of ${total_for_block}
+          <p>Get ready…</p>
+          </div>
+        `,
+        choices: "NO_KEYS",
+        trial_duration: pre_trial_message_ms
+      });
+
+      // RSVP
+      timeline.push({
+        type: jsPsychAnimation,
+        stimuli: stimuli,
+        frame_time: frame_time_ms,
+        frame_isi: frame_isi_ms,
+        render_on_canvas: false,
+        choices: "NO_KEYS",
+        trial_ends_after_animation: true,
+        data: {
+          task: "rsvp",
+          practice: is_practice ? 1 : 0,
+          ...meta,
+          stream: stream_list
+        },
+        on_finish: function (data) {
+          console.log(`[RSVP ${meta.family}]`, {
+            t1_present: !!data.t1_present,
+            t2_present: !!data.t2_present,
+            t1_pos: data.t1_pos,
+            t2_pos: data.t2_pos,
+            lag: data.lag,
+            images: data.stream
+          });
+        }
+      });
+
+      // Report (per-family targets)
+      const targets_inline = show_targets_on_response ? `
+        <div class="targets-inline">
+        <div class="target">T1<img src="${family_lists.targets.t1}" alt="T1"></div>
+        <div class="target">T2<img src="${family_lists.targets.t2}" alt="T2"></div>
+        </div>
+      ` : ``;
+
+      const counter_html = `<div>${label} ${idx} of ${total_for_block}</div>`;
+
+      timeline.push({
+        type: jsPsychSurveyHtmlForm,
+        preamble: `<div style="font-family: system-ui, sans-serif;">${counter_html}please report what you saw:</div>`,
+        html: `
+          ${targets_inline}
+          <div class="question">
+            <div>was T1 present?</div>
+            <label><input type="radio" name="t1_report" value="Yes" required> yes</label>
+            <label><input type="radio" name="t1_report" value="No" required> no</label>
+          </div>
+          <div class="question">
+            <div>was T2 present?</div>
+            <label><input type="radio" name="t2_report" value="Yes" required> yes</label>
+            <label><input type="radio" name="t2_report" value="No" required> no</label>
+          </div>
+        `,
+        data: { task: "report", practice: is_practice ? 1 : 0, ...meta },
+        on_finish: function (data) {
+          // convert responses to booleans
+          const resp = data.response || {};
+          const t1r = resp.t1_report === "Yes";
+          const t2r = resp.t2_report === "Yes";
+
+          // store as 0/1
+          data.t1_report = t1r ? 1 : 0;
+          data.t2_report = t2r ? 1 : 0;
+
+          // truth from meta on this same trial row
+          const t1p = !!data.t1_present;
+          const t2p = !!data.t2_present;
+
+          // correctness flags
+          data.t1_correct = (t1r === t1p) ? 1 : 0;
+          data.t2_correct = (t2r === t2p) ? 1 : 0;
+          data.both_correct = (data.t1_correct && data.t2_correct) ? 1 : 0;
+        }
+      });
+
+      // Feedback (unchanged, uses last trial’s data)
+      const should_feedback = is_practice ? practice_feedback : main_feedback;
+      const button_label = is_practice ? feedback_button_label : main_feedback_button_label;
+
+      if (should_feedback) {
+        timeline.push({
+          type: jsPsychHtmlButtonResponse,
+          stimulus: function () {
+            const last = jsPsych.data.get().last(1).values()[0];
+            const resp = last.response || {};
+            const t1p = !!last.t1_present, t2p = !!last.t2_present;
+            const t1r = (resp.t1_report === "Yes"), t2r = (resp.t2_report === "Yes");
+            const t1ok = (t1r === t1p), t2ok = (t2r === t2p);
+            function yn(b) { return b ? "Yes" : "No"; }
+            const t1_truth = t1p ? "Present" : "Absent";
+            const t2_truth = t2p ? "Present" : "Absent";
+            return `
+                <div style="max-width:720px;margin:2rem auto;font-family:system-ui,sans-serif;">
+                <div style="margin-bottom:.5rem;">${label} ${idx} of ${total_for_block}</div>
+                <strong>Feedback</strong>
+                <p class="${t1ok ? 'ok' : 'bad'}">T1: ${t1ok ? 'Correct' : 'Incorrect'}</p>
+                <p>Your answer: <strong>${yn(t1r)}</strong> &nbsp;|&nbsp; Truth: <strong>${t1_truth}</strong></p>
+                <p class="${t2ok ? 'ok' : 'bad'}">T2: ${t2ok ? 'Correct' : 'Incorrect'}</p>
+                <p>Your answer: <strong>${yn(t2r)}</strong> &nbsp;|&nbsp; Truth: <strong>${t2_truth}</strong></p>
+                </div>
+              `;
+          },
+          choices: [button_label],
+          data: { task: "feedback", practice: is_practice ? 1 : 0, family: meta.family }
+        });
+      }
+    }
+  </script>
+</body>
+
+</html>
