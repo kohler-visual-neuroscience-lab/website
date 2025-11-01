@@ -70,6 +70,16 @@ image: /assets/people/pjkohler_short.png
 <p class="box-body"><img class="small-round" src="/assets/people/agolshan.png" alt="Aida Golshan">Aida is a Master’s student in the Biology program, with a background in psychology and a deep fascination with the brain and perception. Her current research explores how people perceive visual symmetry, particularly within the blind spot. Aida is passionate about neuroscience and psychophysiology. Outside of research, she enjoys traveling, reading books, and staying active through exercise.</p>
 
 <a class="box-head">
+	<span class="wide alignleft">Alejandro Gonzalez Garcia (he, him, his)</span>
+	<span class="mid alignleft">Ajejandro Garcia</span>
+	<span class="narrow alignleft">>Ajejandro Garcia</span>
+	<span class="wide alignright">Master's Student, Biology</span>
+	<span class="mid alignright">Master's Student</span>
+	<span class="narrow alignright">MSc Student</span>
+</a>
+<p class="box-body"><img class="small-round" src="/assets/people/agarcia.png" alt="Alejandro Gonzalez Garcia">Alejandro is a Master's student in the Biology program, with a background in Physics and Computer Science. Alejandro's academic interests lie within the realm of neural decoding, signal processing, and Brain-Computer Interfaces. Previous research involves work in Psychophysics, primarily studying perceptual grouping. His current research involves studying EEG responses elicited by Steady-State Visually Evoked Potentials (SSVEPs), intersubject variability within these responses, and how frequency-tagging can be used to navigate virtual environments. Outside of the lab, Alejandro enjoys socializing and exercising.</p>
+
+<a class="box-head">
 	<span class="wide alignleft">Lab Alumni</span>
 	<span class="mid alignleft">Lab Alumni</span>
 	<span class="narrow alignleft">Lab Alumni</span>
