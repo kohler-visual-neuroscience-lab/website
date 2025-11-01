@@ -72,7 +72,7 @@ image: /assets/people/pjkohler_short.png
 <a class="box-head">
 	<span class="wide alignleft">Alejandro Gonzalez Garcia (he, him, his)</span>
 	<span class="mid alignleft">Ajejandro Garcia</span>
-	<span class="narrow alignleft">>Ajejandro Garcia</span>
+	<span class="narrow alignleft">Ajejandro Garcia</span>
 	<span class="wide alignright">Master's Student, Biology</span>
 	<span class="mid alignright">Master's Student</span>
 	<span class="narrow alignright">MSc Student</span>
