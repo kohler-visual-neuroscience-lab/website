@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>shape×texture change detection</title>
+
+    <!-- jsPsych core + needed plugins (UMD) -->
+    <link rel="stylesheet" href="https://unpkg.com/jspsych@8.2.2/css/jspsych.css" />
+    <script src="https://unpkg.com/jspsych@8.2.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-preload@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.1.0"></script>
+
+    <!-- datapipe -->
+    <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe@0.5"></script>
+
+    <!-- Your manifest MUST expose a global binding: var stimulusManifest = { shapes:{...}, textures:{...} } -->
+    <script src="wm_settings.js"></script>
+    <script src="stimulus_manifest.js"></script>
+
+    <style>
+        :root {
+            --bg: #222;
+            --fg: #fff;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+        }
+
+        #jspsych-target {
+            background: var(--bg);
+            color: var(--fg);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="jspsych-target"></div>
+
+    <script>
+        /* ========================= Settings ========================= */
+        if (typeof s === "undefined") {
+            throw new Error("Settings `s` not found. Make sure change_detect_settings.js is included before the main script.");
+        }
+
+        /* ============ Surface any async errors to the page =========== */
+        window.addEventListener("unhandledrejection", (e) => {
+            console.error("[unhandledrejection]", e.reason);
+            const msg = String(e.reason && e.reason.stack ? e.reason.stack : e.reason);
+            document.body.innerHTML = `<pre style="white-space:pre-wrap;color:#f66;padding:1rem">${msg}</pre>`;
+        });
+
+        /* ====================== Save utilities ======================= */
+
+        function timestamp() {
+            const d = new Date();
+            const z = (n) => String(n).padStart(2, "0");
+            return `${d.getFullYear()}${z(d.getMonth() + 1)}${z(d.getDate())}-${z(d.getHours())}${z(d.getMinutes())}${z(d.getSeconds())}`;
+        }
+
+        function build_filename(prefix, ext) {
+            const base = s.filename_prefix || prefix || "data";
+            const ts = s.add_timestamp ? `_${timestamp()}` : "";
+            return `${base}${ts}.${ext}`;
+        }
+
+        async function saveAllData() {
+            console.log("[save] start"); // debug
+            const fmt = (s.save_format || "csv").toLowerCase();
+            const payload = (fmt === "csv") ? jsPsych.data.get().csv()
+                : jsPsych.data.get().json(true);
+
+            const ts = (() => {
+                const d = new Date(), p = n => String(n).padStart(2, "0");
+                return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+            })();
+            const fname = `${s.filename_prefix || "data"}${s.add_timestamp ? `_${ts}` : ""}.${fmt}`;
+
+            // Friendly “saving…” screen (best-effort)
+            try {
+                jsPsych.getDisplayElement().innerHTML =
+                    `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui;background:${s.bg_color};color:${s.text_color}">
+                        <div><div style="font-size:1.1rem;margin-bottom:.4rem;">saving your responses…</div>
+                        <div style="opacity:.8">please don't close this tab</div></div>
+                    </div>`;
+            } catch { }
+
+            let pipe_ok = false;
+            if (s.use_datapipe) {
+                try {
+                    if (!s.datapipe_experiment_id) throw new Error("Missing datapipe_experiment_id");
+                    console.log("[Pipe] uploading →", fname);
+                    await jsPsychPipe.saveData(s.datapipe_experiment_id, fname, payload);
+                    pipe_ok = true;
+                    console.log("[Pipe] upload OK");
+                } catch (e) {
+                    console.error("[Pipe] upload failed; falling back to local save:", e);
+                }
+            }
+
+            if (!pipe_ok || s.save_local) {
+                console.log("[Local] saving →", fname);
+                jsPsych.data.get().localSave(fmt, fname);
+            }
+
+            try {
+                jsPsych.getDisplayElement().innerHTML =
+                    `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui;background:${s.bg_color};color:${s.text_color}">
+                        <div><div style="font-size:1.1rem;margin-bottom:.4rem;">thanks!</div>
+                        <div style="opacity:.8">your responses have been saved.</div></div>
+                    </div>`;
+            } catch { }
+            console.log("[save] done");
+        }
+
+        /* ===================== Initialize JsPsych ====================== */
+
+        const jsPsych = initJsPsych({ display_element: "jspsych-target", on_finish: saveAllData });
+
+        /* ===================== Compositor utils ====================== */
+
+        function loadImage(src, timeoutMs = 15000) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                let done = false;
+                const finish = (fn, arg) => { if (!done) { done = true; fn(arg); } };
+                const t = setTimeout(() => finish(reject, new Error(`Timeout loading ${src}`)), timeoutMs);
+                img.crossOrigin = "anonymous"; // allow CORS if served from CDN/domain
+                img.onload = () => { clearTimeout(t); finish(resolve, img); };
+                img.onerror = () => { clearTimeout(t); finish(reject, new Error(`Failed to load ${src}`)); };
+                img.src = src;
+            });
+        }
+
+        function canvasToObjectURL(canvas, mime = "image/png", quality) {
+            return new Promise((resolve, reject) => {
+                if (!canvas.toBlob) {
+                    try { return resolve(canvas.toDataURL(mime, quality)); }
+                    catch (e) { return reject(e); }
+                }
+                canvas.toBlob((blob) => {
+                    if (!blob) return reject(new Error("toBlob() returned null"));
+                    resolve(URL.createObjectURL(blob));
+                }, mime, quality);
+            });
+        }
+
+        /**
+         * Compose texture "inside" black-on-gray shape.
+         * - Samples bg from (0,0)
+         * - Computes distance to black vs. bg
+         * - Blends texture where closer to black (soft edge)
+         * Returns blob: URL (or data: URL if toBlob missing).
+         */
+        async function composeShapeTexture(shapeSrc, textureSrc, sizePx, softness) {
+            const soft = Number.isFinite(softness) ? Math.max(0, Math.min(1, softness))
+                : (Number.isFinite(s?.mask_softness) ? Math.max(0, Math.min(1, s.mask_softness)) : 0.15);
+
+            const [shapeImg, texImg] = await Promise.all([loadImage(shapeSrc), loadImage(textureSrc)]);
+
+            const sCan = document.createElement("canvas");
+            const tCan = document.createElement("canvas");
+            const oCan = document.createElement("canvas");
+            sCan.width = sCan.height = tCan.width = tCan.height = oCan.width = oCan.height = sizePx;
+
+            const sctx = sCan.getContext("2d", { willReadFrequently: true });
+            const tctx = tCan.getContext("2d", { willReadFrequently: true });
+            const octx = oCan.getContext("2d");
+
+            sctx.imageSmoothingEnabled = tctx.imageSmoothingEnabled = true;
+            sctx.drawImage(shapeImg, 0, 0, sizePx, sizePx);
+            tctx.drawImage(texImg, 0, 0, sizePx, sizePx);
+
+            let sData, tData;
+            try {
+                sData = sctx.getImageData(0, 0, sizePx, sizePx);
+                tData = tctx.getImageData(0, 0, sizePx, sizePx);
+            } catch (e) {
+                throw new Error("Canvas readback blocked (CORS/privacy). Enable CORS and keep img.crossOrigin='anonymous'.");
+            }
+
+            // sample background of the shape image from (0,0)
+            const bgR = sData.data[0], bgG = sData.data[1], bgB = sData.data[2];
+
+            const dist = (r1, g1, b1, r2, g2, b2) => {
+                const dr = r1 - r2, dg = g1 - g2, db = b1 - b2;
+                return Math.sqrt(dr * dr + dg * dg + db * db);
+            };
+            const smooth = (a, b, x) => { const k = Math.max(0, Math.min(1, (x - a) / (b - a))); return k * k * (3 - 2 * k); };
+
+            const out = sctx.createImageData(sizePx, sizePx);
+            const sp = sData.data, tp = tData.data, op = out.data;
+
+            // edge softness band in “distance” space
+            const band = 10 + soft * 50;
+
+            // tiny cutoff so we write truly 0 alpha outside the mask
+            const alphaCutoff = Number.isFinite(s?.alpha_cutoff) ? s.alpha_cutoff : 0.02;
+
+            for (let p = 0; p < sp.length; p += 4) {
+                const r = sp[p], g = sp[p + 1], b = sp[p + 2];
+
+                // positive when the pixel looks more like black than like the sampled background
+                const dBlack = dist(r, g, b, 0, 0, 0);
+                const dBg = dist(r, g, b, bgR, bgG, bgB);
+                const delta = dBg - dBlack;
+
+                // w ~ 1 inside the shape, ~0 outside, smooth across edge
+                const w = smooth(-band, band, delta);
+
+                if (w <= alphaCutoff) {
+                    // fully transparent outside the silhouette
+                    op[p] = 0;
+                    op[p + 1] = 0;
+                    op[p + 2] = 0;
+                    op[p + 3] = 0;      // alpha = 0 => no occlusion at all
+                } else {
+                    // color from texture; alpha follows mask for a soft edge
+                    op[p] = tp[p];
+                    op[p + 1] = tp[p + 1];
+                    op[p + 2] = tp[p + 2];
+                    op[p + 3] = Math.round(Math.max(0, Math.min(1, w)) * 255);
+                }
+            }
+
+            octx.putImageData(out, 0, 0);
+            return canvasToObjectURL(oCan, "image/png");
+        }
+
+        const composeCache = new Map();
+        async function getComposed(shapePath, texturePath, sizePx) {
+            const soft = Number.isFinite(s.mask_softness) ? s.mask_softness : 0.15;
+            const key = `${shapePath}|${texturePath}|${sizePx}|${soft}`;
+            if (composeCache.has(key)) return composeCache.get(key);
+            const url = await composeShapeTexture(shapePath, texturePath, sizePx, soft);
+            composeCache.set(key, url);
+            return url;
+        }
+        window.addEventListener("beforeunload", () => {
+            for (const v of composeCache.values()) {
+                if (typeof v === "string" && v.startsWith("blob:")) {
+                    try { URL.revokeObjectURL(v); } catch { }
+                }
+            }
+        });
+
+        /* ====================== Trial utilities ======================= */
+        function circlePositions(n, radiusPx, centerX = 0, centerY = 0, startAngleDeg = -90) {
+            const rad = (deg) => deg * Math.PI / 180;
+            const step = 360 / n;
+            const arr = [];
+            for (let i = 0; i < n; i++) {
+                const a = rad(startAngleDeg + i * step);
+                arr.push({ x: centerX + radiusPx * Math.cos(a), y: centerY + radiusPx * Math.sin(a) });
+            }
+            return arr;
+        }
+
+        function rng_int(max) { return Math.floor(Math.random() * max); }
+        function choice(pool) { if (!pool.length) throw new Error("choice: empty"); return pool[rng_int(pool.length)]; }
+        function shuffle(arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rng_int(i + 1);[a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+        function sample_without_replacement(pool, k) {
+            if (k > pool.length) throw new Error(`sample_without_replacement: k=${k} > N=${pool.length}`);
+            const idxs = [...pool.keys ? [...pool.keys()] : pool.map((_, i) => i)];
+            const out = [];
+            for (let i = 0; i < k; i++) { const j = rng_int(idxs.length); out.push(pool[idxs.splice(j, 1)[0]]); }
+            return out;
+        }
+        function sample_with_replacement(pool, k) { return Array.from({ length: k }, () => choice(pool)); }
+
+        function force_different_category(current, pool, max_tries = 10) {
+            if (!pool?.length) throw new Error("force_different_category: empty pool");
+            if (pool.length === 1 && pool[0] === current) throw new Error("force_different_category: only one category available");
+            let cand = current;
+            for (let t = 0; t < max_tries && cand === current; t++) cand = choice(pool);
+            if (cand === current) cand = choice(pool.filter(c => c !== current));
+            return cand;
+        }
+
+        function choice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+        function force_different_category(current, pool, max_tries = 10) {
+            if (!pool?.length) throw new Error("force_different_category: empty pool");
+            if (pool.length === 1 && pool[0] === current) {
+                throw new Error("force_different_category: only one category available, cannot differ");
+            }
+            let candidate = current;
+            for (let t = 0; t < max_tries && candidate === current; t++) {
+                candidate = choice(pool);
+            }
+            if (candidate === current) {
+                const opts = pool.filter(c => c !== current);
+                if (!opts.length) {
+                    throw new Error("force_different_category: no alternative categories");
+                }
+                candidate = choice(opts);
+            }
+            return candidate;
+        }
+
+        function pick_file(family, cat) {
+            const pool = stimulusManifest[family][cat];
+            return choice(pool); // one random filename from that category
+        }
+
+        function shuffle(a) {
+            for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; }
+            return a;
+        }
+        // turn (cat,file) into path using your base paths in `s`
+        function shapePath(cat, file) { return `${s.shapes_base_path}/${cat}/${file}`; }
+        function texturePath(cat, file) { return `${s.textures_base_path}/${cat}/${file}`; }
+
+        /** Build a 2 (change:no/yes) × 3 (change types) factorial design, balanced by `reps` per cell. */
+        function buildDesign(reps) {
+            if (!Number.isInteger(reps) || reps < 1) {
+                throw new Error(`reps must be a positive integer; got ${reps}`);
+            }
+            const arr = [];
+            for (const change of ["no", "yes"]) {
+                for (const dim of s.change_types) {
+                    for (let i = 0; i < reps; i++) {
+                        arr.push({ change, dim }); // explicit factors
+                    }
+                }
+            }
+            return shuffle(arr); // your existing shuffle
+        }
+
+        /* =================== Build & run experiment =================== */
+        // simple mustache-like templater: tpl("hi {{ x }}", {x: 42}) -> "hi 42"
+        function tpl(str, dict) {
+            return String(str).replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (_, k) => {
+                return (dict && k in dict) ? dict[k] : "";
+            });
+        }
+
+        (async function main() {
+            if (typeof stimulusManifest === "undefined" ||
+                !stimulusManifest?.shapes || !stimulusManifest?.textures) {
+                throw new Error("stimulus_manifest.js must define: var stimulusManifest = {shapes:{…}, textures:{…} }");
+            }
+
+            // apply colors
+            document.documentElement.style.setProperty("--bg", s.bg_color);
+            document.documentElement.style.setProperty("--fg", s.text_color);
+
+            const timeline = [];
+
+            const shapeCats = Object.keys(stimulusManifest.shapes);
+            const textureCats = Object.keys(stimulusManifest.textures);
+
+            const nShapeCats = shapeCats.length;
+            const nTexCats = textureCats.length;
+
+            // If you want to *force* distinct categories for every item on a trial:
+            if (s.require_distinct_categories) {
+                const shortages = [];
+                if (s.stim_num > nShapeCats) shortages.push(`shapes: have ${nShapeCats}, need ≥ ${s.stim_num}`);
+                if (s.stim_num > nTexCats) shortages.push(`textures: have ${nTexCats}, need ≥ ${s.stim_num}`);
+                if (shortages.length) {
+                    throw new Error(
+                        `require_distinct_categories=true but there aren't enough categories:\n` +
+                        shortages.map(x => `  • ${x}`).join("\n") +
+                        `\n\nFix by either:\n` +
+                        `  - reducing s.stim_num, or\n` +
+                        `  - adding more categories in stimulus_manifest.\n` +
+                        `If you *allow* repeats within a trial, set s.require_distinct_categories=false.`
+                    );
+                }
+            }
+
+            const img_size = s.stim_img_size_px;
+            const radius_px = s.circle_radius_px;
+            const positions = circlePositions(s.stim_num, radius_px);
+
+            // Create plans for practice & main
+            const prac_design = buildDesign(s.prac_reps);
+            const main_design = buildDesign(s.exp_reps);
+
+            const practice_trials_count = prac_design.length;
+            const main_trials_count = main_design.length;
+
+            async function buildTrials(design, block_label) {
+                const trials = [];
+
+                for (let i = 0; i < design.length; i++) {
+                    const cell = design[i]; // { change:"no"|"yes", dim:"shape"|"texture"|"both" }
+                    const is_change = (cell.change === "yes");
+                    const change_type = is_change ? cell.dim : "none";
+                    const idx_change = is_change ? Math.floor(Math.random() * s.stim_num) : -1;
+
+                    // — per-trial category assignment —
+                    const shape_cats_for_trial = s.require_distinct_categories
+                        ? sample_without_replacement(shapeCats, s.stim_num)
+                        : sample_with_replacement(shapeCats, s.stim_num);
+
+                    const texture_cats_for_trial = s.require_distinct_categories
+                        ? sample_without_replacement(textureCats, s.stim_num)
+                        : sample_with_replacement(textureCats, s.stim_num);
+
+                    // — STUDY: build and COMPOSE now —
+                    const study = [];
+                    for (let k = 0; k < s.stim_num; k++) {
+                        const sc = shape_cats_for_trial[k];
+                        const tc = texture_cats_for_trial[k];
+                        const sfile = pick_file("shapes", sc);
+                        const tfile = pick_file("textures", tc);
+                        const sPath = shapePath(sc, sfile);
+                        const tPath = texturePath(tc, tfile);
+                        const url = await getComposed(sPath, tPath, s.stim_img_size_px);
+                        study.push({ shapeCat: sc, textureCat: tc, sPath, tPath, url });
+                    }
+
+                    // — TEST: deep-ish copy (new objects) so we don't share references —
+                    const test = study.map(x => ({ ...x })); // flat, ok
+
+                    // — mutate test if needed, then RECOMPOSE ONLY the changed item —
+                    if (is_change) {
+                        const k = idx_change;
+
+                        if (cell.dim === "shape" || cell.dim === "both") {
+                            const newShapeCat = force_different_category(test[k].shapeCat, shapeCats);
+                            const newShapeFile = pick_file("shapes", newShapeCat);
+                            test[k].shapeCat = newShapeCat;
+                            test[k].sPath = shapePath(newShapeCat, newShapeFile);
+                        }
+                        if (cell.dim === "texture" || cell.dim === "both") {
+                            const newTexCat = force_different_category(test[k].textureCat, textureCats);
+                            const newTexFile = pick_file("textures", newTexCat);
+                            test[k].textureCat = newTexCat;
+                            test[k].tPath = texturePath(newTexCat, newTexFile);
+                        }
+
+                        // mandatory recomposition for changed item:
+                        test[k].url = await getComposed(test[k].sPath, test[k].tPath, s.stim_img_size_px);
+                    } else {
+                        // for no-change, ensure URLs are independent strings (copy is already fine)
+                        // (optional) you could recompose all test items, but not necessary
+                    }
+
+                    // — final belt-and-suspenders guard (assert invariants) —
+                    if (is_change) {
+                        const a = study[idx_change], b = test[idx_change];
+                        if (cell.dim === "shape" && (a.shapeCat === b.shapeCat || a.textureCat !== b.textureCat)) {
+                            console.error("[guard] shape-change invariant violated", { a, b, cell });
+                        }
+                        if (cell.dim === "texture" && (a.textureCat === b.textureCat || a.shapeCat !== b.shapeCat)) {
+                            console.error("[guard] texture-change invariant violated", { a, b, cell });
+                        }
+                        if (cell.dim === "both" && (a.shapeCat === b.shapeCat || a.textureCat === b.textureCat)) {
+                            console.error("[guard] both-change invariant violated", { a, b, cell });
+                        }
+                    } else {
+                        // no-change: everything must match
+                        for (let k = 0; k < s.stim_num; k++) {
+                            if (study[k].shapeCat !== test[k].shapeCat || study[k].textureCat !== test[k].textureCat) {
+                                console.error("[guard] no-change mutated", { study: study[k], test: test[k] });
+                            }
+                        }
+                    }
+
+                    // — concise console diff for debugging low stim_num cases —
+                    console.log(`[trial ${block_label}#${i + 1}] ${change_type} @idx=${idx_change}`,
+                        study.map((it, k) => `${k}[${it.shapeCat}|${it.textureCat}]`).join(" "),
+                        "→",
+                        test.map((it, k) => `${k}[${it.shapeCat}|${it.textureCat}]`).join(" ")
+                    );
+
+                    trials.push({
+                        block: block_label,
+                        index_in_block: i + 1,
+                        change_type,
+                        factor_change: cell.change,
+                        factor_dim: cell.dim,
+                        changed_index: idx_change,
+                        study,
+                        test
+                    });
+                }
+
+                return trials;
+            }
+ 
+            const prac_trials = await buildTrials(prac_design, "practice");
+            const main_trials = await buildTrials(main_design, "main");
+
+            // Preload all composed URLs
+            const toPreload = [];
+            for (const tr of [...prac_trials, ...main_trials]) {
+                for (const it of tr.study) toPreload.push(it.url);
+                for (const it of tr.test) toPreload.push(it.url);
+            }
+            timeline.push({
+                type: jsPsychPreload,
+                images: Array.from(new Set(toPreload)),
+                show_detailed_errors: true
+            });
+
+            /* --------------- Rendering helpers --------------- */
+            function renderArray(items) {
+                const bg = s.bg_color, fg = s.text_color, sz = img_size;
+                const imgs = items.map((it, i) => {
+                    const pos = positions[i];
+                    return `<img src="${it.url}"
+                            style="position:absolute; left:50%; top:50%;
+                                                transform: translate(${pos.x}px, ${pos.y}px) translate(-50%, -50%);
+                                                width:${sz}px; height:${sz}px; object-fit:contain;" />`;
+                            }).join("");
+                return `
+                        <div style="position:relative; width:100vw; height:100vh; background:${bg}; color:${fg};">
+                            <!-- fixation -->
+                        <div style="position:absolute; left:50%; top:50%; width:6px; height:6px; transform:translate(-50%,-50%);
+                                        background:${fg}; border-radius:50%"></div>
+                                    ${imgs}
+            </div>`;
+            }
+
+            function blank(ms) {
+                return {
+                    type: jsPsychHtmlKeyboardResponse,
+                    stimulus: `<div style="width:100vw;height:100vh;background:${s.bg_color}"></div>`,
+                    choices: "NO_KEYS",
+                    trial_duration: ms
+                };
+            }
+
+            function pushBlock(trialsArr, label) {
+                // choose correct intro template
+                const intro_html = (label === "practice") ? s.practice_intro_tpl : s.main_intro_tpl;
+
+                // show intro (only if you still want a block intro)
+                if (s.show_block_intro && intro_html) {
+                    timeline.push({
+                        type: jsPsychHtmlKeyboardResponse,
+                        stimulus: () => `
+                                        <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+                                                    background:${s.bg_color};color:${s.text_color};font-family:system-ui;line-height:1.55;">
+                                        <div style="max-width:780px;">
+                                            ${tpl(intro_html, {
+                            stim_num: s.stim_num,
+                            key_same: s.key_same,
+                            key_diff: s.key_diff,
+                            study_ms: s.study_ms,
+                            memory_isi_ms: s.memory_isi_ms,
+                            test_timeout_ms: s.test_timeout_ms ?? 0,
+                            iti_ms: s.iti_ms ?? 0,
+                            practice_trials: practice_trials_count,
+                            main_trials: main_trials_count
+                        })}
+                                        </div>
+                                        </div>`,
+                        choices: [" "]
+                    });
+                }
+
+                for (let idx = 0; idx < trialsArr.length; idx++) {
+                    const tr = trialsArr[idx];
+
+                    // ---- NEW: brief trial counter card before each trial ----
+                    if (s.show_trial_counter) {
+                        const counter_tpl = (label === "practice") ? s.practice_counter_tpl : s.main_counter_tpl;
+                        timeline.push({
+                            type: jsPsychHtmlKeyboardResponse,
+                            stimulus: () => `
+            <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+                                                        background:${s.bg_color};color:${s.text_color};font-family:system-ui;">
+                <div>${tpl(counter_tpl, { i: idx + 1, N: trialsArr.length })}</div>
+            </div>`,
+                            choices: "NO_KEYS",
+                            trial_duration: s.trial_counter_ms
+                        });
+                    }
+
+                    // ---- Study (unchanged) ----
+                    timeline.push({
+                        type: jsPsychHtmlKeyboardResponse,
+                        stimulus: () => renderArray(tr.study),
+                        choices: "NO_KEYS",
+                        trial_duration: s.study_ms
+                    });
+
+                    // ---- ISI (unchanged) ----
+                    timeline.push(blank(s.memory_isi_ms));
+
+                    // ---- Test + response (keep the corrected version) ----
+                    timeline.push({
+                        type: jsPsychHtmlKeyboardResponse,
+                        stimulus: () => renderArray(tr.test),
+                        choices: [s.key_same, s.key_diff].map(k => k.toLowerCase()),
+                        trial_duration: s.test_timeout_ms,
+                        data: {
+                            task: "change_detection",
+                            block: tr.block,
+                            trial_index_in_block: idx + 1,
+                            total_trials_in_block: trialsArr.length,
+                            change_type: tr.change_type,
+                            changed_index: tr.changed_index,
+                            stim_num: s.stim_num
+                        },
+                        on_finish: (data) => {
+                            const resp = (data.response ?? "").toString().toLowerCase();
+                            const is_change = (tr.factor_change === "yes");           // source of truth
+                            const expected = (is_change ? s.key_diff : s.key_same).toLowerCase();
+                            const correct = (resp && resp === expected) ? 1 : 0;
+
+                            data.response_key = resp || null;
+                            data.expected_key = expected;
+                            data.is_change = is_change ? 1 : 0;                  // numeric mirror
+                            data.correct = correct;
+                            data.accuracy_label = correct ? "correct" : "incorrect";
+
+                            // Save both factor labels AND the convenience field
+                            data.change_type = tr.change_type;   // "none"/"shape"/"texture"/"both"
+                            data.factor_change = tr.factor_change; // "no"/"yes"
+                            data.factor_dim = tr.factor_dim;    // "shape"/"texture"/"both"
+
+                            data.study = tr.study.map(x => ({
+                                shape_cat: x.shapeCat, texture_cat: x.textureCat,
+                                shape_path: x.sPath, texture_path: x.tPath
+                            }));
+                            data.test = tr.test.map(x => ({
+                                shape_cat: x.shapeCat, texture_cat: x.textureCat,
+                                shape_path: x.sPath, texture_path: x.tPath
+                            }));
+
+                            if (s.practice_feedback && tr.block === "practice") {
+                                data.__show_feedback = { correct, rt: data.rt };
+                            }
+                            if (s.main_feedback && tr.block === "main") {
+                                data.__show_feedback = { correct, rt: data.rt };
+                            }
+                        }
+                    });
+
+                    // ---- Optional feedback for practice/main ----
+                    if ((tr.block === "practice" && s.practice_feedback) ||
+                        (tr.block === "main" && s.main_feedback)) {
+                        timeline.push({
+                            type: jsPsychHtmlKeyboardResponse,
+                            stimulus: () => {
+                                const last = jsPsych.data.get().last(1).values()[0] || {};
+                                const ok = last.__show_feedback?.correct === 1;
+                                const msg = ok ? (s.feedback_correct_html || "correct")
+                                    : (s.feedback_incorrect_html || "incorrect");
+                                return `
+                                        <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+                                            background:${s.bg_color};color:${s.text_color};font-family:system-ui;">
+                                            <div>${msg}</div>
+                                        </div>`;
+                            },
+                            choices: [" "],
+                            trial_duration: s.feedback_ms
+                        });
+                    }
+
+                    if (s.iti_ms) timeline.push(blank(s.iti_ms));
+                }
+            }
+
+            // Assemble and run
+            pushBlock(prac_trials, "practice");
+            pushBlock(main_trials, "main");
+
+            jsPsych.run(timeline);
+        })();
+    </script>
+</body>
+
+</html>

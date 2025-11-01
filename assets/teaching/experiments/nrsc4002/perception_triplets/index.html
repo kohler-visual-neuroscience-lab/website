@@ -410,8 +410,8 @@
         if (use_local_save || !pipe_ok) {
           try {
             const local_name = pipe_ok ? `local_copy_${fname}` : fname;
-            if (file_format === "json") dataset.localSave("json", local_name);
-            else dataset.localSave("csv", local_name);
+            if (file_format === "json") ds.localSave("json", local_name);
+            else ds.localSave("csv", local_name);
             console.info("[Triplets] Local save:", local_name);
           } catch (e) {
             console.error("[Triplets] Local save failed; showing data.", e);
