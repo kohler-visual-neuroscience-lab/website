@@ -57,12 +57,12 @@ def create_images_stimulus_js(base_dir: str = ".", output_filename: str = "image
 
     layout: Dict[str, Dict[str, Path]] = {
         "shape": {
-            "targets":     base / "shape_stimuli" / "targets",
-            "distractors": base / "shape_stimuli" / "distractors",
+            "targets":     base / "shapes" / "targets",
+            "distractors": base / "shapes" / "distractors",
         },
         "texture": {
-            "targets":     base / "texture_stimuli" / "targets",
-            "distractors": base / "texture_stimuli" / "distractors",
+            "targets":     base / "textures" / "targets",
+            "distractors": base / "textures" / "distractors",
         },
     }
 

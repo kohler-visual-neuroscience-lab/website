@@ -83,12 +83,12 @@ const stimulusManifest = {
       "texture_bush018.png"
     ],
     "fabric": [
-      "texture_fabric007.png",
       "texture_fabric009.png",
       "texture_fabric010.png",
+      "texture_fabric012.png",
       "texture_fabric027.png",
-      "texture_fabric062.png",
-      "texture_fabric066.png"
+      "texture_fabric066.png",
+      "texture_fabric076.png"
     ],
     "floor": [
       "texture_floor001.png",

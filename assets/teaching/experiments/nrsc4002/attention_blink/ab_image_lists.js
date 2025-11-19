@@ -1,7 +1,7 @@
 // image lists for the AB RSVP experiment
 
 const shape_targets = [
-  "stimuli/shapes/targets/shape_bear002.png",
+  "stimuli/shapes/targets/shape_bear007.png",
   "stimuli/shapes/targets/shape_cat009.png"
 ];
 
@@ -45,8 +45,8 @@ const shape_distractors = [
 ];
 
 const texture_targets = [
-  "stimuli/textures/targets/texture_leaf005.png",
-  "stimuli/textures/targets/texture_leather004.png"
+  "stimuli/textures/targets/texture_hair007.png",
+  "stimuli/textures/targets/texture_leaf005.png"
 ];
 
 const texture_distractors = [
