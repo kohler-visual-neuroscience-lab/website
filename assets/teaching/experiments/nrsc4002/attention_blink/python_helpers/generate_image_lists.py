@@ -100,10 +100,10 @@ def create_images_stimulus_js(base_dir: str = ".", output_filename: str = "image
     # Console feedback
     missing = [
         name for name, folder in [
-            ("shape_stimuli/targets", layout["shape"]["targets"]),
-            ("shape_stimuli/distractors", layout["shape"]["distractors"]),
-            ("texture_stimuli/targets", layout["texture"]["targets"]),
-            ("texture_stimuli/distractors", layout["texture"]["distractors"]),
+            ("shapes/targets", layout["shape"]["targets"]),
+            ("shapes/distractors", layout["shape"]["distractors"]),
+            ("textures/targets", layout["texture"]["targets"]),
+            ("textures/distractors", layout["texture"]["distractors"]),
         ]
         if not folder.exists()
     ]
