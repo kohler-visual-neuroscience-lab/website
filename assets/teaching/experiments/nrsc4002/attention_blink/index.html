@@ -149,6 +149,27 @@
     const exp_reps = Number.isFinite(s.exp_reps) ? s.exp_reps : 2;   // reps per 2×2×8 cell
     const prac_reps = Number.isFinite(s.prac_reps) ? s.prac_reps : 1; // reps per 2×2 (max lag)
 
+    function asIntArray(x) {
+      return Array.isArray(x) ? x.map(v => parseInt(v, 10)).filter(Number.isFinite) : null;
+    }
+    function validLagArray(a) {
+      if (!a || !a.length) return null;
+      // lag must be >=1 and within stream; upper bound of 8 is conventional, but
+      // allow up to n_stream-1 (T2 after T1)
+      const out = Array.from(new Set(a)).filter(l => l >= 1 && l <= Math.min(8, n_stream - 1));
+      return out.length ? out : null;
+    }
+
+    // Main experiment factors
+    const design_t1_levels = asIntArray(s.design_t1_levels) ?? [0, 1];
+    const design_t2_levels = asIntArray(s.design_t2_levels) ?? [0, 1];
+    const design_lag_levels = validLagArray(s.design_lag_levels) ?? [1, 2, 3, 4, 5, 6, 7, 8];
+
+    // Practice factors
+    const prac_t1_levels = asIntArray(s.prac_t1_levels) ?? [0, 1];
+    const prac_t2_levels = asIntArray(s.prac_t2_levels) ?? [0, 1];
+    const prac_lag_levels = validLagArray(s.prac_lag_levels) ?? [8];
+
     // Feedback
     const practice_feedback = s.practice_feedback !== false;
     const feedback_button_label = s.feedback_button_label || "Next";
@@ -372,14 +393,18 @@
     }
 
     /* ================= Designs ================= */
-    function build_full_design(reps_per_cell) {
-      const lags = [1, 2, 3, 4, 5, 6, 7, 8];
+    // Build a factorial design from provided levels + reps/cell
+    function build_design_from_levels(t1_levels, t2_levels, lag_levels, reps_per_cell) {
+      if (!t1_levels.length) throw new Error("design error: empty T1 levels");
+      if (!t2_levels.length) throw new Error("design error: empty T2 levels");
+      if (!lag_levels.length) throw new Error("design error: empty lag levels");
+
       const cells = [];
-      for (const t1 of [false, true]) {
-        for (const t2 of [false, true]) {
-          for (const lag of lags) {
+      for (const t1 of t1_levels) {
+        for (const t2 of t2_levels) {
+          for (const lag of lag_levels) {
             for (let r = 0; r < reps_per_cell; r++) {
-              cells.push({ t1_present: t1, t2_present: t2, lag });
+              cells.push({ t1_present: !!t1, t2_present: !!t2, lag });
             }
           }
         }
@@ -387,17 +412,14 @@
       return shuffled(cells);
     }
 
+    // Main experiment design
+    function build_full_design(reps_per_cell) {
+      return build_design_from_levels(design_t1_levels, design_t2_levels, design_lag_levels, reps_per_cell);
+    }
+
+    // Practice design
     function build_practice_design(prac_reps_local) {
-      const max_lag = 8;
-      const base = [];
-      for (const t1 of [false, true]) {
-        for (const t2 of [false, true]) {
-          base.push({ t1_present: t1, t2_present: t2, lag: max_lag });
-        }
-      }
-      const out = [];
-      for (let r = 0; r < prac_reps_local; r++) out.push(...shuffled(base));
-      return shuffled(out);
+      return build_design_from_levels(prac_t1_levels, prac_t2_levels, prac_lag_levels, prac_reps_local);
     }
 
     /* ================= Save helpers ================= */
