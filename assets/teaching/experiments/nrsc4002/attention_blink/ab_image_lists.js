@@ -1,11 +1,17 @@
 // image lists for the AB RSVP experiment
 
 const shape_targets = [
-  "stimuli/shapes/targets/shape_bear007.png",
-  "stimuli/shapes/targets/shape_cat009.png"
+  "stimuli/shapes/targets/shape_cat009.png",
+  "stimuli/shapes/targets/shape_rabbit009.png"
 ];
 
-const shape_distractors = [
+export const shape_distractors = [
+  "stimuli/shapes/distractors/shape_bear002.png",
+  "stimuli/shapes/distractors/shape_bear003.png",
+  "stimuli/shapes/distractors/shape_bear004.png",
+  "stimuli/shapes/distractors/shape_bear005.png",
+  "stimuli/shapes/distractors/shape_bear009.png",
+  "stimuli/shapes/distractors/shape_bear011.png",
   "stimuli/shapes/distractors/shape_elephant001.png",
   "stimuli/shapes/distractors/shape_elephant002.png",
   "stimuli/shapes/distractors/shape_elephant003.png",
@@ -24,12 +30,6 @@ const shape_distractors = [
   "stimuli/shapes/distractors/shape_lizard007.png",
   "stimuli/shapes/distractors/shape_lizard009.png",
   "stimuli/shapes/distractors/shape_lizard012.png",
-  "stimuli/shapes/distractors/shape_rabbit001.png",
-  "stimuli/shapes/distractors/shape_rabbit002.png",
-  "stimuli/shapes/distractors/shape_rabbit004.png",
-  "stimuli/shapes/distractors/shape_rabbit005.png",
-  "stimuli/shapes/distractors/shape_rabbit009.png",
-  "stimuli/shapes/distractors/shape_rabbit011.png",
   "stimuli/shapes/distractors/shape_turtle001.png",
   "stimuli/shapes/distractors/shape_turtle004.png",
   "stimuli/shapes/distractors/shape_turtle006.png",
