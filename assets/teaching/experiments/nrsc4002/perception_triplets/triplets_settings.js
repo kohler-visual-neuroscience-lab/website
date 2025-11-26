@@ -1,7 +1,7 @@
 // triplets_settings.js (all snake_case)
 const triplets_settings = {
   /* Look */
-  background_color: "#808080",
+  background_color: "#000000ff",
   foreground_color: "#eeeeee",
   use_fullscreen: false,
 
@@ -17,7 +17,7 @@ const triplets_settings = {
   pre_trial_ms: 600,
 
   /* Design: counts per block (shape / texture) */
-  practice_trials_per_type: 10,  // baseline & incongruent → 2 × 10 = 20 practice trials/block
+  practice_trials_per_type: 5,  // baseline & incongruent → 2 × 10 = 20 practice trials/block
   main_trials_per_type: 60,     // baseline & incongruent → 2 × 60 = 120 main trials/block
 
   /* Feedback */
@@ -26,7 +26,7 @@ const triplets_settings = {
   feedback_button_label: "Next",
 
   /* saving and datapipe */
-  collect_consent_survey: true, // set to true when collecting real data
+  collect_consent_survey: false, // set to true when collecting real data
   use_local_save: true,          // replaces "save_data"
   use_datapipe: false,           // upload via DataPipe (Pipe plugin)
   file_format: "csv",            // replaces "save_format" / "datapipe_format"
@@ -74,3 +74,21 @@ const triplets_settings = {
     <p><em>Press SPACE to begin.</em></p>
   `,
 };
+
+const survey_html =
+  "<div style='text-align: left; vertical-align: top; display: inline-block; float: left; width: 100%'>" +
+  "<p><u>Participant ID:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='p_id'></p>" +
+  "<p><u>Age:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='age'></p>" +
+  "<p><u>Handedness:</u> </strong><input type='radio' id='left' name='handedness' value='left'>" +
+  "<label for='left'>Left-handed</label>" +
+  "<input type='radio' id='right' name='handedness' value='right' checked>" +
+  "<label for='right'>Right-handed</label>" +
+  "<input type='radio' id='ambi' name='handedness' value='ambi'>" +
+  "<label for='ambi'>Ambidextrous</label></p>" +
+  "<p><u>Sex:</u> <input type='radio' id='female' name='sex' value='female' checked>" +
+  "<label for='female'>Female</label>" +
+  "<input type='radio' id='male' name='sex' value='male'>" +
+  "<label for='male'>Male</label>" +
+  "<input type='radio' name='sex' value='other'><label for='other'>Other, please specify: </label>" +
+  "<input type='text' name='other_sex' id='other_sex' value=''></p>" +
+  "</div>"

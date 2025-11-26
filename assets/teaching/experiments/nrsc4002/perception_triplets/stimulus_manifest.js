@@ -35,13 +35,6 @@ const stimulus_manifest = {
       "shape_rabbit009.png",
       "shape_rabbit011.png"
     ],
-    "tiger": [
-      "shape_tiger001.png",
-      "shape_tiger002.png",
-      "shape_tiger003.png",
-      "shape_tiger008.png",
-      "shape_tiger011.png"
-    ]
   },
   "textures": {
     "bark": [
