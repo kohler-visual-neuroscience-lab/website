@@ -5,7 +5,7 @@ const shape_targets = [
   "stimuli/shapes/targets/shape_rabbit009.png"
 ];
 
-export const shape_distractors = [
+const shape_distractors = [
   "stimuli/shapes/distractors/shape_bear002.png",
   "stimuli/shapes/distractors/shape_bear003.png",
   "stimuli/shapes/distractors/shape_bear004.png",
