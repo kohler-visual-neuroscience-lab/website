@@ -57,15 +57,16 @@ window.s = Object.freeze({
     preload_continue_after_error: false,
 
     /* browser check & fullscreen */
-    use_browser_check: false,
-    require_desktop: false,
+    collect_consent_survey: true, // set to true when collecting real data
+    use_browser_check: true,
+    require_desktop: true,
     min_width_px: 900,
     min_height_px: 600,
-    use_fullscreen: false,
+    use_fullscreen: true,
 
     /* saving */
     use_datapipe: false,
-    datapipe_experiment_id: "",
+    datapipe_experiment_id: "M2uDhsOezEXp",
     save_locally: true,          // set false when DataPipe is on
     save_format: "csv",          // "csv" or "json"
     filename_base: "change_detect",

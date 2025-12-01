@@ -10,6 +10,10 @@
     <script src="https://unpkg.com/jspsych@8.2.2"></script>
     <script src="https://unpkg.com/@jspsych/plugin-preload@2.1.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-browser-check@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-fullscreen@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-external-html@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@2.1.0"></script>
 
     <!-- datapipe -->
     <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe@0.5"></script>
@@ -17,6 +21,9 @@
     <!-- Your manifest MUST expose a global binding: var stimulusManifest = { shapes:{...}, textures:{...} } -->
     <script src="wm_settings.js"></script>
     <script src="stimulus_manifest.js"></script>
+
+    <!-- (optional) lab helpers you mentioned -->
+    <script src="kvnl-functions.js"></script>
 
     <style>
         :root {
@@ -350,6 +357,92 @@
 
             const timeline = [];
 
+            /* ====== Browser Check ====== */
+            if (s.use_browser_check) {
+                const inclusion_fn = (data) => {
+                    let ok = true;
+                    if (s.browser_check_require_desktop && data.mobile) ok = false;
+                    if (s.browser_check_min_width && data.width < s.browser_check_min_width) ok = false;
+                    if (s.browser_check_min_height && data.height < s.browser_check_min_height) ok = false;
+                    return ok;
+                };
+                timeline.push({
+                    type: jsPsychBrowserCheck,
+                    inclusion_function: inclusion_fn,
+                    exclusion_message: (data) => {
+                        const reasons = [];
+                        if (s.browser_check_require_desktop && data.mobile) reasons.push("mobile/tablet detected");
+                        if (s.browser_check_min_width && data.width < s.browser_check_min_width) reasons.push(`window width ${data.width}px < ${s.browser_check_min_width}px`);
+                        if (s.browser_check_min_height && data.height < s.browser_check_min_height) reasons.push(`window height ${data.height}px < ${s.browser_check_min_height}px`);
+                        return `<div style="max-width:780px;margin:2rem auto;font-family:system-ui;">
+                            <h2>setup not supported</h2>
+                            <ul>${reasons.map(r => `<li>${r}</li>`).join("")}</ul>
+                            <p>Please adjust your setup and reload this page.</p>
+                            </div>`;
+                    }
+                });
+            }
+
+            /* ====== Welcome, Consent and Survey ====== */
+            const welcome = {
+                type: jsPsychSurveyHtmlForm,
+                html:
+                    "<div style='text-align: center; vertical-align: top; display: inline-block; float: left; width: 100%'>" +
+                    "<p>Welcome to the experiment. <br><br>" +
+                    "Please enter your URPP code here (if applicable): <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='urpp'></p>" +
+                    "</div>",
+                button_label: "continue"
+            };
+
+            const check_consent = function () {
+                if (document.getElementById("consent_checkbox").checked) return true;
+                alert("If you wish to participate, you must consent to participate by checking the box");
+                return false;
+            };
+
+            const consent = {
+                type: jsPsychExternalHtml,
+                url: "consent.html",
+                cont_btn: "start",
+                check_fn: check_consent
+            };
+            const survey_html =
+                "<div style='text-align: left; vertical-align: top; display: inline-block; float: left; width: 100%'>" +
+                "<p><u>Participant ID:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='p_id'></p>" +
+                "<p><u>Age:</u> <input style='font-size: 18px; line-height: 1.6em;' input type='text' id='start' name='age'></p>" +
+                "<p><u>Handedness:</u> </strong><input type='radio' id='left' name='handedness' value='left'>" +
+                "<label for='left'>Left-handed</label>" +
+                "<input type='radio' id='right' name='handedness' value='right' checked>" +
+                "<label for='right'>Right-handed</label>" +
+                "<input type='radio' id='ambi' name='handedness' value='ambi'>" +
+                "<label for='ambi'>Ambidextrous</label></p>" +
+                "<p><u>Sex:</u> <input type='radio' id='female' name='sex' value='female' checked>" +
+                "<label for='female'>Female</label>" +
+                "<input type='radio' id='male' name='sex' value='male'>" +
+                "<label for='male'>Male</label>" +
+                "<input type='radio' name='sex' value='other'><label for='other'>Other, please specify: </label>" +
+                "<input type='text' name='other_sex' id='other_sex' value=''></p>" +
+                "</div>"
+
+            const survey = {
+                type: jsPsychSurveyHtmlForm,
+                html: survey_html,
+                preamble: "<strong>Welcome to the experiment. <br> Please provide some personal information: </strong>",
+                button_label: "continue",
+                on_finish: jsPsych.data.addProperties(get_id())
+            };
+
+            if (s.collect_consent_survey) {
+                timeline.push(welcome, consent, survey);
+            } else {
+                timeline.push(welcome)
+            }
+
+            /* ====== Fullscreen ====== */
+            if (s.use_fullscreen) {
+                timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
+            }
+
             const shapeCats = Object.keys(stimulusManifest.shapes);
             const textureCats = Object.keys(stimulusManifest.textures);
 
@@ -484,7 +577,7 @@
 
                 return trials;
             }
- 
+
             const prac_trials = await buildTrials(prac_design, "practice");
             const main_trials = await buildTrials(main_design, "main");
 
@@ -509,7 +602,7 @@
                             style="position:absolute; left:50%; top:50%;
                                                 transform: translate(${pos.x}px, ${pos.y}px) translate(-50%, -50%);
                                                 width:${sz}px; height:${sz}px; object-fit:contain;" />`;
-                            }).join("");
+                }).join("");
                 return `
                         <div style="position:relative; width:100vw; height:100vh; background:${bg}; color:${fg};">
                             <!-- fixation -->
