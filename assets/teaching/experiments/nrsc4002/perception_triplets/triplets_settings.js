@@ -26,7 +26,7 @@ const triplets_settings = {
   feedback_button_label: "Next",
 
   /* saving and datapipe */
-  collect_consent_survey: false, // set to true when collecting real data
+  collect_consent_survey: true, // set to true when collecting real data
   use_local_save: true,          // replaces "save_data"
   use_datapipe: false,           // upload via DataPipe (Pipe plugin)
   file_format: "csv",            // replaces "save_format" / "datapipe_format"
