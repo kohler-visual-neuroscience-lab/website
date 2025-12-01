@@ -39,8 +39,8 @@ window.s = Object.freeze({
 
     /* practice/main trials per condition */
     change_types: ["shape", "texture", "both"], /* x 2 (change / no change)*/
-    prac_reps: 3,
-    exp_reps: 30,
+    prac_reps: 1,  // test to 3
+    exp_reps: 1, // set to 30
 
     /* feedback */
     practice_feedback: true,

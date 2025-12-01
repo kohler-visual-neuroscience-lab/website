@@ -101,7 +101,7 @@
                 }
             } catch (e) { console.warn("[fullscreen] exit failed:", e); }
         }
-
+        
         async function saveAllData() {
             console.log("[save] start");
             const fmt = (s.save_format || "csv").toLowerCase();
@@ -149,6 +149,8 @@
                 } catch { }
                 console.log("[save] done (no redirect)");
                 return;
+            } else {
+                console.log(targetUrl)
             }
 
             // Exit fullscreen (if any), then redirect
