@@ -7,8 +7,8 @@ window.s = Object.freeze({
     mask_softness: 0.2,
 
     /* timing */
-    study_ms: 1000,
-    memory_isi_ms: 2000,
+    study_ms: 2000,
+    memory_isi_ms: 1000,
     test_timeout_ms: null,
 
     /* theme */
@@ -39,8 +39,8 @@ window.s = Object.freeze({
 
     /* practice/main trials per condition */
     change_types: ["shape", "texture", "both"], /* x 2 (change / no change)*/
-    prac_reps: 2,
-    exp_reps: 20,
+    prac_reps: 3,
+    exp_reps: 30,
 
     /* feedback */
     practice_feedback: true,
