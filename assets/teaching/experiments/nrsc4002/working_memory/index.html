@@ -62,8 +62,7 @@
         /* ====================== Save utilities ======================= */
 
         function timestamp() {
-            const d = new Date();
-            const z = (n) => String(n).padStart(2, "0");
+            const d = new Date(), z = n => String(n).padStart(2, "0");
             return `${d.getFullYear()}${z(d.getMonth() + 1)}${z(d.getDate())}-${z(d.getHours())}${z(d.getMinutes())}${z(d.getSeconds())}`;
         }
 
@@ -73,19 +72,43 @@
             return `${base}${ts}.${ext}`;
         }
 
+        function getQueryParam(name) {
+            const usp = new URLSearchParams(window.location.search);
+            return usp.get(name) || null;
+        }
+
+        function buildRedirectUrl() {
+            if (!s.redirect_base_url) return null;
+            const idKey = s.redirect_param_name || "id";
+            const inboundKey = s.redirect_urpp_param_in_url || "urpp_id";
+            const urpp = getQueryParam(inboundKey);
+            try {
+                const url = new URL(s.redirect_base_url, window.location.href);
+                if (urpp) url.searchParams.set(idKey, urpp);
+                return url.toString();
+            } catch {
+                // fallback if base is not absolute; try to append query manually
+                const sep = s.redirect_base_url.includes("?") ? "&" : "?";
+                return urpp ? `${s.redirect_base_url}${sep}${encodeURIComponent(idKey)}=${encodeURIComponent(urpp)}`
+                    : s.redirect_base_url;
+            }
+        }
+
+        async function exitFullscreenIfAny() {
+            try {
+                if (document.fullscreenElement && document.exitFullscreen) {
+                    await document.exitFullscreen();
+                }
+            } catch (e) { console.warn("[fullscreen] exit failed:", e); }
+        }
+
         async function saveAllData() {
-            console.log("[save] start"); // debug
+            console.log("[save] start");
             const fmt = (s.save_format || "csv").toLowerCase();
-            const payload = (fmt === "csv") ? jsPsych.data.get().csv()
-                : jsPsych.data.get().json(true);
+            const payload = (fmt === "csv") ? jsPsych.data.get().csv() : jsPsych.data.get().json(true);
+            const fname = build_filename(s.filename_prefix || "data", fmt);
 
-            const ts = (() => {
-                const d = new Date(), p = n => String(n).padStart(2, "0");
-                return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
-            })();
-            const fname = `${s.filename_prefix || "data"}${s.add_timestamp ? `_${ts}` : ""}.${fmt}`;
-
-            // Friendly “saving…” screen (best-effort)
+            // “Saving…” screen (best-effort)
             try {
                 jsPsych.getDisplayElement().innerHTML =
                     `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui;background:${s.bg_color};color:${s.text_color}">
@@ -94,6 +117,7 @@
                     </div>`;
             } catch { }
 
+            // Try DataPipe, fallback to local
             let pipe_ok = false;
             if (s.use_datapipe) {
                 try {
@@ -106,20 +130,43 @@
                     console.error("[Pipe] upload failed; falling back to local save:", e);
                 }
             }
-
             if (!pipe_ok || s.save_local) {
                 console.log("[Local] saving →", fname);
                 jsPsych.data.get().localSave(fmt, fname);
             }
 
+            // “Thanks” screen or immediate redirect
+            const targetUrl = s.redirect_on_finish ? buildRedirectUrl() : null;
+
+            if (!targetUrl) {
+                // show thanks if no redirect requested
+                try {
+                    jsPsych.getDisplayElement().innerHTML =
+                        `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui;background:${s.bg_color};color:${s.text_color}">
+                            <div><div style="font-size:1.1rem;margin-bottom:.4rem;">thanks!</div>
+                            <div style="opacity:.8">your responses have been saved.</div></div>
+                        </div>`;
+                } catch { }
+                console.log("[save] done (no redirect)");
+                return;
+            }
+
+            // Exit fullscreen (if any), then redirect
+            await exitFullscreenIfAny();
+            const delay = Number.isFinite(s.redirect_delay_ms) ? s.redirect_delay_ms : 600;
+
             try {
                 jsPsych.getDisplayElement().innerHTML =
                     `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui;background:${s.bg_color};color:${s.text_color}">
-                        <div><div style="font-size:1.1rem;margin-bottom:.4rem;">thanks!</div>
-                        <div style="opacity:.8">your responses have been saved.</div></div>
+                        <div style="text-align:center">
+                            <div style="font-size:1.1rem;margin-bottom:.4rem;">thanks!</div>
+                            <div style="opacity:.8">redirecting you back…</div>
+                        </div>
                     </div>`;
             } catch { }
-            console.log("[save] done");
+
+            console.log("[redirect] →", targetUrl);
+            setTimeout(() => { window.location.href = targetUrl; }, delay);
         }
 
         /* ===================== Initialize JsPsych ====================== */
