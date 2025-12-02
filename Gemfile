@@ -13,6 +13,8 @@ gem 'nokogiri', '~> 1.15'
 
 gem "kramdown", ">= 2.3.1"
 
+gem "rexml", ">= 3.3.9"
+
 # gem "rails"
 
 # gem "jekyll", "~> 3.8"
