@@ -5,7 +5,7 @@ window.s = Object.freeze({
     stim_img_size_px: 400,
     circle_radius_px: 200,
     mask_softness: 0.2,
-    jitter_px: [10,20],   // min, max position jitter, positive numbers
+    jitter_deg: [5,10],   // min, max position jitter, degrees, positive numbers
 
     /* timing */
     study_ms: 2000,
@@ -78,8 +78,8 @@ window.s = Object.freeze({
     redirect_on_finish: true,                       // set false to keep the “thanks” screen
     redirect_base_url: " https://yorku.sona-systems.com/webstudy_credit.aspx?experiment_id=5198&credit_token=cc315d4e704c4551805153d86840b79a",// recruitment portal landing URL
     redirect_param_name: "survey_code",                      // name of the query parameter to send
-    redirect_urpp_param_in_url: "participant=",          // how the URPP id appears in *this* page’s URL
-    redirect_delay_ms: 60000,                         // wait (ms) after saving/exiting fullscreen
+    redirect_urpp_param_in_url: "participant",          // how the URPP id appears in *this* page’s URL
+    redirect_delay_ms: 60000,                         // wait (ms) after saving/exiting fullscreen, should be 500
 
 
     /* instructions (templates) */

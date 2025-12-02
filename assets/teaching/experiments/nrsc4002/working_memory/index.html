@@ -82,6 +82,7 @@
             const idKey = s.redirect_param_name || "id";
             const inboundKey = s.redirect_urpp_param_in_url || "urpp_id";
             const urpp = getQueryParam(inboundKey);
+            console.log(idKey, inboundKey, urpp)
             try {
                 const url = new URL(s.redirect_base_url, window.location.href);
                 if (urpp) url.searchParams.set(idKey, urpp);
@@ -643,14 +644,14 @@
 
             /* --------------- Rendering helpers --------------- */
             function randBetween(min, max) { return Math.random() * (max - min) + min; }
+            function deg2rad(d) { return (d * Math.PI) / 180; }
 
             function renderArray(items, opts = {}) {
                 const bg = s.bg_color, fg = s.text_color, sz = img_size;
 
-                // Expect opts.jitter = [minPx, maxPx]; pick random sign per axis
+                // Expect rotational jitter in DEGREES: [minDeg, maxDeg]
                 let jmin = 0, jmax = 0;
                 if (Array.isArray(opts.jitter) && opts.jitter.length === 2) {
-                    // treat inputs as magnitudes; order- and sign-agnostic
                     const a = Math.abs(Number(opts.jitter[0]));
                     const b = Math.abs(Number(opts.jitter[1]));
                     if (Number.isFinite(a) && Number.isFinite(b)) {
@@ -661,29 +662,34 @@
                 const useJitter = jmax > 0;
 
                 const imgs = items.map((it, i) => {
-                    const pos = positions[i];
+                    const pos = positions[i]; // expected to be relative to center (px)
 
-                    // magnitude in [jmin, jmax], direction ±1 independently for x and y
-                    const magX = useJitter ? randBetween(jmin, jmax) : 0;
-                    const magY = useJitter ? randBetween(jmin, jmax) : 0;
-                    const sx = Math.random() < 0.5 ? -1 : 1;
-                    const sy = Math.random() < 0.5 ? -1 : 1;
+                    // Convert current Cartesian pos -> polar
+                    const r = Math.hypot(pos.x, pos.y);
+                    const theta = Math.atan2(pos.y, pos.x);
 
-                    const x = pos.x + sx * magX;
-                    const y = pos.y + sy * magY;
+                    // Sample rotational jitter (degrees) → radians; random ± direction
+                    const degMag = useJitter ? randBetween(jmin, jmax) : 0;
+                    const sign = Math.random() < 0.5 ? -1 : 1;
+                    const dTheta = deg2rad(sign * degMag);
+
+                    // Rotate by dTheta, keep radius
+                    const x = r * Math.cos(theta + dTheta);
+                    const y = r * Math.sin(theta + dTheta);
 
                     return `<img src="${it.url}"
-                        style="position:absolute; left:50%; top:50%;
-                        transform: translate(${x}px, ${y}px) translate(-50%, -50%);
-                        width:${sz}px; height:${sz}px; object-fit:contain;" />`;
+                            style="position:absolute; left:50%; top:50%;
+                                    transform: translate(${x}px, ${y}px) translate(-50%, -50%);
+                                    width:${sz}px; height:${sz}px; object-fit:contain;" />`;
                 }).join("");
 
                 return `
-                    <div style="position:relative; width:100vw; height:100vh; background:${bg}; color:${fg};">
-                    <div style="position:absolute; left:50%; top:50%; width:6px; height:6px; transform:translate(-50%,-50%);
-                                background:${fg}; border-radius:50%"></div>
-                    ${imgs}
-                    </div>`;
+                        <div style="position:relative; width:100vw; height:100vh; background:${bg}; color:${fg};">
+                        <!-- fixation -->
+                        <div style="position:absolute; left:50%; top:50%; width:6px; height:6px; transform:translate(-50%,-50%);
+                                    background:${fg}; border-radius:50%"></div>
+                        ${imgs}
+                        </div>`;
             }
 
             function blank(ms) {
@@ -756,7 +762,7 @@
                     // ---- Test + response (keep the corrected version) ----
                     timeline.push({
                         type: jsPsychHtmlKeyboardResponse,
-                        stimulus: () => renderArray(tr.test, { jitter: s.jitter_px }),
+                        stimulus: () => renderArray(tr.test, { jitter: s.jitter_deg }),
                         choices: [s.key_same, s.key_diff].map(k => k.toLowerCase()),
                         trial_duration: s.test_timeout_ms,
                         data: {
