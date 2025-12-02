@@ -17,7 +17,7 @@ const triplets_settings = {
   pre_trial_ms: 600,
 
   /* Design: counts per block (shape / texture) */
-  practice_trials_per_type: 5,  // should be 5, baseline & incongruent → 2 × 5 = 10 practice trials/block
+  practice_trials_per_type: 10,  // should be 10, baseline & incongruent → 2 × 10 = 20 practice trials/block
   main_trials_per_type: 60,     // should be 60, baseline & incongruent → 2 × 60 = 120 main trials/block
 
   /* Feedback */
