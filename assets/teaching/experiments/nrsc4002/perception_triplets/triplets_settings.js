@@ -36,7 +36,7 @@ const triplets_settings = {
 
   // ---- Redirect to SONA / URPP ----
   enable_redirect: true,   // turn on/off redirect at the end
-  redirect_base_url: "https://yorku.sona-systems.com/services/SonaAPI.svc/WebstudyCredit?experiment_id=5227&credit_token=72810003e37249dd86347ebde36a9372",
+  redirect_base_url: "https://yorku.sona-systems.com/webstudy_credit.aspx?experiment_id=5227&credit_token=72810003e37249dd86347ebde36a9372",
   urpp_param_name: "participant",     // where we read the code from the URL
   redirect_append_param: "survey_code",// the param name we append to redirect URL
 
