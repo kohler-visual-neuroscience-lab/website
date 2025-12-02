@@ -5,6 +5,7 @@ window.s = Object.freeze({
     stim_img_size_px: 400,
     circle_radius_px: 200,
     mask_softness: 0.2,
+    jitter_px: [5,10],   // min, max position jitter, positive numbers
 
     /* timing */
     study_ms: 2000,
@@ -78,14 +79,14 @@ window.s = Object.freeze({
     redirect_base_url: " https://yorku.sona-systems.com/webstudy_credit.aspx?experiment_id=5198&credit_token=cc315d4e704c4551805153d86840b79a",// recruitment portal landing URL
     redirect_param_name: "survey_code",                      // name of the query parameter to send
     redirect_urpp_param_in_url: "participant=",          // how the URPP id appears in *this* page’s URL
-    redirect_delay_ms: 600,                         // wait (ms) after saving/exiting fullscreen
+    redirect_delay_ms: 6000,                         // wait (ms) after saving/exiting fullscreen
 
 
     /* instructions (templates) */
     practice_intro_tpl: `
     You will see {{stim_num}} images arranged around the center. Remember them. <br>
     After {{memory_isi_ms}} ms, the images reappear. <br>
-    Sometimes one of them images have changed (in shape, texture, or both), <br>
+    Sometimes one of the images have changed (in shape, texture, or both), <br>
     sometimes none of them have changed. <br>
     Press <b>{{key_diff}}</b> if the images have changed, and <b>{{key_same}}</b> if there is no change. <br>
     This practice block has {{practice_trials}} trials. Press space to begin.
@@ -94,9 +95,9 @@ window.s = Object.freeze({
     The main experiment will now begin ({{main_trials}} trials).<br>
     Again you will see {{stim_num}} images arranged around the center. Remember them. <br>
     After {{memory_isi_ms}} ms, the images reappear. <br>
-    Sometimes one of them images have changed (in shape, texture, or both), <br>
+    Sometimes one of the images have changed (in shape, texture, or both), <br>
     sometimes none of them have changed. <br>
-    Same rules: Sometimes one of them images have changed (in shape, texture, or both), sometimes none of them have changed. <br>
+    Same rules: Sometimes one of the images have changed (in shape, texture, or both), sometimes none of them have changed. <br>
     Please stay focused and respond as accurately as you can.
     Press space to start.
     `,

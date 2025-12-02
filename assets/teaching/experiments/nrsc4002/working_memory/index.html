@@ -101,7 +101,7 @@
                 }
             } catch (e) { console.warn("[fullscreen] exit failed:", e); }
         }
-        
+
         async function saveAllData() {
             console.log("[save] start");
             const fmt = (s.save_format || "csv").toLowerCase();
@@ -642,22 +642,48 @@
             });
 
             /* --------------- Rendering helpers --------------- */
-            function renderArray(items) {
+            function randBetween(min, max) { return Math.random() * (max - min) + min; }
+
+            function renderArray(items, opts = {}) {
                 const bg = s.bg_color, fg = s.text_color, sz = img_size;
+
+                // Expect opts.jitter = [minPx, maxPx]; pick random sign per axis
+                let jmin = 0, jmax = 0;
+                if (Array.isArray(opts.jitter) && opts.jitter.length === 2) {
+                    // treat inputs as magnitudes; order- and sign-agnostic
+                    const a = Math.abs(Number(opts.jitter[0]));
+                    const b = Math.abs(Number(opts.jitter[1]));
+                    if (Number.isFinite(a) && Number.isFinite(b)) {
+                        jmin = Math.min(a, b);
+                        jmax = Math.max(a, b);
+                    }
+                }
+                const useJitter = jmax > 0;
+
                 const imgs = items.map((it, i) => {
                     const pos = positions[i];
+
+                    // magnitude in [jmin, jmax], direction ±1 independently for x and y
+                    const magX = useJitter ? randBetween(jmin, jmax) : 0;
+                    const magY = useJitter ? randBetween(jmin, jmax) : 0;
+                    const sx = Math.random() < 0.5 ? -1 : 1;
+                    const sy = Math.random() < 0.5 ? -1 : 1;
+
+                    const x = pos.x + sx * magX;
+                    const y = pos.y + sy * magY;
+
                     return `<img src="${it.url}"
-                            style="position:absolute; left:50%; top:50%;
-                                                transform: translate(${pos.x}px, ${pos.y}px) translate(-50%, -50%);
-                                                width:${sz}px; height:${sz}px; object-fit:contain;" />`;
+                        style="position:absolute; left:50%; top:50%;
+                        transform: translate(${x}px, ${y}px) translate(-50%, -50%);
+                        width:${sz}px; height:${sz}px; object-fit:contain;" />`;
                 }).join("");
+
                 return `
-                        <div style="position:relative; width:100vw; height:100vh; background:${bg}; color:${fg};">
-                            <!-- fixation -->
-                        <div style="position:absolute; left:50%; top:50%; width:6px; height:6px; transform:translate(-50%,-50%);
-                                        background:${fg}; border-radius:50%"></div>
-                                    ${imgs}
-            </div>`;
+                    <div style="position:relative; width:100vw; height:100vh; background:${bg}; color:${fg};">
+                    <div style="position:absolute; left:50%; top:50%; width:6px; height:6px; transform:translate(-50%,-50%);
+                                background:${fg}; border-radius:50%"></div>
+                    ${imgs}
+                    </div>`;
             }
 
             function blank(ms) {
@@ -707,10 +733,10 @@
                         timeline.push({
                             type: jsPsychHtmlKeyboardResponse,
                             stimulus: () => `
-            <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
-                                                        background:${s.bg_color};color:${s.text_color};font-family:system-ui;">
-                <div>${tpl(counter_tpl, { i: idx + 1, N: trialsArr.length })}</div>
-            </div>`,
+                            <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+                                                                        background:${s.bg_color};color:${s.text_color};font-family:system-ui;">
+                                <div>${tpl(counter_tpl, { i: idx + 1, N: trialsArr.length })}</div>
+                            </div>`,
                             choices: "NO_KEYS",
                             trial_duration: s.trial_counter_ms
                         });
@@ -730,7 +756,7 @@
                     // ---- Test + response (keep the corrected version) ----
                     timeline.push({
                         type: jsPsychHtmlKeyboardResponse,
-                        stimulus: () => renderArray(tr.test),
+                        stimulus: () => renderArray(tr.test, { jitter: s.jitter_px }),
                         choices: [s.key_same, s.key_diff].map(k => k.toLowerCase()),
                         trial_duration: s.test_timeout_ms,
                         data: {
