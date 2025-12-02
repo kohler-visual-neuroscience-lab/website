@@ -493,9 +493,9 @@
       type: jsPsychSurveyHtmlForm,
       html: survey_html,
       preamble: "<strong>Welcome to the experiment. <br> Please provide some personal information: </strong>",
-      button_label: "continue",
-      on_finish: jsPsych.data.addProperties(get_id())
+      button_label: "continue"
     };
+    
     if (collect_consent_survey) {
       timeline.push(welcome, consent, survey);
     } else {
