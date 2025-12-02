@@ -82,7 +82,6 @@
             const idKey = s.redirect_param_name || "id";
             const inboundKey = s.redirect_urpp_param_in_url || "urpp_id";
             const urpp = getQueryParam(inboundKey);
-            console.log(idKey, inboundKey, urpp)
             try {
                 const url = new URL(s.redirect_base_url, window.location.href);
                 if (urpp) url.searchParams.set(idKey, urpp);
@@ -661,17 +660,18 @@
                 }
                 const useJitter = jmax > 0;
 
+                // use same rotational jitter for all images 
+                // (degrees) → radians; random ± direction
+                const degMag = useJitter ? randBetween(jmin, jmax) : 0;
+                const sign = Math.random() < 0.5 ? -1 : 1;
+                const dTheta = deg2rad(sign * degMag);
+
                 const imgs = items.map((it, i) => {
                     const pos = positions[i]; // expected to be relative to center (px)
 
                     // Convert current Cartesian pos -> polar
                     const r = Math.hypot(pos.x, pos.y);
                     const theta = Math.atan2(pos.y, pos.x);
-
-                    // Sample rotational jitter (degrees) → radians; random ± direction
-                    const degMag = useJitter ? randBetween(jmin, jmax) : 0;
-                    const sign = Math.random() < 0.5 ? -1 : 1;
-                    const dTheta = deg2rad(sign * degMag);
 
                     // Rotate by dTheta, keep radius
                     const x = r * Math.cos(theta + dTheta);
