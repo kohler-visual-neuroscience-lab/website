@@ -16,6 +16,7 @@
   <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@2.1.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-external-html@2.1.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-browser-check@2.1.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-fullscreen@2.1.0"></script>
 
   <!-- DataPipe (jspsych-contrib) -->
   <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe@0.5"></script>
@@ -159,6 +160,12 @@
       : (s.save_add_timestamp !== false); // default true
 
     const datapipe_experiment_id = s.datapipe_experiment_id || "";
+
+    // Redirect settings
+    const enable_redirect = s.enable_redirect === true;
+    const redirect_base_url = s.redirect_base_url || "";
+    const urpp_param_name = s.urpp_param_name || "survey_code";
+    const redirect_append_param = s.redirect_append_param || "survey_code";
 
     /* look */
     document.documentElement.style.background = background_color;
@@ -347,6 +354,21 @@
       return shuffled(specs).map(spec => ({ ...spec, triplet: makers[spec.trial_type]() }));
     }
 
+    function get_query_param(name) {
+      const m = new URLSearchParams(window.location.search).get(name);
+      return (m && m.trim()) ? m.trim() : null;
+    }
+
+    async function exit_fullscreen_safely() {
+      try {
+        if (document.fullscreenElement && document.exitFullscreen) {
+          await document.exitFullscreen();
+        }
+      } catch (e) {
+        console.warn("exitFullscreen failed (ignored):", e);
+      }
+    }
+
     /* ================= preload list ================= */
     const all_images = (() => {
       const imgs = [];
@@ -400,6 +422,19 @@
             jsPsych.data.displayData();
           }
         }
+        await exit_fullscreen_safely();
+
+        if (enable_redirect && redirect_base_url) {
+          const code = get_query_param(urpp_param_name); // e.g., "survey_code"
+          // Build redirect URL; if code missing, still send them to base URL
+          const sep = redirect_base_url.includes("?") ? "&" : "?";
+          const dest = code
+            ? `${redirect_base_url}${sep}${encodeURIComponent(redirect_append_param)}=${encodeURIComponent(code)}`
+            : redirect_base_url;
+
+          // small delay so file-save UX has a moment to complete
+          setTimeout(() => { window.location.href = dest; }, 300);
+        }
       }
     });
 
@@ -429,6 +464,10 @@
             </div>`;
         }
       });
+    }
+
+    if (use_fullscreen) {
+      timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
     }
 
     /* ====== Welcome / consent / survey (keep yours; SPACE change not needed) ====== */
@@ -479,21 +518,6 @@
       message: "Loading images…",
       continue_after_error: false
     });
-
-    /* ================= Fullscreen (optional; SPACE) ================= */
-    if (use_fullscreen && jsPsych.pluginAPI.getDisplayElement().requestFullscreen) {
-      timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `<div style="max-width:720px;margin:2rem auto;font-family:system-ui,sans-serif;">
-            <h2>Fullscreen</h2><p>We'll switch to fullscreen for steadier timing.</p><p><em>Press SPACE to continue.</em></p></div>`,
-        choices: [' '],
-        save_trial_parameters: { stimulus: false, choices: false },
-        on_finish: () => {
-          const el = jsPsych.pluginAPI.getDisplayElement();
-          if (el.requestFullscreen) el.requestFullscreen();
-        }
-      });
-    }
 
     /* ================= Block scaffolding ================= */
     const randomized_blocks = shuffled(block_types);
@@ -565,26 +589,26 @@
         }
       });
 
-// 3) choice trial (keyboard: Left/Up/Right)
-timeline.push({
-  type: jsPsychHtmlKeyboardResponse,
-  stimulus: function () {
-    let html = render_arena_html(composed_urls);
+      // 3) choice trial (keyboard: Left/Up/Right)
+      timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: function () {
+          let html = render_arena_html(composed_urls);
 
-    const block_label = is_practice ? "Practice" : "Main";
-    let msg = "";
-    if (spec.block_type === "shape") {
-      msg = `<strong>${block_label} — Pick the Odd Shape Out</strong>`;
-    } else if (spec.block_type === "texture") {
-      msg = `<strong>${block_label} — Pick the Odd Texture Out</strong>`;
-    }
+          const block_label = is_practice ? "Practice" : "Main";
+          let msg = "";
+          if (spec.block_type === "shape") {
+            msg = `<strong>${block_label} — Pick the Odd Shape Out</strong>`;
+          } else if (spec.block_type === "texture") {
+            msg = `<strong>${block_label} — Pick the Odd Texture Out</strong>`;
+          }
 
-    html += `<div style="text-align:center; margin-top:1.5rem; font-size:18px; font-family:system-ui; color:white;">
+          html += `<div style="text-align:center; margin-top:1.5rem; font-size:18px; font-family:system-ui; color:white;">
                 ${msg}
              </div>`;
 
-    return html;
-  },
+          return html;
+        },
 
         choices: ["arrowleft", "arrowup", "arrowright"],
         save_trial_parameters: { stimulus: false, choices: false },

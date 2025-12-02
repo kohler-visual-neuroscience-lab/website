@@ -3,7 +3,7 @@ const triplets_settings = {
   /* Look */
   background_color: "#000000ff",
   foreground_color: "#eeeeee",
-  use_fullscreen: false,
+  use_fullscreen: true,
 
   /* Where the files live relative to the HTML */
   shapes_base_path: "stimuli/shapes/",     // prepended to filenames in stimulus_manifest.shapes[*]
@@ -17,8 +17,8 @@ const triplets_settings = {
   pre_trial_ms: 600,
 
   /* Design: counts per block (shape / texture) */
-  practice_trials_per_type: 5,  // baseline & incongruent → 2 × 10 = 20 practice trials/block
-  main_trials_per_type: 60,     // baseline & incongruent → 2 × 60 = 120 main trials/block
+  practice_trials_per_type: 1,  // should be 5, baseline & incongruent → 2 × 10 = 20 practice trials/block
+  main_trials_per_type: 1,     // should be 60, baseline & incongruent → 2 × 60 = 120 main trials/block
 
   /* Feedback */
   practice_feedback: true,
@@ -33,6 +33,12 @@ const triplets_settings = {
   filename_base: "triplets_data",// replaces "save_filename" / "datapipe_filename_prefix"
   add_timestamp: true,           // replaces "save_add_timestamp"
   datapipe_experiment_id: "SXIm98HnPi9H",
+
+  // ---- Redirect to SONA / URPP ----
+  enable_redirect: true,   // turn on/off redirect at the end
+  redirect_base_url: "https://yorku.sona-systems.com/services/SonaAPI.svc/WebstudyCredit?experiment_id=5227&credit_token=72810003e37249dd86347ebde36a9372",
+  urpp_param_name: "participant",     // where we read the code from the URL
+  redirect_append_param: "survey_code",// the param name we append to redirect URL
 
   /* Browser Check (official plugin) — simple, optional gate */
   use_browser_check: true,                // set to false to skip the check entirely
