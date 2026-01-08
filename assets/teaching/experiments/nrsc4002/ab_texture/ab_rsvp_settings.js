@@ -32,7 +32,7 @@ const AB_SETTINGS = {
 
   // Repetitions per cell (kept, now applied to the cartesian product above)
   exp_reps: 20,
-  prac_reps: 2,
+  prac_reps: 4,
 
   // feedback
   practice_feedback: true,
