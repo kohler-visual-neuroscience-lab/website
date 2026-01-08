@@ -23,16 +23,16 @@ const AB_SETTINGS = {
   // Main experiment
   design_t1_levels: [0, 1],       // 0 = absent, 1 = present
   design_t2_levels: [0, 1],       // 0 = absent, 1 = present
-  design_lag_levels: [1,2,3,4,5,6,7,8],  // allowed lags (1–8)
-
+  design_lag_levels: [1,2,3,8],  // allowed lags (1–8)
+ 
   // Practice block
   prac_t1_levels: [0, 1],         
   prac_t2_levels: [0, 1],
   prac_lag_levels: [8],           
 
   // Repetitions per cell (kept, now applied to the cartesian product above)
-  exp_reps: 2,
-  prac_reps: 1,
+  exp_reps: 20,
+  prac_reps: 2,
 
   // feedback
   practice_feedback: true,
