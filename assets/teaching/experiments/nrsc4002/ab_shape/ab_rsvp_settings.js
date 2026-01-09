@@ -31,8 +31,8 @@ const AB_SETTINGS = {
   prac_lag_levels: [8],           
 
   // Repetitions per cell (kept, now applied to the cartesian product above)
-  exp_reps: 1, // 20,
-  prac_reps: 1, // 4,
+  exp_reps: 20,
+  prac_reps: 4,
 
   // feedback
   practice_feedback: true,
