@@ -450,16 +450,33 @@
     /* ================= jsPsych init ================= */
     const jsPsych = initJsPsych({
       on_finish: async function () {
+        // --- 0) Show an immediate "saving…" screen & guard against closing ---
+        const bg = background_color || "#111";
+        const fg = foreground_color || "#fff";
+        try {
+          jsPsych.getDisplayElement().innerHTML =
+            `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+                   background:${bg};color:${fg};font-family:system-ui,sans-serif;text-align:center">
+              <div>
+                <div style="font-size:1.15rem;margin-bottom:.5rem;">saving your responses…</div>
+                <div style="opacity:.8">please don’t close this tab</div>
+              </div>
+            </div>`;
+        } catch { }
+
+        window.onbeforeunload = () => "Your data is still saving.";
+
         const dataset = jsPsych.data.get();
 
-        // Filenames
+        // --- 1) Filenames (you already have these helpers) ---
         const fname_pipe = make_filename(datapipe_filename_prefix, datapipe_format, true);
         const fname_local = make_filename(local_filename_prefix, local_format, local_add_timestamp);
 
-        // Data strings
+        // --- 2) Data strings ---
         const pipe_string = (datapipe_format === "json") ? dataset.json() : dataset.csv();
         const local_string = (local_format === "json") ? dataset.json() : dataset.csv();
 
+        // --- 3) Try DataPipe; on failure, fall back to local (keeps your existing behavior) ---
         let pipe_ok = false;
 
         if (use_datapipe && datapipe_experiment_id) {
@@ -468,22 +485,48 @@
             pipe_ok = true;
             console.info("[AB RSVP] DataPipe upload OK:", fname_pipe);
           } catch (e) {
-            console.error("[AB RSVP] DataPipe upload FAILED:", e);
+            console.error("[AB RSVP] DataPipe upload failed; will fall back to local:", e);
           }
         }
 
-        if (use_local_save || !pipe_ok) {
+        if (!pipe_ok) {
           try {
             const name = pipe_ok ? `local_copy_${fname_local}` : fname_local;
             if (local_format === "json") dataset.localSave("json", name);
             else dataset.localSave("csv", name);
             console.info("[AB RSVP] Local save:", name);
           } catch (e) {
-            console.error("[AB RSVP] Local save failed; showing data.", e);
+            console.error("[AB RSVP] Local save failed; showing data instead.", e);
             jsPsych.data.displayData();
           }
         }
+
+        // --- 4) Exit fullscreen if active (non-blocking if already windowed) ---
+        try {
+          if (document.fullscreenElement && document.exitFullscreen) {
+            await document.exitFullscreen();
+          }
+        } catch (e) {
+          console.warn("[fullscreen] exit failed (ignored):", e);
+        }
+
+        // --- 5) Final passive end screen (no button) ---
+        const endMsg = (s && s.end_message)
+          ? s.end_message
+          : "Thank you for participating! You may now close this tab or window.";
+
+        try {
+          jsPsych.getDisplayElement().innerHTML =
+            `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+                   background:${bg};color:${fg};font-family:system-ui,sans-serif;text-align:center">
+         <div style="max-width:720px;line-height:1.5">${endMsg}</div>
+       </div>`;
+        } catch { }
+
+        // --- 6) Allow the tab to be closed now that saving is done ---
+        window.onbeforeunload = null;
       }
+
     });
 
     const timeline = [];
