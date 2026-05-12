@@ -482,9 +482,21 @@
     };
 
     const check_consent = function (elem) {
-      if (document.getElementById("consent_checkbox").checked) { return true; }
-      alert("If you wish to participate, you must consent to participate by checking the box");
-      return false;
+      if (!document.getElementById("epilepsy_checkbox").checked) {
+        alert("You must confirm that you do not have a history of seizures or photosensitive epilepsy in order to participate.");
+        return false;
+      }
+
+      if (!document.getElementById("repo_checkbox").checked) {
+        alert("You must indicate that you understand your de-identified data may be placed into an open research data repository in order to participate.");
+        return false;
+      }
+
+      if (!document.getElementById("consent_checkbox").checked) {
+        alert("If you wish to participate, you must consent to participate by checking the consent box.");
+        return false;
+      }
+      return true;
     };
 
     const consent = { type: jsPsychExternalHtml, url: "consent.html", cont_btn: "start", check_fn: check_consent };
