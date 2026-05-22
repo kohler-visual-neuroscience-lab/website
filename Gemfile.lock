@@ -233,7 +233,7 @@ GEM
     mutex_m (0.3.0)
     net-http (0.9.1)
       uri (>= 0.11.1)
-    nokogiri (1.15.7)
+    nokogiri (1.19.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     octokit (4.25.1)
@@ -277,7 +277,7 @@ DEPENDENCIES
   jekyll-seo-tag
   jekyll-sitemap (~> 1.4)
   kramdown (>= 2.3.1)
-  nokogiri (~> 1.15)
+  nokogiri (~> 1.19)
   rexml (>= 3.3.9)
 
 BUNDLED WITH
