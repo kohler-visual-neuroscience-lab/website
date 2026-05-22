@@ -9,8 +9,6 @@ gem 'jekyll-seo-tag'
 
 gem 'jekyll-sitemap', '~> 1.4'
 
-gem 'nokogiri', '~> 1.19'
-
 gem "kramdown", ">= 2.3.1"
 
 gem "rexml", ">= 3.3.9"
