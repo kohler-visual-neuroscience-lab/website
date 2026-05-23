@@ -243,6 +243,7 @@ h2 {
     white-space: nowrap;
     overflow: hidden;
 }
+
 h3 {
     font-size: 30px;
     font-style: italic;
@@ -262,10 +263,11 @@ h4 {
     line-height: 1.2;
     color: var(--red);
 }
+
 .responsive-heading {
     margin: 0;
 }
-
+.responsive-heading h2,
 .responsive-heading h3 {
     margin: 0;
 }
@@ -479,21 +481,17 @@ p {
 .wide {
     display: block;
 }
-.mid {
-    display: none;
-}
+.mid,
 .narrow {
     display: none;
 }
 
-@media screen and (max-width: 1150px) 
+@media screen and (max-width: 1400px) 
 {
-    .wide {
-        display: none;
-    }
     .mid {
         display: block;
     }
+    .wide, 
     .narrow {
         display: none;
     }
@@ -513,15 +511,12 @@ p {
     .column {
         width: 100%;
     }
-
-    .wide {
-    display: none;
-    }
-    .mid {
-        display: none;
-    }
     .narrow {
         display: block;
+    }
+    .wide, 
+    .mid {
+        display: none;
     }
 
     /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
