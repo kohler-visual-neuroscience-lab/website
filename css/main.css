@@ -16,7 +16,7 @@ html{
 body {
     background-color: var(--taupe);
     color: var(--black);
-    margin: 200px 0px 0px 0px;
+    margin: 250px 0px 0px 0px;
     font-size: 18px;
     font-family: "Helvetica", Helvetica, Arial, sans-serif;
     text-decoration: none;
@@ -75,8 +75,7 @@ html.no-svg-logo header, span.lab-logo{
 /* Add a background color to the top navigation */
 .topnav {
   background-color: var(--red);
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
+  position: fixed;
   top: 200px;
   margin: 0;
   padding: 0;
