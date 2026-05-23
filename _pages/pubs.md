@@ -6,9 +6,11 @@ permalink: /pubs/
 ---
 <div class="row">
 <div class="column">
+<div class="responsive-heading">
 <h3 class="wide">Peer-reviewed Articles</h3>
 <h3 class="mid">Articles</h3>
 <h3 class="narrow">Peer-reviewed Articles</h3>
+</div>
 0. Kohler, PJ, Moreau, R, Alp, N, Godley, L, Freud, E (in prep) Symmetry has Dissociable Effects on Efficiency and Difficulty of Visual Search. 
 0. Samet, S, Iskandar, Y, Fukuda, K, Freud, E & **Kohler**, PJ (in prep). Symmetry Benefits Working Memory Representations of Object Orientation.
 0. Reitelbach, C, **Kohler**, PJ, Oyibo, K and Ehlers, J (under review). Optimizing SSVEP for Brain-Computer Interfaces: The influence of viewing distance, stimulus size and luminance. *Behavioural Brain Research*.
@@ -72,19 +74,22 @@ permalink: /pubs/
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/mala_et_al_2008.pdf)
 	Mala, H, Castro, MR, Knippel, J, **Kohler**, PJ, Lassen, P &amp; Mogensen, J (2008). Therapeutic effects of a restraint procedure on posttraumatic place learning in fimbria-fornix transected rats. *Brain Research, 1217*, 221-231.
 {: reversed="reversed"}
-
+<div class="responsive-heading">
 <h3 class="wide">Book Chapters</h3>
 <h3 class="mid">Book Chapters</h3>
 <h3 class="narrow">Book Chapters</h3>
+</div>
 0. Caplovitz, GP Hsieh, P-J, Kohler, PJ &amp; Porter, KB (2017). The Spinning Ellipse Speed Illusion. In *Oxford Compendium of Visual Illusions* (pp. 170-173). Oxford University Press.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/tse_et_al_2013.pdf)
 	Tse, PU, Reavis, EA, **Kohler**, PJ, Caplovitz, GP, &amp; Wheatley, T (2013). How Attention can Alter Appearances. In *Handbook of Experimental Phenomenology* (pp. 291-315). John Wiley & Sons, Ltd.
 {: reversed="reversed"}
 </div>
 <div class="column">
+<div class="responsive-heading">
 <h3 class="wide">Selected Conference Presentations</h3>
 <h3 class="mid">Conferences</h3>
 <h3 class="narrow">Conference Presentations</h3>
+</div>
 0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/vss2026_movahedi.pdf) Movahedi, N & Kohler, PJ (2026). Does perspective distortion modulate the temporal tuning of symmetry responses in the human visual cortex? Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/vss2026_maloh.pdf) Maloh, A, Pierce, L & Kohler, PJ (2026). Brain Responses to Symmetry in Early Infancy. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/vss2026_kohler.pdf) Kohler, PJ, Asadian, A, Walther, DB & Ma, L (2026). Symmetry responses in marmoset visual cortex measured with SSVEPs. Poster at *Vision Sciences Society*, St. Petersburg, FL.

@@ -247,22 +247,31 @@ h3 {
     font-size: 30px;
     font-style: italic;
     font-weight: 400;
-    margin-top: 0;
-    margin-bottom: 12px;
+    margin-top: 18px;
+    margin-bottom: 6px;
     line-height: 1.2;
     color: var(--red);
-    position:relative;
 }
 
 h4 {
     font-size: 20px;
     font-style: italic;
     font-weight: 400;
-    line-height: 50%;
+    margin-top: 14px;
+    margin-bottom: 4px;
+    line-height: 1.2;
     color: var(--red);
+}
+.responsive-heading {
+    margin: 0;
+}
+
+.responsive-heading h3 {
+    margin: 0;
 }
 
 h2.relative, h3.relative{
+    position: relative;
     text-align: center;
     z-index:1;
 }
@@ -491,7 +500,7 @@ p {
 }
 
 /* When the screen is less than 700 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
-@media screen and (max-width: 700px) 
+@media screen and (max-width: 1100px) 
 {
     .topnav a:not(.active) {
         display: none;
