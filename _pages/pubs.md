@@ -11,9 +11,12 @@ permalink: /pubs/
 <h3 class="mid">Articles</h3>
 <h3 class="narrow">Peer-reviewed Articles</h3>
 </div>
+<!-- 0. Reitelbach, C, **Kohler**, PJ, Oyibo, K and Ehlers, J (under review). Optimizing SSVEP for Brain-Computer Interfaces: The influence of viewing distance, stimulus size and luminance. *Behavioural Brain Research*. -->
 0. Kohler, PJ, Moreau, R, Alp, N, Godley, L, Freud, E (in prep) Symmetry has Dissociable Effects on Efficiency and Difficulty of Visual Search. 
 0. Samet, S, Iskandar, Y, Fukuda, K, Freud, E & **Kohler**, PJ (in prep). Symmetry Benefits Working Memory Representations of Object Orientation.
-0. Reitelbach, C, **Kohler**, PJ, Oyibo, K and Ehlers, J (under review). Optimizing SSVEP for Brain-Computer Interfaces: The influence of viewing distance, stimulus size and luminance. *Behavioural Brain Research*.
+0. Georgiadis, P, Luabeya, GN, Freud, E, **Kohler**, PJ & Crawford, JD (in prep). Reach plans for grasping vs. placing objects evoke different neural dynamics within a shared cortico-cerebellar mechanism. *Journal of Neuroscience*. [bioRxiv](https://www.biorxiv.org/content/10.64898/2026.10.14.759130v1)
+0. Asadian, A, Walther, DB, **Kohler**, PJ & Ma, L (submitted). Shared symmetry detection with divergent temporal dynamics in marmosets and humans. *eLife*. [bioRxiv](https://www.biorxiv.org/content/10.64898/2026.08.17.745359v1)
+0. Si, W, Choe, E, Heller, NH, **Kohler**, PJ, Cavanagh, P, Störmer, VS & Tse, PU (submitted). Seeing at Will: Shared Neural Representations of Motion Perception and Intention. *Journal of Neuroscience*. [bioRxiv](https://www.biorxiv.org/content/10.64898/2026.08.17.745279v5)
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/shams_et_al_2026.pdf) Shams, M, **Kohler**, PJ & Cavanagh, P (2026). Different Effects of Flash-Grab and Frame Stimuli on Position Shift and Shape Distortion. *Journal of Vision 26*(3), 1-13.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/liu_et_al_2025.pdf) Liu, Y, Halfen, EJ, Yau, JM, Fischer-Baum, S, **Kohler**, PJ, Faseyitan, O, Coslett, HB, Medina, J (2025). Reweighting of visuomotor areas during motor processing subsequent to somatosensory cortical damage. *NeuroImage 317*, 121336.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/maechler_et_al_2025.pdf) Maechler, MR, Choe, E, Cavanagh, P, **Kohler**, PJ, Tse, PU (2025). Hemifield Specificity of Attention Response Functions During Multiple Object Tracking. *Journal of Neuroscience 45*(19), 1-12.
@@ -90,6 +93,8 @@ permalink: /pubs/
 <h3 class="mid">Conferences</h3>
 <h3 class="narrow">Conference Presentations</h3>
 </div>
+0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/ecvp2026_kohler.pdf) Kohler, PJ, Maloh, A & Pierce, L (2026). Brain Responses to Visual Symmetry in Early Infancy. Poster at *European Conference on Visual Perception*, Bournemouth, UK.
+0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/csbbcs2026_okonofua.pdf) Okonofua, I, Kohler, PJ & Schall, J (2026). Individual Variability in Visual Evoked Potentials and Visual Area Cortical Morphology. Poster at *Canadian Society for Brain, Behaviour and Cognitive Science (CSBBCS)*.
 0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/vss2026_movahedi.pdf) Movahedi, N & Kohler, PJ (2026). Does perspective distortion modulate the temporal tuning of symmetry responses in the human visual cortex? Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/vss2026_maloh.pdf) Maloh, A, Pierce, L & Kohler, PJ (2026). Brain Responses to Symmetry in Early Infancy. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/vss2026_kohler.pdf) Kohler, PJ, Asadian, A, Walther, DB & Ma, L (2026). Symmetry responses in marmoset visual cortex measured with SSVEPs. Poster at *Vision Sciences Society*, St. Petersburg, FL.
