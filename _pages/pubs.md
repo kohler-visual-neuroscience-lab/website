@@ -25,7 +25,7 @@ permalink: /pubs/
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/kohler_et_al_2022.pdf) **Kohler**, PJ, Vedak, S &amp; Gilmore, RO (2022) Perceptual Similarities among Wallpaper Group Exemplars. *Symmetry 14*(5), 857.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/boswell_et_al_2021.pdf) Boswell, A., **Kohler**, PJ, McCarthy, JD &amp; Caplovitz, GP (2021). Perceived group size is determined by the centroids of the component elements. *Journal of Vision 21*(13), 1. 
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/sievers_et_al_2021.pdf) Sievers, B, Parkinson, C, **Kohler**, PJ, Hughes, J, Fogelson, S &amp; Wheatley, T (2021). Visual and auditory brain areas share a representational geometry for perceiving emotion. *Current Biology, 31*, 1–12 
-0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/audurier_et_al_2021.pdf) Audurier, P, Héjjà-Brichard, Y, De Castro, V, **Kohler**, PJ, Norcia, AM, Durand, J-B &amp; Cottereau, BR (2021). Symmetry processing in the macaque visual cortex. *Cerebral Cortex.* 
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/audurier_et_al_2022.pdf) Audurier, P, Héjjà-Brichard, Y, De Castro, V, **Kohler**, PJ, Norcia, AM, Durand, J-B &amp; Cottereau, BR (2022). Symmetry processing in the macaque visual cortex. *Cerebral Cortex, 32*(10), 2277-2290. 
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/kohler_clarke_2021.pdf) **Kohler**, PJ &amp; Clarke, A (2021). The human visual system preserves the hierarchy of 2-dimensional pattern regularity. *Proceedings of the Royal Society B: Biological Sciences, 288*, 20211142.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/norcia_et_al_2021.pdf)
 	Norcia, AM, Lee, A, Meredith, W, **Kohler**, PJ, Pei, F, Ghassan, S, Libove, R, Phillips, J &amp; Hardan, AY (2021). A case-control study of visual, auditory and audio-visual sensory interactions in children with Autism Spectrum Disorder. *Journal of Vision, 21*(4), 5.
@@ -67,7 +67,7 @@ permalink: /pubs/
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/reavis_et_al_2013.pdf)
 	Reavis, EA, **Kohler**, PJ, Caplovitz, CP, Wheatley, T &amp; Tse, PU (2013). Effects of attention on visual experience during monocular rivalry. *Vision Research, 83*, 76-81.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/parkinson_et_al_2012.pdf)
-	Parkinson, C, **Kohler**, PJ, Sievers, B &amp; Wheatley, T (2012). Associations between auditory pitch and visual elevation do not depend on language: Evidence from a remote population. *Perception, 47*(7), 854-861.
+	Parkinson, C, **Kohler**, PJ, Sievers, B &amp; Wheatley, T (2012). Associations between auditory pitch and visual elevation do not depend on language: Evidence from a remote population. *Perception, 41*(7), 854-861.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/porter_et_al_2011.pdf)
 	Porter, KB, Caplovitz, GP, **Kohler**, PJ, Ackerman, CM &amp; Tse, PU (2011). Rotational and translational motion interact independently with form. *Vision Research, 51*(23), 2478-2487.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/kohler_et_al_2010.pdf)
@@ -82,7 +82,7 @@ permalink: /pubs/
 <h3 class="mid">Book Chapters</h3>
 <h3 class="narrow">Book Chapters</h3>
 </div>
-0. Caplovitz, GP Hsieh, P-J, Kohler, PJ &amp; Porter, KB (2017). The Spinning Ellipse Speed Illusion. In *Oxford Compendium of Visual Illusions* (pp. 170-173). Oxford University Press.
+0. Caplovitz, GP, Hsieh, P-J, Kohler, PJ &amp; Porter, KB (2017). The Spinning Ellipse Speed Illusion. In *Oxford Compendium of Visual Illusions* (pp. 170-173). Oxford University Press.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/tse_et_al_2013.pdf)
 	Tse, PU, Reavis, EA, **Kohler**, PJ, Caplovitz, GP, &amp; Wheatley, T (2013). How Attention can Alter Appearances. In *Handbook of Experimental Phenomenology* (pp. 291-315). John Wiley & Sons, Ltd.
 {: reversed="reversed"}
@@ -93,8 +93,11 @@ permalink: /pubs/
 <h3 class="mid">Conferences</h3>
 <h3 class="narrow">Conference Presentations</h3>
 </div>
+0. Kohler, PJ (2026). The Role of Symmetry in Object Perception. Talk at *Theories of Object Perception workshop*, Niagara-on-the-Lake, ON.
+0. Kohler, PJ (2026). Is symmetry processing constrained by familiarity? Talk at *Annual Interdisciplinary Conference*, Jackson Hole, WY.
 0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/ecvp2026_kohler.pdf) Kohler, PJ, Maloh, A & Pierce, L (2026). Brain Responses to Visual Symmetry in Early Infancy. Poster at *European Conference on Visual Perception*, Bournemouth, UK.
-0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/csbbcs2026_okonofua.pdf) Okonofua, I, Kohler, PJ & Schall, J (2026). Individual Variability in Visual Evoked Potentials and Visual Area Cortical Morphology. Poster at *Canadian Society for Brain, Behaviour and Cognitive Science (CSBBCS)*.
+0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/csbbcs2026_okonofua.pdf) Okonofua, I, Kohler, PJ & Schall, J (2026). Individual Variability in Visual Evoked Potentials and Visual Area Cortical Morphology. Poster at *Canadian Society for Brain, Behaviour and Cognitive Science (CSBBCS)*, Toronto, Canada.
+0. 0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/csbbcs2026_garcia.pdf) Garcia, AG, Dao, CTK, Mamassian, P & Kohler, PJ (2026). Perceptual grouping reduces perceived speed but does not change uncertainty. Poster at *Canadian Society for Brain, Behaviour and Cognitive Science (CSBBCS)*, Toronto, Canada.
 0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/vss2026_movahedi.pdf) Movahedi, N & Kohler, PJ (2026). Does perspective distortion modulate the temporal tuning of symmetry responses in the human visual cortex? Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/vss2026_maloh.pdf) Maloh, A, Pierce, L & Kohler, PJ (2026). Brain Responses to Symmetry in Early Infancy. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "view presentation"){: #pdf-icon }](/assets/posters/vss2026_kohler.pdf) Kohler, PJ, Asadian, A, Walther, DB & Ma, L (2026). Symmetry responses in marmoset visual cortex measured with SSVEPs. Poster at *Vision Sciences Society*, St. Petersburg, FL.
@@ -105,14 +108,13 @@ permalink: /pubs/
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/vss2025_shams.pdf) Shams, M, Maloh, A, Kohler, PJ & Cavanagh, P (2025). Investigating Attentional Repulsion as a Mechanism for Anisotropic Position Shifts around Moving Objects. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/vss2025_samet.pdf) Samet, SS, Kahlon, J, Baker, N, Freud, E, Elder, JH & Kohler, PJ (2025). The Contribution of Configural Shape to Object Recognition Is Processed by a Late-Onset Mechanism Likely Localized in Right Temporal Cortex. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/ecvp2024_kohler.pdf) Kohler, PJ, Samet, S, Kahlon, J, Baker, N, Freud, E & Elder, JH (2024). Investigating Configural and Local Shape Processing with Steady State Visual Evoked Potentials. Poster at *European Conference on Visual Perception*, Aberdeen, Scotland.
-0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/ecvp2024_shams.pdf) Shams, M, Cutler, J, Kohler, PJ, & Cavanagh, P (2024). Comparing Shape Distortion in in Frame Effect and Flash-Grab Effect. Poster at *European Conference on Visual Perception*, Aberdeen, Scotland.
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/ecvp2024_shams.pdf) Shams, M, Cutler, J, Kohler, PJ, & Cavanagh, P (2024). Comparing Shape Distortion in Frame Effect and Flash-Grab Effect. Poster at *European Conference on Visual Perception*, Aberdeen, Scotland.
 0. [![movie_icon](/assets/icons/movie.png "download movie"){: #movie-icon }](/assets/talks/vss2024_movahedi.mp4) Movahedi, N, Ragavaloo, S & Kohler, PJ (2024). Does perspective-distortion modulate the temporal tuning of symmetry responses? Talk at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/vss2024_iskandar.pdf) Iskandar, S, Lee, C, Bosse, S & Kohler, PJ (2024). Spatial Tuning of Visual Responses to Symmetries in Textures. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/vss2024_ragavaloo.pdf) Ragavaloo, S, Movahedi, N & Kohler, PJ (2024). Brain Responses to Symmetries in Naturalistic Novel Three-Dimensional Objects. Poster at *Vision Sciences Society*, St. Petersburg, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/vss2024_samet.pdf) Samet, S, Kahlon, J, Elder, JH, Baker, N, Freud, E & Kohler, PJ (2024). Investigating Configural and Local Shape Processing with Steady State Visual Evoked Potentials. Poster at *Vision Sciences Society*, St. Petersburg, FL. 
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/vss2024_shams.pdf) Shams, M, Maloh, A, Kohler, PJ & Cavanagh, P (2024). Attentional Effect in Motion-Induced Position Shift. Poster at *Vision Sciences Society*, St. Petersburg, FL.
-0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/talks/kohler_aic2024.pdf) 
-	Kohler, PJ (2024). Investigating local and configural shape processing with steady-state visual evoked potentials. Talk at *Annual Interdisciplinary Conference*, Jackson Hole, WY.
+0. Kohler, PJ (2024). Investigating local and configural shape processing with steady-state visual evoked potentials. Talk at *Annual Interdisciplinary Conference*, Jackson Hole, WY.
 0. Shams, M, Kohler, PJ, & Cavanagh, P (2023). Spatiotemporal profile of flash mislocalization in the vicinity of motion. Talk at *European Conference on Visual Perception*, Paphos, Cyprus.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/ragavaloo_sfn2023.pdf) 
 	Ragavaloo, S & Kohler, PJ (2023). Brain Responses to Symmetries in Naturalistic Novel Three-Dimensional Objects. Poster at *Society for Neuroscience*, Washington, DC.
