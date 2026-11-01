@@ -14,14 +14,14 @@ permalink: /pubs/
 <!-- 0. Reitelbach, C, **Kohler**, PJ, Oyibo, K and Ehlers, J (under review). Optimizing SSVEP for Brain-Computer Interfaces: The influence of viewing distance, stimulus size and luminance. *Behavioural Brain Research*. -->
 0. Kohler, PJ, Moreau, R, Alp, N, Godley, L, Freud, E (in prep) Symmetry has Dissociable Effects on Efficiency and Difficulty of Visual Search. 
 0. Samet, S, Iskandar, Y, Fukuda, K, Freud, E & **Kohler**, PJ (in prep). Symmetry Benefits Working Memory Representations of Object Orientation.
-0. Georgiadis, P, Luabeya, GN, Freud, E, **Kohler**, PJ & Crawford, JD (in prep). Reach plans for grasping vs. placing objects evoke different neural dynamics within a shared cortico-cerebellar mechanism. *Journal of Neuroscience*. [bioRxiv](https://www.biorxiv.org/content/10.64898/2026.10.14.759130v1)
+0. Georgiadis, P, Luabeya, GN, Freud, E, **Kohler**, PJ & Crawford, JD (submitted). Reach plans for grasping vs. placing objects evoke different neural dynamics within a shared cortico-cerebellar mechanism. *Journal of Neuroscience*. [bioRxiv](https://www.biorxiv.org/content/10.64898/2026.10.14.759130v1)
 0. Asadian, A, Walther, DB, **Kohler**, PJ & Ma, L (submitted). Shared symmetry detection with divergent temporal dynamics in marmosets and humans. *eLife*. [bioRxiv](https://www.biorxiv.org/content/10.64898/2026.08.17.745359v1)
 0. Si, W, Choe, E, Heller, NH, **Kohler**, PJ, Cavanagh, P, Störmer, VS & Tse, PU (submitted). Seeing at Will: Shared Neural Representations of Motion Perception and Intention. *Journal of Neuroscience*. [bioRxiv](https://www.biorxiv.org/content/10.64898/2026.08.17.745279v5)
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/shams_et_al_2026.pdf) Shams, M, **Kohler**, PJ & Cavanagh, P (2026). Different Effects of Flash-Grab and Frame Stimuli on Position Shift and Shape Distortion. *Journal of Vision 26*(3), 1-13.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/liu_et_al_2025.pdf) Liu, Y, Halfen, EJ, Yau, JM, Fischer-Baum, S, **Kohler**, PJ, Faseyitan, O, Coslett, HB, Medina, J (2025). Reweighting of visuomotor areas during motor processing subsequent to somatosensory cortical damage. *NeuroImage 317*, 121336.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/maechler_et_al_2025.pdf) Maechler, MR, Choe, E, Cavanagh, P, **Kohler**, PJ, Tse, PU (2025). Hemifield Specificity of Attention Response Functions During Multiple Object Tracking. *Journal of Neuroscience 45*(19), 1-12.
-0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/moreau_et_al_2025.pdf) Moreau, R, Alp, N, Clarke, A, Freud, E & **Kohler**, PJ (2025). Visual search efficiency is modulated by symmetry type and texture regularity. *Journal of Vision 25*(7), 1-13.
-0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/shams_et_al_2024.pdf) Shams, M, **Kohler**, PJ & Cavanagh, P (2024). Deconstructing the Frame Effect. *Journal of Vision 24*(11), 1-10.
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/moreau_et_al_2025.pdf) Moreau, R, Alp, N, Clarke, A, Freud, E & **Kohler**, PJ (2025). Visual search efficiency is modulated by symmetry type and texture regularity. *Journal of Vision 25*(6):7, 1-13.
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/shams_et_al_2024.pdf) Shams, M, **Kohler**, PJ & Cavanagh, P (2024). Deconstructing the Frame Effect. *Journal of Vision 24*(11):8, 1-10.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/kohler_et_al_2022.pdf) **Kohler**, PJ, Vedak, S &amp; Gilmore, RO (2022) Perceptual Similarities among Wallpaper Group Exemplars. *Symmetry 14*(5), 857.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/boswell_et_al_2021.pdf) Boswell, A., **Kohler**, PJ, McCarthy, JD &amp; Caplovitz, GP (2021). Perceived group size is determined by the centroids of the component elements. *Journal of Vision 21*(13), 1. 
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/papers/sievers_et_al_2021.pdf) Sievers, B, Parkinson, C, **Kohler**, PJ, Hughes, J, Fogelson, S &amp; Wheatley, T (2021). Visual and auditory brain areas share a representational geometry for perceiving emotion. *Current Biology, 31*, 1–12 
@@ -150,10 +150,10 @@ permalink: /pubs/
  	Kohler, PJ & Norcia, AM (2015). Does SNR of visually evoked BOLD responses change with rapid multiplexed fMRI? Poster at *Cognitive Neuroscience Society*, San Francisco, CA
  0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2014.pdf)
  	Kohler, PJ, Clarke, ADF, Liu-Shuang, J, Liu, Y, Norcia, AM (2014). The neural response to visual symmetry in wallpaper patterns. Poster at *Vision Sciences Society*, St. Petersburg, FL.
-0. [![pdf_icon](/assets/icons/pdf.png "download pdg"){: #pdf-icon }](/assets/posters/kohler_vss2013.pdf)
+0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2013.pdf)
  	Kohler, PJ, Harder, LH, & Tse, PU (2013). The influence of local and global motion on perceived position. Poster at *Vision Sciences Society*, Naples, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_ecvp2012.pdf)
- 	Kohler, PJ, Harder, LH, & Tse, PU PJ, Cavanagh, CEP, & Tse, PU (2012). The influence of motion integration on shifts in perceived position. Poster at *European Conference on Visual Perception*, Alghero, Italy. 1. [Demo video](/assets/demos/globalmotiongrab.mov) 2. [Feature on New Scientist Blog.](https://web.archive.org/web/20121001014756/http://www.newscientist.com/blogs/nstv/2012/09/friday-illusion-how-to-move-an-object-with-your-mind.html) 3. [Feature on Focus.de's "Illusion der Woche"](https://www.focus.de/wissen/videos/illusion-der-woche-dieser-punkt-wird-zur-marionette-des-gehirns_vid_33733.html)
+ 	Kohler, PJ, Cavanagh, CEP, & Tse, PU (2012). The influence of motion integration on shifts in perceived position. Poster at *European Conference on Visual Perception*, Alghero, Italy. 1. [Demo video](/assets/demos/globalmotiongrab.mov) 2. [Feature on New Scientist Blog.](https://web.archive.org/web/20121001014756/http://www.newscientist.com/blogs/nstv/2012/09/friday-illusion-how-to-move-an-object-with-your-mind.html) 3. [Feature on Focus.de's "Illusion der Woche"](https://www.focus.de/wissen/videos/illusion-der-woche-dieser-punkt-wird-zur-marionette-des-gehirns_vid_33733.html)
 0. Kohler, PJ, Caplovitz, GP, Fogelson, SF, & Tse, PU (2012). Neural correlates of perceptually bistable motion-based grouping. Talk at *Vision Sciences Society*, Naples, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2011.pdf)
  	Kohler, PJ, Fogelson, SF, Reavis, EA, & Tse, PU (2011). The neural basis of lightness constancy in the visual system. Poster at *Vision Sciences Society*, Naples, FL.
@@ -162,7 +162,7 @@ permalink: /pubs/
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2010.pdf)
 	Kohler, PJ, Fogelson, SV, Reavis EA, Guntupalli, JS & Tse, PU (2010). The Relationship Between Multivariate Pattern Classification Accuracy and Hemodynamic Response Level in Visual Cortical Areas. Poster at *Vision Sciences Society*, Naples, FL.
 0. [![pdf_icon](/assets/icons/pdf.png "download pdf"){: #pdf-icon }](/assets/posters/kohler_vss2009.pdf)
-	Kohler, PJ, Caplovitz, GP & Tse, PU (2009). The whole moves less than the spin of its parts. Poster at Poster at *Vision Sciences Society*, Naples, FL.
+	Kohler, PJ, Caplovitz, GP & Tse, PU (2009). The whole moves less than the spin of its parts. Poster at *Vision Sciences Society*, Naples, FL.
 {: reversed="reversed"}
 </div>
 </div>
